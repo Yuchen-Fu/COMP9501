@@ -1,10 +1,11 @@
-"""One run of one cell: GIN (Multi-GNN's GINe) on HI-Small, edge features +counts / +ports (/ +novelty).
+"""Train and evaluate one cell of the design: a GIN edge classifier on HI-Small.
 
-Model, hyper-parameters, loaders, per-graph z-normalisation and evaluation follow IBM/Multi-GNN
-(models.GINe, model_settings.json["gin"], train_util, training.train_homo). Like Multi-GNN, the model is
-never put in eval mode, so BatchNorm normalises every (train, validation or test) batch with its own statistics.
-One change for the short CPU budget: the decision threshold is the F1-maximising threshold on validation
-(Multi-GNN uses argmax = 0.5); argmax F1 and average precision are logged as well.
+Every cell uses the base edge features (timestamp, amount received, received currency, payment format);
+--counts, --ports and --novelty append the corresponding history features from prepare.py.
+Each transaction is classified from its 2-hop sampled neighbourhood. The model is never switched to eval mode,
+so BatchNorm normalises every training, validation and test batch with its own statistics.
+After each epoch the decision threshold is the F1-maximising threshold on validation; test F1 at that threshold,
+test F1 at p > 0.5 and average precision are logged, and the test predictions of every epoch are saved.
 Usage: python src/train.py [--counts] [--ports] [--novelty] --seed 0 --epochs 5 --out results/runs
 """
 import argparse
@@ -22,13 +23,13 @@ from torch_geometric.data import Data
 from torch_geometric.loader import LinkNeighborLoader
 from torch_geometric.nn import BatchNorm, GINEConv
 
-# Multi-GNN model_settings.json["gin"]["params"] and main.py defaults.
+# Fixed hyper-parameters for every cell: the tuned GIN setting for HI-Small reported by Egressy et al. (2024).
 HP = dict(lr=0.006213266113989207, n_hidden=66, n_gnn_layers=2, w_ce=(1.0000182882773443, 6.275014431494497),
           final_dropout=0.10527690625126304, batch_size=8192, num_neighbors=[100, 100])
 
 
-class GINe(nn.Module):
-    """Multi-GNN GINe without edge updates; the edge read-out is applied to the seed edges only."""
+class GIN(nn.Module):
+    """GINE message passing over edge features, then an MLP on [h_sender, h_receiver, edge embedding]."""
 
     def __init__(self, edge_dim, h=HP["n_hidden"], layers=HP["n_gnn_layers"], p=HP["final_dropout"]):
         super().__init__()
@@ -54,12 +55,12 @@ def z_norm(a):
 
 
 def loader(d, feats, s, shuffle):
-    """Graph = all transactions up to split s (train / train+val / all, as in Multi-GNN); seeds = split s.
-    Edge features are z-normalised per graph object, as in Multi-GNN's get_data."""
+    """Graph = all transactions up to split s (train / train+val / all); seeds = transactions of split s.
+    Edge features are z-normalised within each of the three graphs."""
     m = d["split"] <= s
     attr = z_norm(torch.cat([d[k][m].double() for k in feats], 1)).float()
     seeds = torch.nonzero(d["split"][m] == s).squeeze(1)
-    # Multi-GNN's node feature is a constant 1, which z_norm maps to 0.
+    # Accounts carry no features of their own: a constant node feature (z-normalised to 0).
     g = Data(x=torch.zeros(d["n_nodes"], 1), edge_index=d["edge_index"][:, m], edge_attr=attr, num_nodes=d["n_nodes"])
     return LinkNeighborLoader(g, num_neighbors=HP["num_neighbors"], edge_label_index=g.edge_index[:, seeds],
                               edge_label=d["y"][m][seeds], batch_size=HP["batch_size"], shuffle=shuffle), attr[seeds]
@@ -71,7 +72,7 @@ def step(model, batch, seed_attr):
 
 @torch.no_grad()
 def scores(model, ld, seed_attr):
-    """P(laundering) for every seed transaction, in seed order (train-mode forward, as in Multi-GNN)."""
+    """P(laundering) for every seed transaction, in seed order."""
     s = torch.empty(len(seed_attr))
     for b in ld:
         s[b.input_id] = step(model, b, seed_attr).softmax(1)[:, 1]
@@ -103,7 +104,7 @@ def main():
     (tr, tr_attr), (va, va_attr), (te, te_attr) = (loader(d, feats, s, s == 0) for s in range(3))
     y_va, y_te = (d["y"][d["split"] == s].numpy() for s in (1, 2))
 
-    model = GINe(edge_dim=tr_attr.shape[1])
+    model = GIN(edge_dim=tr_attr.shape[1])
     opt = torch.optim.Adam(model.parameters(), lr=HP["lr"])
     loss_fn = nn.CrossEntropyLoss(weight=torch.tensor(HP["w_ce"]))
     log, test_preds = [], []

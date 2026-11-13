@@ -1,7 +1,7 @@
 """Aggregate the runs into the estimand, the mechanism check and their uncertainty.
 
-Per run: Multi-GNN's selection rule (best validation F1 over epochs >= 1) picks the epoch; its test predictions
-are thresholded at that epoch's validation-optimal threshold (train.py).
+Per run: the epoch with the best validation F1 (epochs >= 1; epoch 0 only warms up) is selected, and its test
+predictions are thresholded at that epoch's validation-optimal threshold (train.py).
 Uncertainty, two ways, and the wider one is the one to trust:
   * hierarchical bootstrap: seeds resampled within each cell x test transactions resampled with Poisson weights,
     laundering transactions in whole patterns (connected components of the test laundering subgraph), the same draw
@@ -28,7 +28,7 @@ def load_runs():
     for f in sorted(glob.glob("results/runs/*.json")):
         r = json.load(open(f))
         val = [e["val_f1"] for e in r["log"]]
-        ep = 1 + int(np.argmax(val[1:]))               # Multi-GNN never keeps epoch 0 once a later epoch exists
+        ep = 1 + int(np.argmax(val[1:]))               # best validation epoch, epoch 0 excluded
         e = r["log"][ep]
         runs[r["cell"]].append(dict(seed=r["seed"], epoch=ep, log=r["log"], test_ap=100 * e["test_ap"],
                                     test_f1_argmax=100 * e["test_f1_argmax"],
@@ -146,8 +146,8 @@ def report(res, cells):
     L += ["", "| Check | " + " | ".join(cells) + " | share explained |", "|---|" + "---:|" * (len(cells) + 1),
           "| test AP ×100 | " + " | ".join(f"{t['cells'][c]['mean']:.1f} ± {t['cells'][c]['sd']:.1f}" for c in cells) +
           f" | {pct(t['share_explained'])} |",
-          "| test F1, argmax (Multi-GNN rule) | " + " | ".join(f"{g[c]['mean']:.1f} ± {g[c]['sd']:.1f}" for c in cells) + " | |",
-          "| published (100 epochs, argmax) | " + " | ".join(f"{PUBLISHED[c]:.1f}" if c in PUBLISHED else "" for c in cells) + " | |",
+          "| test F1 at p > 0.5 | " + " | ".join(f"{g[c]['mean']:.1f} ± {g[c]['sd']:.1f}" for c in cells) + " | |",
+          "| published (100 epochs, p > 0.5) | " + " | ".join(f"{PUBLISHED[c]:.1f}" if c in PUBLISHED else "" for c in cells) + " | |",
           "", "Mean validation / test F1 by epoch (selected epochs: " + str(res["selected_epochs"]) + "):", "",
           "| Cell | " + " | ".join(f"ep {i}" for i in range(len(res["mean_curves"][cells[0]]["val_f1"]))) + " |",
           "|---|" + "---:|" * len(res["mean_curves"][cells[0]]["val_f1"])]

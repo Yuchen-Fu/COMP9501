@@ -1,12 +1,11 @@
 """Build the HI-Small graph once: formatting, temporal split, port numbers, causal counts.
 
-Faithful to IBM/Multi-GNN (format_kaggle_files.py + data_loading.get_data + data_util.ports),
-with one deliberate change: every transaction gets one position in a total order, timestamp
-first and same-minute ties broken by a fixed random permutation. Ports AND counts are both
-computed in this order, so for a first-contact transaction the port equals the distinct-
-counterparty count exactly. Raw-file row order is not used for ties: in HI-Small it is
-label-correlated (laundering rows tend to be written after their same-minute siblings),
-which would leak the label into "strictly earlier" counts.
+Accounts (bank + account id) are nodes and transfers are directed edges. Every transaction gets
+one position in a total order: timestamp first, same-minute ties broken by a fixed random
+permutation. Ports and counts are both computed in this order, so for a first-contact
+transaction the port equals the distinct-counterparty count exactly. Raw-file row order is not
+used for ties: in HI-Small it is label-correlated (laundering rows tend to be written after
+their same-minute siblings), which would leak the label into "strictly earlier" counts.
 
 Usage: python src/prepare.py data/raw/HI-Small_Trans.csv data/hi_small.pt
 """
@@ -19,8 +18,8 @@ import torch
 
 
 def load_formatted(path):
-    """Replicates format_kaggle_files.py: string account ids, first-seen integer codes, time sort
-(ties: random permutation instead of file order, see module docstring)."""
+    """Raw CSV -> one row per transaction: integer account ids, integer codes for currency and payment
+    format (in order of first appearance), timestamps in seconds from the first transaction, total order."""
     raw = pd.read_csv(path, dtype=str)
     raw.columns = ["Timestamp", "From Bank", "From Acc", "To Bank", "To Acc", "Amount Received",
                    "Receiving Currency", "Amount Paid", "Payment Currency", "Payment Format", "Is Laundering"]
@@ -45,7 +44,8 @@ def load_formatted(path):
 
 
 def day_split(ts, split_per=(0.6, 0.2, 0.2)):
-    """data_loading.get_data: choose day cut points (i, j) minimising the max relative error."""
+    """Day-based 60/20/20 temporal split: the day cut points (i, j) whose transaction shares have the
+    smallest maximum relative error to 60/20/20."""
     day = ts // 86400
     d_ts = np.bincount(day)
     best = min(((max(abs(s / d_ts.sum() - t) / t for s, t in
@@ -103,7 +103,7 @@ def main(src, dst):
         "y": torch.from_numpy(df["Is Laundering"].to_numpy()),
         "split": torch.from_numpy(split),
         "base": torch.from_numpy(base),
-        "ports": torch.from_numpy(np.stack([in_port, out_port], 1)),           # Multi-GNN column order
+        "ports": torch.from_numpy(np.stack([in_port, out_port], 1)),
         "counts": torch.from_numpy(np.stack([out_total, out_distinct, in_total, in_distinct], 1)),
         "first_contact": torch.from_numpy(first_contact),
         "novelty": torch.from_numpy(first_contact[:, None].astype(np.int64)),  # 1 = no earlier u->v transaction
