@@ -1,0 +1,6 @@
+# torch and pyg_lib come from their own wheel indexes; see setup.sh
+torch_geometric==2.6.1
+numpy==2.5.4
+pandas==3.1.1
+scikit-learn==1.9.1
+scipy==1.18.1
