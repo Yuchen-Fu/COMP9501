@@ -1,6 +1,7 @@
 """Aggregate the 2x2 x 5-seed runs into the estimand, the mechanism check and their uncertainty.
 
-Per run: the epoch with the best validation F1 (within the first `budget` epochs) gives the test predictions.
+Per run: the epoch with the best validation F1 (within the first `budget` epochs) gives the test predictions
+(thresholded at the validation-optimal threshold of that epoch, see train.py).
 Uncertainty: hierarchical bootstrap, 5 seeds resampled within each cell x test transactions resampled
 (Poisson weights, the same draw for all runs so cells stay paired on the test set).
 F1 only depends on TP/FP/FN, so only transactions that are positive or predicted positive by some run matter.
@@ -24,7 +25,8 @@ def load_runs(budget):
         val = [e["val_f1"] for e in r["log"][:budget]]
         ep = int(np.argmax(val))
         pred = np.load(f.replace(".json", "_test_pred.npz"))["pred"][ep].astype(bool)
-        runs[r["cell"]].append(dict(seed=r["seed"], epoch=ep, val_f1=val[ep], pred=pred, log=r["log"]))
+        runs[r["cell"]].append(dict(seed=r["seed"], epoch=ep, val_f1=val[ep], pred=pred, log=r["log"],
+                                    test_ap=r["log"][ep]["test_ap"], test_f1_argmax=r["log"][ep]["test_f1_argmax"]))
     return runs
 
 
@@ -79,8 +81,16 @@ def main(budget=5):
            "all": analyse(runs, y, np.ones_like(y), rng),
            "first_contact": analyse(runs, y, first, rng),
            "repeat": analyse(runs, y, ~first, rng)}
+    # Threshold-free check: the same contrasts on test average precision (seed bootstrap only).
+    ap = {c: 100 * np.array([r["test_ap"] for r in runs[c]]) for c in CELLS}
+    boot_ap = {c: ap[c][rng.integers(0, len(ap[c]), size=(B, len(ap[c])))].mean(1) for c in CELLS}
+    pt, bt = effects({c: ap[c].mean() for c in CELLS}), effects(boot_ap)
+    res["test_ap"] = {"cells": {c: {"mean": ap[c].mean(), "sd": ap[c].std(ddof=1)} for c in CELLS},
+                      **{k: {"estimate": float(pt[k]), "ci95": np.percentile(bt[k], [2.5, 97.5]).tolist()} for k in pt}}
+    res["test_f1_argmax"] = {c: {"mean": 100 * np.mean([r["test_f1_argmax"] for r in runs[c]]),
+                                 "sd": 100 * np.std([r["test_f1_argmax"] for r in runs[c]], ddof=1)} for c in CELLS}
     curves = {c: {k: np.mean([[e[k] for e in r["log"][:budget]] for r in runs[c]], 0).round(4).tolist()
-                  for k in ("val_f1", "test_f1")} for c in CELLS}
+                  for k in ("val_f1", "test_f1", "test_ap")} for c in CELLS}
     res["mean_curves"] = curves
     json.dump(res, open(f"results/summary_E{budget}.json", "w"), indent=1)
 
@@ -98,6 +108,14 @@ def main(budget=5):
         sh = r["share_explained"]
         L.append(f"| {s} | {fmt(r['count_gain'])} | {fmt(r['port_gain'])} | {fmt(r['identity_effect'])} | "
                  f"{100*sh['estimate']:.0f}% [{100*sh['ci95'][0]:.0f}%, {100*sh['ci95'][1]:.0f}%] |")
+    a = res["test_ap"]
+    L += ["", "Threshold-free check (test average precision ×100, seed bootstrap) and Multi-GNN's argmax F1:", "",
+          "| Metric | Base | Counts | Ports | Counts+Ports | Port gain | Identity effect | Share explained |", "|---|---:|---:|---:|---:|---:|---:|---:|",
+          "| test AP | " + " | ".join(f"{a['cells'][c]['mean']:.1f} ± {a['cells'][c]['sd']:.1f}" for c in CELLS) +
+          f" | {fmt(a['port_gain'])} | {fmt(a['identity_effect'])} | {100*a['share_explained']['estimate']:.0f}% "
+          f"[{100*a['share_explained']['ci95'][0]:.0f}%, {100*a['share_explained']['ci95'][1]:.0f}%] |",
+          "| test F1, argmax | " + " | ".join(f"{res['test_f1_argmax'][c]['mean']:.1f} ± {res['test_f1_argmax'][c]['sd']:.1f}"
+                                              for c in CELLS) + " | | | |"]
     L += ["", "Mean validation / test F1 by epoch:", "", "| Cell | " + " | ".join(f"ep {i}" for i in range(budget)) + " |",
           "|---|" + "---:|" * budget]
     for c in CELLS:

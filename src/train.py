@@ -2,6 +2,8 @@
 
 Model, hyper-parameters, loaders, per-graph z-normalisation and best-validation model selection
 follow IBM/Multi-GNN (models.GINe, model_settings.json["gin"], train_util, training.train_homo).
+One change for the short CPU budget: the decision threshold is the F1-maximising threshold on validation
+(Multi-GNN uses argmax = 0.5); argmax F1 and average precision are logged as well.
 Usage: python src/train.py [--counts] [--ports] --seed 0 --epochs 5 --out results/runs
 """
 import argparse
@@ -14,7 +16,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from sklearn.metrics import f1_score
+from sklearn.metrics import average_precision_score, f1_score, precision_recall_curve
 from torch_geometric.data import Data
 from torch_geometric.loader import LinkNeighborLoader
 from torch_geometric.nn import BatchNorm, GINEConv
@@ -67,12 +69,20 @@ def step(model, batch, seed_attr):
 
 
 @torch.no_grad()
-def predict(model, ld, seed_attr):
+def scores(model, ld, seed_attr):
+    """P(laundering) for every seed transaction, in seed order."""
     model.eval()
-    pred = torch.empty(len(seed_attr), dtype=torch.int8)
+    s = torch.empty(len(seed_attr))
     for b in ld:
-        pred[b.input_id] = step(model, b, seed_attr).argmax(1).to(torch.int8)
-    return pred.numpy()
+        s[b.input_id] = step(model, b, seed_attr).softmax(1)[:, 1]
+    return s.numpy()
+
+
+def val_threshold(y, s):
+    """Decision threshold that maximises F1 on the validation transactions, and that F1."""
+    p, r, t = precision_recall_curve(y, s)
+    f = 2 * p[:-1] * r[:-1] / np.maximum(p[:-1] + r[:-1], 1e-12)
+    return t[f.argmax()], f.max()
 
 
 def main():
@@ -104,12 +114,20 @@ def main():
             loss = loss_fn(step(model, batch, tr_attr), batch.edge_label)
             loss.backward()
             opt.step()
-        p_va, p_te = predict(model, va, va_attr), predict(model, te, te_attr)
-        f_va, f_te = f1_score(y_va, p_va, zero_division=0), f1_score(y_te, p_te, zero_division=0)
+        s_va, s_te = scores(model, va, va_attr), scores(model, te, te_attr)
+        thr, f_va = val_threshold(y_va, s_va)                 # chosen on validation only
+        p_te = (s_te >= thr).astype(np.int8)
+        f_te = f1_score(y_te, p_te, zero_division=0)
         test_preds.append(p_te)
-        log.append(dict(epoch=epoch, val_f1=f_va, test_f1=f_te, loss=loss.item(), sec=time.time() - t0))
-        print(f"[{cell} s{args.seed}] epoch {epoch:3d} loss {loss.item():.4f} val F1 {f_va:.4f} test F1 {f_te:.4f} "
-              f"({time.time() - t0:.0f}s)", flush=True)
+        log.append(dict(epoch=epoch, val_f1=f_va, test_f1=f_te, threshold=float(thr),
+                        val_ap=average_precision_score(y_va, s_va), test_ap=average_precision_score(y_te, s_te),
+                        val_f1_argmax=f1_score(y_va, s_va > 0.5, zero_division=0),
+                        test_f1_argmax=f1_score(y_te, s_te > 0.5, zero_division=0),
+                        loss=loss.item(), sec=time.time() - t0))
+        e = log[-1]
+        print(f"[{cell} s{args.seed}] epoch {epoch:3d} loss {e['loss']:.4f} | val F1 {f_va:.4f} test F1 {f_te:.4f} "
+              f"(thr {thr:.3f}) | AP val {e['val_ap']:.4f} test {e['test_ap']:.4f} | argmax F1 val "
+              f"{e['val_f1_argmax']:.4f} test {e['test_f1_argmax']:.4f} ({e['sec']:.0f}s)", flush=True)
 
     # Test predictions of every epoch are kept, so best-validation selection can be redone for any budget <= epochs.
     os.makedirs(args.out, exist_ok=True)
