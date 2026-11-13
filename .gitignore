@@ -2,3 +2,5 @@
 data/
 __pycache__/
 *.pyc
+results/logs/
+results/run_all.out
