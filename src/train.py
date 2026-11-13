@@ -1,10 +1,11 @@
-"""One run of the 2x2 factorial: GIN (Multi-GNN's GINe) on HI-Small, edge features +counts / +ports.
+"""One run of one cell: GIN (Multi-GNN's GINe) on HI-Small, edge features +counts / +ports (/ +novelty).
 
-Model, hyper-parameters, loaders, per-graph z-normalisation and best-validation model selection
-follow IBM/Multi-GNN (models.GINe, model_settings.json["gin"], train_util, training.train_homo).
+Model, hyper-parameters, loaders, per-graph z-normalisation and evaluation follow IBM/Multi-GNN
+(models.GINe, model_settings.json["gin"], train_util, training.train_homo). Like Multi-GNN, the model is
+never put in eval mode, so BatchNorm normalises every (train, validation or test) batch with its own statistics.
 One change for the short CPU budget: the decision threshold is the F1-maximising threshold on validation
 (Multi-GNN uses argmax = 0.5); argmax F1 and average precision are logged as well.
-Usage: python src/train.py [--counts] [--ports] --seed 0 --epochs 5 --out results/runs
+Usage: python src/train.py [--counts] [--ports] [--novelty] --seed 0 --epochs 5 --out results/runs
 """
 import argparse
 import json
@@ -70,8 +71,7 @@ def step(model, batch, seed_attr):
 
 @torch.no_grad()
 def scores(model, ld, seed_attr):
-    """P(laundering) for every seed transaction, in seed order."""
-    model.eval()
+    """P(laundering) for every seed transaction, in seed order (train-mode forward, as in Multi-GNN)."""
     s = torch.empty(len(seed_attr))
     for b in ld:
         s[b.input_id] = step(model, b, seed_attr).softmax(1)[:, 1]
@@ -89,6 +89,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--counts", action="store_true")
     ap.add_argument("--ports", action="store_true")
+    ap.add_argument("--novelty", action="store_true", help="flag: no earlier transaction between this sender and receiver")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--epochs", type=int, default=100)
     ap.add_argument("--data", default="data/hi_small.pt")
@@ -97,8 +98,8 @@ def main():
 
     random.seed(args.seed), np.random.seed(args.seed), torch.manual_seed(args.seed)
     d = torch.load(args.data, weights_only=False)
-    feats = ["base"] + ["counts"] * args.counts + ["ports"] * args.ports
-    cell = {(0, 0): "base", (1, 0): "counts", (0, 1): "ports", (1, 1): "counts+ports"}[(args.counts, args.ports)]
+    extras = [k for k in ("counts", "novelty", "ports") if getattr(args, k)]
+    feats, cell = ["base"] + extras, "+".join(extras) or "base"
     (tr, tr_attr), (va, va_attr), (te, te_attr) = (loader(d, feats, s, s == 0) for s in range(3))
     y_va, y_te = (d["y"][d["split"] == s].numpy() for s in (1, 2))
 
@@ -108,7 +109,6 @@ def main():
     log, test_preds = [], []
     for epoch in range(args.epochs):
         t0 = time.time()
-        model.train()
         for batch in tr:
             opt.zero_grad()
             loss = loss_fn(step(model, batch, tr_attr), batch.edge_label)
@@ -134,7 +134,7 @@ def main():
     tag = f"{cell}_s{args.seed}"
     np.savez_compressed(f"{args.out}/{tag}_test_pred.npz", pred=np.stack(test_preds))
     with open(f"{args.out}/{tag}.json", "w") as f:
-        json.dump(dict(cell=cell, counts=args.counts, ports=args.ports, seed=args.seed, epochs=args.epochs,
+        json.dump(dict(cell=cell, features=feats, seed=args.seed, epochs=args.epochs,
                        hp=HP, log=log), f, indent=1)
 
 

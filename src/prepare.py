@@ -1,11 +1,12 @@
 """Build the HI-Small graph once: formatting, temporal split, port numbers, causal counts.
 
 Faithful to IBM/Multi-GNN (format_kaggle_files.py + data_loading.get_data + data_util.ports),
-with one deliberate change: every transaction gets a single deterministic position in a
-total order (stable sort on timestamp, ties broken by raw-file row order). Ports AND counts
-are both computed in this order, so for a first-contact transaction the port number equals
-the distinct-counterparty count exactly. (Multi-GNN breaks same-minute ties with numpy's
-unstable quicksort, i.e. implementation-defined.)
+with one deliberate change: every transaction gets one position in a total order, timestamp
+first and same-minute ties broken by a fixed random permutation. Ports AND counts are both
+computed in this order, so for a first-contact transaction the port equals the distinct-
+counterparty count exactly. Raw-file row order is not used for ties: in HI-Small it is
+label-correlated (laundering rows tend to be written after their same-minute siblings),
+which would leak the label into "strictly earlier" counts.
 
 Usage: python src/prepare.py data/raw/HI-Small_Trans.csv data/hi_small.pt
 """
@@ -18,7 +19,8 @@ import torch
 
 
 def load_formatted(path):
-    """Replicates format_kaggle_files.py: string account ids, first-seen integer codes, time sort."""
+    """Replicates format_kaggle_files.py: string account ids, first-seen integer codes, time sort
+(ties: random permutation instead of file order, see module docstring)."""
     raw = pd.read_csv(path, dtype=str)
     raw.columns = ["Timestamp", "From Bank", "From Acc", "To Bank", "To Acc", "Amount Received",
                    "Receiving Currency", "Amount Paid", "Payment Currency", "Payment Format", "Is Laundering"]
@@ -35,7 +37,8 @@ def load_formatted(path):
         "Payment Format": pd.factorize(raw["Payment Format"])[0],
         "Is Laundering": raw["Is Laundering"].astype(int).to_numpy(),
     })
-    df = df.iloc[np.argsort(df["Timestamp"].to_numpy(), kind="stable")].reset_index(drop=True)
+    tie = np.random.default_rng(0).permutation(n)                     # label-independent tie-break
+    df = df.iloc[np.lexsort((tie, df["Timestamp"].to_numpy()))].reset_index(drop=True)
     df["Timestamp"] -= df["Timestamp"].min()
     assert len(df) == n
     return df
@@ -84,7 +87,7 @@ def main(src, dst):
     in_total, in_distinct, in_port = side_history(v, u, n_nodes)      # receiver side
 
     # Mechanism-check strata. A transaction is a "first contact" if no earlier u->v transaction exists.
-    first_contact = (out_port == out_distinct)
+    first_contact = (out_port == out_distinct)                         # also the "novelty" feature
     assert np.array_equal(first_contact, in_port == in_distinct)
     # An account "repeats" if it has >=2 transactions with the same counterparty in the same direction
     # anywhere in the observed graph (the test graph the model sees contains all transactions).
@@ -103,6 +106,7 @@ def main(src, dst):
         "ports": torch.from_numpy(np.stack([in_port, out_port], 1)),           # Multi-GNN column order
         "counts": torch.from_numpy(np.stack([out_total, out_distinct, in_total, in_distinct], 1)),
         "first_contact": torch.from_numpy(first_contact),
+        "novelty": torch.from_numpy(first_contact[:, None].astype(np.int64)),  # 1 = no earlier u->v transaction
         "repeat_free": torch.from_numpy(repeat_free),
         "n_nodes": n_nodes,
     }

@@ -1,6 +1,6 @@
 # What Do Port Numbers Add? Counterparty Counts vs. Counterparty Identity in Multigraph GNNs for AML
 
-_COMP9501 course project (example) · IBM AML HI-Small · GIN from IBM/Multi-GNN · 2×2 factorial × 5 seeds_
+_COMP9501 course project · IBM AML HI-Small · GIN from IBM/Multi-GNN · 2×2 factorial × 5 seeds_
 
 <!-- RESULTS_TLDR -->
 
