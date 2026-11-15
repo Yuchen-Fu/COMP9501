@@ -12,6 +12,14 @@ serif headings, restrained colors, complete sentences, and numbered captions
 from Figure 1 to Figure 12. Results lead with a conclusion and supporting bullets.
 There are no oversized number panels.
 
+The second layout revision assigns space according to each page's content.
+Most introductory and results figures span about 85% of the slide width, with
+one or two supporting sentences below. Selected methods and comparison pages
+use balanced text-and-figure layouts, while the conclusion remains text-led.
+Redundant section and evidence headings have been removed, and captions and
+footers are shorter. The key scientific qualifications remain visible; detailed
+explanations stay in the speaker notes.
+
 - [PowerPoint](AML_BUSINESS_SLIDES.pptx) retains editable slide text and speaker notes.
 - [PDF](AML_BUSINESS_SLIDES.pdf) contains all 19 slides.
 - [HTML](AML_BUSINESS_SLIDES.html) is a standalone browser presentation; arrow keys
@@ -33,11 +41,15 @@ python3 presentation/build_slides.py
 
 The three plotting scripts produce the figures. The builder inserts them and
 generates PowerPoint, HTML, PDF, previews, and the Markdown speaker script from
-one layout. Required packages are NumPy, Matplotlib, python-pptx, Pillow,
+shared slide content and per-page layouts. Required packages are NumPy,
+Matplotlib, python-pptx, Pillow,
 ReportLab, and PyMuPDF. The PDF renderer uses Liberation fonts under
 `/usr/share/fonts/truetype/liberation/`; PowerPoint uses the compatible Arial and
 Times New Roman families. These dependencies are present in the cloud plotting
 interpreter.
+
+PDF previews use the shared renderer. PowerPoint is checked structurally with
+python-pptx; it has not been rendered in Microsoft PowerPoint on this machine.
 
 Numerical values come from `../results/summary.json` and the audited dataset
 records. Primary results use validation-selected checkpoints and thresholds;

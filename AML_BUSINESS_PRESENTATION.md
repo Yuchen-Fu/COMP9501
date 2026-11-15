@@ -28,61 +28,58 @@ Presentation design: displayed figures are rendered in Python and inserted as im
 
 *Source / scope:* COMP9501 · Completed study · IBM AML HI-Small
 
-### 2. AML screening must prioritize transfers for review.
+### 2. AML screening prioritizes transfers for review.
 
 **INTRODUCTION**
 
-![A transaction score helps prioritize human review.](presentation/figures/academic_workflow.png)
+![Transaction screening and human review.](presentation/figures/academic_workflow.png)
 
-**Figure 1.** A transaction score helps prioritize human review.
+**Figure 1.** Transaction screening and human review.
 
 - Analysts have limited capacity to investigate flagged transfers.
-- Useful features must improve detection while making false-positive flags visible.
-- A model score supports review; it does not establish money laundering.
+- A useful model must balance missed positives against false-positive flags.
 
 **Speaker notes.** Explain AML as anti-money-laundering monitoring: payments can be examined individually and in their wider transaction network. A model score is an input to an investigation process, not a legal determination. In this benchmark, a true positive is a flagged transaction with a synthetic laundering label; a false positive is a flagged transaction without that label. Business teams care about both missed activity and the demand placed on investigators. F1 is a useful research summary, but the same F1 can arise from different alert volumes. Later we therefore show the underlying transaction counts. A transaction flag is not necessarily a unique case, customer investigation, or suspicious activity report.
 
 Presentation design: displayed figures are rendered in Python and inserted as images; detailed caveats remain in these notes.
 
-*Source / scope:* Conceptual workflow. The benchmark evaluates transaction labels, not investigation outcomes.
+*Source / scope:* Conceptual workflow. A risk score supports investigation; it does not establish laundering.
 
-### 3. Equal activity can conceal different relationships.
+### 3. Equal activity can hide different relationships.
 
 **INTRODUCTION**
 
-![Equal transfer counts can describe different counterparty breadth.](presentation/figures/academic_counterparty_breadth.png)
+![Equal transfer counts with different counterparty breadth.](presentation/figures/academic_counterparty_breadth.png)
 
-**Figure 2.** Equal transfer counts can describe different counterparty breadth.
+**Figure 2.** Equal transfer counts with different counterparty breadth.
 
-- Both accounts make four transfers.
-- Distinct-counterparty counts distinguish one recipient from four recipients.
+- Both accounts make four transfers, but their counterparty breadth differs.
 - Neither pattern alone establishes money laundering.
 
 **Speaker notes.** Use the two simple networks as an introductory example. A repeated customer–supplier relationship and a distribution across multiple recipients can have the same number of transfers. Distinct-counterparty counts separate these patterns, which makes them a plausible simple explanation for gains attributed to graph adaptations. However, even after we know how many counterparties an account has used, we may still not know whether the current recipient is one of them. Fan-in and fan-out are structural motifs discussed in the multigraph literature; this study does not estimate separate performance for each laundering typology. Do not label either illustrative network as inherently suspicious.
 
 Presentation design: displayed figures are rendered in Python and inserted as images; detailed caveats remain in these notes.
 
-*Source / scope:* Conceptual examples. Each arrow represents one directed transfer; neither example is labelled as laundering.
+*Source / scope:* Conceptual examples. Each arrow represents one directed transfer.
 
-### 4. Counts and ports describe different parts of history.
+### 4. A repeated counterparty keeps its port index.
 
 **INTRODUCTION**
 
-![A repeated counterparty retains its original outgoing port index.](presentation/figures/academic_feature_history.png)
+![Sender history across three transfers.](presentation/figures/academic_feature_history.png)
 
-**Figure 3.** A repeated counterparty retains its original outgoing port index.
+**Figure 3.** Sender history across three transfers.
 
-- Counts summarize previous activity and relationship breadth.
-- A port index records local first-contact order and is reused on repeats.
-- Novelty states whether the current directed pair has appeared before.
+- Counts summarize previous activity and breadth.
+- Novelty records whether the current directed pair has appeared before.
 
 **Speaker notes.** Define a counterparty as the account on the other side of a transfer. The four count features summarize the sender’s outgoing history and the receiver’s incoming history. Ports are local numerical ranks assigned when a counterparty is first encountered and reused on later transfers. They are unrelated to network communication ports and are not KYC identities or globally unique customer IDs. An explicit novelty bit says whether this sender has previously transferred to this receiver in the observed history. This distinction is central: an account can be established while the relationship is first observed. Features are limited by the observation window; unobserved earlier relationships can look new.
 
 Presentation design: displayed figures are rendered in Python and inserted as images; detailed caveats remain in these notes.
 
-*Source / scope:* Sender-side example. “New” means first observed within this data window, not a new customer.
+*Source / scope:* Ports are local first-contact ranks. “New” means first observed within this data window.
 
-### 5. HI-Small supplies labels for a controlled experiment.
+### 5. HI-Small provides a controlled test of history features.
 
 **DATA**
 
@@ -98,25 +95,24 @@ Accounts are nodes, and individual transfers are directed edges.
 
 Presentation design: displayed figures are rendered in Python and inserted as images; detailed caveats remain in these notes.
 
-*Source / scope:* Source: Altman et al. (2023); pinned HI-Small revision 6412f57. Counts verified against the downloaded data.
+*Source / scope:* Altman et al. (2023); pinned HI-Small revision 6412f57. Simulator labels are not bank case outcomes.
 
-### 6. The test period contains a sharp prevalence shift.
+### 6. A small test tail contains many positives.
 
 **DATA**
 
-![Daily transaction volume and label prevalence across the temporal split.](presentation/figures/temporal_shift.png)
+![Daily transfer volume and laundering-label prevalence.](presentation/figures/temporal_shift.png)
 
-**Figure 4.** Daily transaction volume and label prevalence across the temporal split.
+**Figure 4.** Daily transfer volume and laundering-label prevalence.
 
-- Whole-day cuts allocate 64%, 19%, and 17% of transfers to train, validation, and test.
-- Days 10–17 contain 655 of the 1,611 test positives, in only 1,108 transfers.
+- Days 10–17 contain 40.7% of test positives in 0.128% of test transfers.
 - We therefore also examine test days 8–9.
 
 **Speaker notes.** Explain why temporal separation is relevant to monitoring: the model should be assessed on a later period rather than an arbitrary mixture of the same days. Whole-day boundaries prevent an exact 60/20/20 allocation. The late test tail is unusual: its prevalence is 59.12%, compared with 0.111% on test days 8–9. A retrospective rule flagging everything from day 10 would score 48.18 full-test F1. We do not present that rule as a deployable detector because it was noticed after inspecting test data. Instead, the full test remains primary and days 8–9 form a disclosed sensitivity. Temporal splitting alone does not make this a live chronological simulation: evaluation graph construction still uses the cumulative period.
 
 Presentation design: displayed figures are rendered in Python and inserted as images; detailed caveats remain in these notes.
 
-*Source / scope:* The full test remains primary. The days 8–9 sensitivity was motivated by inspection of the test tail.
+*Source / scope:* The full test is primary; days 8–9 are a post-hoc sensitivity.
 
 ### 7. Prior work motivates an explanation test.
 
@@ -130,137 +126,131 @@ Presentation design: displayed figures are rendered in Python and inserted as im
 
 Presentation design: displayed figures are rendered in Python and inserted as images; detailed caveats remain in these notes.
 
-*Source / scope:* The published result motivates our question. This five-epoch study is not a numerical replication of the published result.
+*Source / scope:* Our five-epoch experiment tests a proposed explanation; it is not a numerical replication.
 
-### 8. Can historical counts explain the port-numbering gain?
+### 8. Can counts explain the port-numbering gain?
 
 **RESEARCH QUESTION**
 
-The target is the information behind the gain.
-
-- If ports mainly reveal activity and breadth, their gain should shrink when counts are supplied.
-- We compare the port gain with and without the four historical counts.
-- A supplementary novelty model tests an explicit representation of current-pair history.
+- If ports mainly reveal activity and breadth, their gain should shrink once counts are supplied.
+- We test that attenuation by comparing the port gain before and after adding counts.
 
 **Speaker notes.** State the competing explanation clearly. A port on a first contact equals the number of distinct partners previously encountered at that endpoint. Perhaps much of its benefit can be replaced by basic account counters. If so, the additional gain from ports should shrink once those counters are available. The factorial design tests this attenuation, rather than comparing Counts alone with Ports alone. The supplementary novelty cell asks whether making current-pair membership explicit is a useful alternative representation. This is a feature-design question with operational relevance, but the experiment does not compare GNNs with rule systems or tabular models, so it cannot establish that a GNN is necessary.
 
 Presentation design: displayed figures are rendered in Python and inserted as images; detailed caveats remain in these notes.
 
-*Source / scope:* The primary question concerns attenuation of the port gain. The novelty comparison is supplementary.
+*Source / scope:* The primary question concerns attenuation. Explicit pair novelty is a supplementary mechanism check.
 
-### 9. A factorial experiment separates the feature effects.
+### 9. The factorial compares four feature combinations.
 
 **METHODOLOGY**
 
-![The primary counts × ports design and the supplementary novelty model.](presentation/figures/academic_factorial_design.png)
+![Primary factorial and supplementary novelty model.](presentation/figures/academic_factorial_design.png)
 
-**Figure 5.** The primary counts × ports design and the supplementary novelty model.
+**Figure 5.** Primary factorial and supplementary novelty model.
 
 - Every cell uses the same GIN settings, five seeds, and five epochs.
-- Four counts measure sender-outgoing and receiver-incoming activity and breadth.
-- Counts plus novelty adds five supplementary runs to the twenty primary runs.
+- Four counts describe sender-outgoing and receiver-incoming activity and breadth.
+
+**Scope.** The design has twenty primary runs and five supplementary runs.
 
 **Speaker notes.** Explain the 2×2 visually before the equation. The four core cells have base transaction attributes in common: elapsed timestamp, received amount, receiving currency, and payment format. The count factors add four prefix-history values. The port factor adds incoming and outgoing first-contact ranks. Five paired random seeds are used across every cell, with fixed hyperparameters and five epochs. The fifth cell replaces ports with a novelty bit alongside counts. Counts, ports, and novelty use one total order: timestamp and a fixed random tie-break within a minute. Earlier means earlier in this convention, not a claimed true intraminute ordering. We completed all planned runs without extending the budget based on final results.
 
 Presentation design: displayed figures are rendered in Python and inserted as images; detailed caveats remain in these notes.
 
-*Source / scope:* Historical features use timestamp order with a fixed random tie-break. True within-minute ordering is unknown.
+*Source / scope:* Counts + novelty is supplementary. Histories use the declared timestamp-and-tie order.
 
-### 10. We measure how much of the port gain remains.
+### 10. We compare the port gain before and after counts.
 
 **METHODOLOGY**
 
-![The explained share compares the residual gain with the original gain.](presentation/figures/academic_estimand.png)
+![Original and residual gains; overbars denote means across five paired seeds.](presentation/figures/academic_estimand.png)
 
-**Figure 6.** The explained share compares the residual gain with the original gain.
+**Figure 6.** Original and residual gains; overbars denote means across five paired seeds.
 
-- Validation selects the checkpoint and the decision threshold.
-- Paired seed differences compare the same feature contrast across five matched seeds.
-- A Fieller interval accounts for uncertainty in the explained-share ratio.
+- Validation selects both the checkpoint and the decision threshold.
+- The explained share uses mean paired gains, with a Fieller interval.
 
-**Speaker notes.** Explain the estimand in words first: if counts are the explanation, the additional benefit of ports should become smaller. Use a ratio of mean paired differences, not the average of seed-wise ratios. Each epoch’s decision threshold maximizes validation F1 and is then applied unchanged to test. Primary selection uses the best validation F1 among zero-based epochs 1–4, with earliest ties. No test outcome chooses the epoch or threshold. The intervals describe variation across five training/scoring seeds conditional on this dataset and protocol; they do not estimate uncertainty across banks. The ratio needs Fieller inference because denominator uncertainty matters. Final-epoch, early-test, and AP views are disclosed sensitivities. The analysis was refined with inherited interim results available, not preregistered outcome-blind.
+**Scope.** A share of 100% means no residual gain; 0% means no attenuation.
+
+**Speaker notes.** Here B_s, P_s, C_s, and CP_s denote seed-specific test F1 for Base, Ports, Counts, and Counts+Ports. Overbars denote means across the five paired seeds. Explain the estimand in words first: if counts are the explanation, the additional benefit of ports should become smaller. Use a ratio of mean paired differences, not the average of seed-wise ratios. Each epoch’s decision threshold maximizes validation F1 and is then applied unchanged to test. Primary selection uses the best validation F1 among zero-based epochs 1–4, with earliest ties. No test outcome chooses the epoch or threshold. The intervals describe variation across five training/scoring seeds conditional on this dataset and protocol; they do not estimate uncertainty across banks. The ratio needs Fieller inference because denominator uncertainty matters. Final-epoch, early-test, and AP views are disclosed sensitivities. The analysis was refined with inherited interim results available, not preregistered outcome-blind.
 
 Presentation design: displayed figures are rendered in Python and inserted as images; detailed caveats remain in these notes.
 
-*Source / scope:* Primary endpoint: full-test minority F1 at validation-selected, zero-based epochs 1–4. Intervals condition on this dataset and protocol.
+*Source / scope:* Primary selection uses validation F1 among zero-based epochs 1–4.
 
-### 11. Ports retain a positive gain after counts are supplied.
+### 11. Counts do not eliminate the port gain.
 
 **RESULTS**
 
-![Port gains before and after supplying the four account counts.](presentation/figures/factorial_gain.png)
+![Mean paired effects with 95% intervals.](presentation/figures/factorial_gain.png)
 
-**Figure 7.** Port gains before and after supplying the four account counts.
+**Figure 7.** Mean paired effects with 95% intervals.
 
-- Both port gains are positive in all five seeds.
-- The residual gain is 14.91 F1 points after adding counts.
-- The interaction interval includes zero, so amplification is not established.
+- The gain remains positive in all five seeds.
+- The interaction interval includes zero, so amplification is unresolved.
 
 **Speaker notes.** Present the directly interpretable differences before the negative ratio. Ports add 7.48 F1 points without the counters, and 14.91 points after counters are supplied. Their respective paired intervals are [2.96,12.00] and [10.11,19.71]. The requested explained share is −99.35% with Fieller interval [−512.75%,+8.42%]. Under the stated model, large positive attenuation is incompatible with the results, whereas zero attenuation and substantial amplification remain possible. Do not say that ports have proven to become twice as valuable: the interaction interval includes zero. Counts alone shows an imprecise gain, but that does not mean counts are useless. This finding is about substitution within this five-epoch GIN experiment.
 
 Presentation design: displayed figures are rendered in Python and inserted as images; detailed caveats remain in these notes.
 
-*Source / scope:* Means and 95% paired-seed t intervals. Five epochs per run; the explained-share interval appears in Appendix A.
+*Source / scope:* Full-test F1; five epochs. Intervals describe seed variation on this fixed synthetic dataset.
 
-### 12. Explicit pair novelty improves F1 at this budget.
+### 12. Explicit novelty is effective at five epochs.
 
 **MECHANISM**
 
-![An explicit novelty indicator improves the supplementary representation.](presentation/figures/novelty_comparison.png)
+![Paired-seed F1 values and five-seed means.](presentation/figures/novelty_comparison.png)
 
-**Figure 8.** An explicit novelty indicator improves the supplementary representation.
+**Figure 8.** Paired-seed F1 values and five-seed means.
 
-- Counts plus novelty exceed counts plus ports by 9.42 F1 points.
-- The advantage is concentrated among first-contact transfers.
-- This comparison does not isolate port-rank value after novelty.
+- Counts + novelty exceeds Counts + Ports by 9.42 F1 points.
+- This replacement comparison does not isolate port-rank value after novelty.
+
+**Scope.** The advantage is concentrated among first-contact transfers.
 
 **Speaker notes.** Connect the finding back to the introductory questions. The supplementary novelty representation outperforms counts plus ranks in every seed. Its advantage is concentrated among first-contact transactions. This does not mean every new relationship should trigger an alert: most first-contact transfers are legitimate even in this synthetic test set. Nor does it prove that ranks never help. CP versus CN replaces a rank representation with an explicit bit; it does not test adding ranks to a model that already has explicit novelty. A model may learn the explicit bit more easily than infer it from normalized counts and ranks in five epochs. Ports are local ranks, not global customer identities. Appendix B explains why the first-contact determinism argument does not imply a zero gain.
 
 Presentation design: displayed figures are rendered in Python and inserted as images; detailed caveats remain in these notes.
 
-*Source / scope:* C = Counts; CP = Counts + Ports; CN = Counts + novelty. Each model uses its validation-selected checkpoint and threshold.
+*Source / scope:* Supplementary comparison. Additional rank value after explicit novelty remains untested.
 
-### 13. Better detection can increase the number of flags.
+### 13. More detections can mean more transaction flags.
 
 **AML BUSINESS INTERPRETATION**
 
-![Mean transaction outcomes across five seeds at model-specific thresholds.](presentation/figures/alert_outcomes.png)
+![Mean transaction outcomes at model-specific thresholds.](presentation/figures/alert_outcomes.png)
 
-**Figure 9.** Mean transaction outcomes across five seeds at model-specific thresholds.
+**Figure 9.** Mean transaction outcomes at model-specific thresholds.
 
-- Adding ports to counts finds 213 more positives and removes 483 false-positive flags.
-- Novelty finds 217 more positives than ports, with 24 more false-positive flags.
-- Each model uses its own validation-selected threshold.
+- Replacing ports with novelty finds 217 more positives and adds 24 false-positive flags.
 
 **Speaker notes.** This is the main business translation. The whole test set contains 863,900 transfers and 1,611 labelled positives. Moving from counts to counts plus ports improves both detection and false positives at the selected thresholds. Moving from counts plus ports to explicit novelty finds still more positives, but increases the total number of flags. It would therefore be misleading to sell the novelty result as lower workload. All entries are arithmetic means across seeds; each actual run has integer counts. Different models have different validation-selected thresholds, so these are not comparisons at equal alert volume or false-positive rate. Real AML teams group transactions into cases, assign varying review effort, and use information outside this benchmark. We did not measure case yield, investigator hours, suspicious activity reporting, prevented loss, or return on investment.
 
 Presentation design: displayed figures are rendered in Python and inserted as images; detailed caveats remain in these notes.
 
-*Source / scope:* Counts in the bullets are rounded seed means. Transaction flags are not unique investigations or measured staff workload.
+*Source / scope:* Rounded five-seed means at separate thresholds. Transaction flags are not investigations.
 
-### 14. Both feature gains persist outside the late test tail.
+### 14. Both feature gains persist outside the late tail.
 
 **ROBUSTNESS**
 
-![Temporal and ranking sensitivities for the two residual comparisons.](presentation/figures/robustness_effects.png)
+![Temporal and ranking sensitivities with 95% intervals.](presentation/figures/robustness_effects.png)
 
-**Figure 10.** Temporal and ranking sensitivities for the two residual comparisons.
+**Figure 10.** Temporal and ranking sensitivities with 95% intervals.
 
 - The residual port gain and novelty advantage remain positive on days 8–9.
 - Final-validation average precision supports both comparisons.
-- These checks reuse the same models and dataset.
 
 **Speaker notes.** Do not claim three independent confirmations: these views reuse the same models and dataset, and the additional checks were motivated by interim results and the tail. The early-test comparison removes the unusual late-period transactions. Final validation AP concerns a period without that test tail and assesses ranking rather than one cutoff, although validation has also informed model selection. The residual and novelty advantages have positive intervals in these views. Counterevidence remains important: the original port gain on final test AP has an interval crossing zero, and at a fixed 0.5 threshold the primary residual-gain interval also crosses zero. The conclusion applies to the specified validation-calibrated protocol, not every possible threshold.
 
 Presentation design: displayed figures are rendered in Python and inserted as images; detailed caveats remain in these notes.
 
-*Source / scope:* These are post-hoc, correlated sensitivities with nominal 95% intervals. F1 and average precision are different outcomes.
+*Source / scope:* Post-hoc, correlated checks. F1 and average precision are different outcomes.
 
-### 15. Further validation must reflect real scoring conditions.
+### 15. Validation must reflect real scoring conditions.
 
 **BUSINESS IMPLICATIONS AND LIMITS**
-
-The present evidence sets validation priorities.
 
 - Construct graph neighborhoods from information available at scoring time.
 - Compare detection at a common transaction-alert budget, then measure case-level outcomes.
@@ -272,61 +262,56 @@ The present evidence sets validation priorities.
 
 Presentation design: displayed figures are rendered in Python and inserted as images; detailed caveats remain in these notes.
 
-*Source / scope:* Training convergence and deployment effectiveness remain unestablished. Twenty-three of 25 selected checkpoints are at the last epoch.
+*Source / scope:* Convergence is unestablished: 23 of 25 selected checkpoints are at the final epoch.
 
-### 16. The specified counts do not eliminate the port gain.
+### 16. The specified counts do not explain away the port gain.
 
 **CONCLUSION**
 
-The residual gain is positive; its mechanism remains unresolved.
+- Ports retain 14.91 F1 points beyond counts (95% interval: 10.11–19.71).
+- Explicit novelty is effective, while additional port-rank value remains unresolved.
+- AML validation should examine current-pair history as well as account activity.
 
-- Ports retain 14.91 F1 points beyond counts, with a 95% interval of 10.11–19.71.
-- Explicit novelty is effective, but additional port-rank value remains unresolved.
-- AML feature validation should examine current-pair history as well as account activity.
-
-**Scope.** These findings guide feature validation; they do not establish deployment effectiveness.
+**Scope.** These results guide feature validation; they do not establish deployment effectiveness.
 
 **Speaker notes.** Close in the same vocabulary used at the beginning. We started with frequency, breadth, and the current relationship. The experiment shows that the specified frequency and breadth counts do not remove the value of ports. The novelty comparison points to a useful, explicit representation of current-pair history at this budget. That is the original contribution: testing and constraining an explanation, rather than simply repeating a published performance ranking. Keep the scope in the final spoken sentence: these are results on a synthetic dataset, with five-epoch GIN training and transductive scoring. They justify focused feature validation, not an identity-causation claim or immediate deployment. Direct the audience to the report, all five seed results, code, and audits.
 
 Presentation design: displayed figures are rendered in Python and inserted as images; detailed caveats remain in these notes.
 
-*Source / scope:* Conclusion is conditional on HI-Small, the fixed five-epoch GIN protocol, and validation-calibrated scoring.
+*Source / scope:* One synthetic dataset, five epochs, and transductive evaluation.
 
-### 17. The explained-share estimate is negative and imprecise.
+### 17. The estimated share explained is negative.
 
 **APPENDIX A**
 
-![The explained-share interval allows zero attenuation and substantial amplification.](presentation/figures/share_interval.png)
+![Explained-share estimate and 95% Fieller interval.](presentation/figures/share_interval.png)
 
-**Figure 11.** The explained-share interval allows zero attenuation and substantial amplification.
+**Figure 11.** Explained-share estimate and 95% Fieller interval.
 
-- The estimated share explained is −99.35%.
-- The 95% Fieller interval ranges from −512.75% to +8.42%.
-- Zero attenuation remains compatible, and amplification is uncertain.
+- The interval permits zero attenuation and substantial amplification.
 
 **Speaker notes.** For a technical question, define D and N as mean seed contrasts and I=N−D. Then S=−I/D. The original port-gain interval is positive, so the Fieller set is bounded. Zero explained share corresponds to I=0 and remains compatible; complete explanation corresponds to N=0 and is excluded. The asymmetric interval contains useful information about attenuation even though amplification is very imprecise. Inference assumes independent seed blocks and approximately normal paired differences on one fixed dataset. These five seeds are not independent financial populations. Do not substitute the paper’s 26.15-point gain into our denominator, clip the estimate to 0–100%, or call the ratio a causal identity fraction.
 
 Presentation design: displayed figures are rendered in Python and inserted as images; detailed caveats remain in these notes.
 
-*Source / scope:* The ratio uses mean paired differences. It is a performance interaction, not a causal fraction of identity information.
+*Source / scope:* Ratio of mean paired differences. This is not a causal identity fraction.
 
-### 18. First-contact conditioning does not reveal novelty.
+### 18. The same counts can hide a different relationship.
 
 **APPENDIX B**
 
-![Alternative next transfers share counts but have different ports and novelty.](presentation/figures/academic_counterexample.png)
+![Alternative next transfers with identical counts (sender total/distinct; receiver total/distinct).](presentation/figures/academic_counterexample.png)
 
-**Figure 12.** Alternative next transfers share counts but have different ports and novelty.
+**Figure 12.** Alternative next transfers with identical counts (sender total/distinct; receiver total/distinct).
 
-- These three possible next transfers have identical historical counts.
-- With counts, port indices reveal whether the current pair has appeared before.
-- Counts plus novelty plus ports would test rank value after explicit novelty.
+- Ports plus counts can reveal whether the current pair is new.
+- Evaluating only first contacts does not supply that condition to the Counts model.
 
-**Speaker notes.** This small counterexample clarifies the mechanism and prevents overclaiming. The raw count vector is identical for all three alternatives. A port equals its corresponding distinct count on a first contact and is lower on a repeat, so counts plus ports can reveal novelty. Equality holds conditional on group membership; it is not a global function of counts alone. A pooled predictor can therefore improve on first contacts when ports help it identify the group. Neighboring repeated edges create another route through which GNN messages can carry rank information. This example concerns the raw features, not an impossibility theorem for full graphs. The observed comparison with explicit novelty does not isolate rank after novelty; a future sixth cell would do so.
+**Speaker notes.** The count tuple lists sender total, sender distinct, receiver total, and receiver distinct, in that order. This small counterexample clarifies the mechanism and prevents overclaiming. The raw count vector is identical for all three alternatives. A port equals its corresponding distinct count on a first contact and is lower on a repeat, so counts plus ports can reveal novelty. Equality holds conditional on group membership; it is not a global function of counts alone. A pooled predictor can therefore improve on first contacts when ports help it identify the group. Neighboring repeated edges create another route through which GNN messages can carry rank information. This example concerns the raw features, not an impossibility theorem for full graphs. The observed comparison with explicit novelty does not isolate rank after novelty; a future sixth cell would do so.
 
 Presentation design: displayed figures are rendered in Python and inserted as images; detailed caveats remain in these notes.
 
-*Source / scope:* Illustrative raw features, not an impossibility result for GNNs. The repeat-free account stratum contains only 23 test positives.
+*Source / scope:* Illustrative raw features. The repeat-free account stratum has only 23 test positives.
 
 ### 19. References and reproducible evidence
 
@@ -341,4 +326,4 @@ Presentation design: displayed figures are rendered in Python and inserted as im
 
 Presentation design: displayed figures are rendered in Python and inserted as images; detailed caveats remain in these notes.
 
-*Source / scope:* Pinned sources: IBM/Multi-GNN 252b025; HI-Small 6412f57. See speaker notes for links and full audit details.
+*Source / scope:* Pinned sources: IBM/Multi-GNN 252b025; HI-Small 6412f57. Full links and audit details are in the notes.

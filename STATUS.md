@@ -12,13 +12,21 @@ requested reporting work are complete. No training or queue process is active.
 | Queue execution | Successful | Exit code 0; completion recorded 14 November 2026 at 15:52 UTC+08:00 |
 | Independent numerical audit | Passed | 2,638 numerical comparisons and 39,682 Fieller membership checks |
 | Research report and interpretation | Complete | Full results, confidence intervals, sensitivities, and independent interpretation review |
-| AML business presentation | Complete | Academic redesign: 19 slides, speaker notes, 12 numbered Python figures, and high-resolution/vector exports |
+| AML business presentation | Complete | 19 slides with content-specific layouts, 12 numbered Python figures, speaker notes, and high-resolution/vector exports |
 | Remaining planned training jobs | None | 25/25 run JSON files and 25/25 prediction archives present |
 
 The two Base/Ports seed-0 runs were inherited and verified; the remaining 23
 runs completed in this cloud environment. Completed artifacts were retained
 when the launcher was resumed. No extra seeds, epochs, or outcome-driven
 replacement runs were added.
+
+The presentation's second layout revision gives most introductory and results
+figures about 85% of the slide width, uses balanced layouts where comparisons
+need accompanying text, and reduces competing headings and supporting text.
+The completed research results and their scientific scope are unchanged. See
+the [presentation design review](presentation/DESIGN_REVIEW.md) for export checks
+and the distinction between PDF preview inspection and PowerPoint structural
+validation.
 
 ## Research outcome
 

@@ -6,7 +6,7 @@ _COMP9501 course project · IBM AML HI-Small · GIN · counts × ports · five s
 
 **AML business presentation:** [PowerPoint with speaker notes](presentation/AML_BUSINESS_SLIDES.pptx) · [PDF slides](presentation/AML_BUSINESS_SLIDES.pdf) · [browser presentation](presentation/AML_BUSINESS_SLIDES.html) · [slide overview](presentation/preview/contact-sheet.png) · [business narrative and script](AML_BUSINESS_PRESENTATION.md).
 
-The academic edition uses 12 numbered, Python-rendered figures, clearer introductory examples, and concise conclusions supported by evidence bullets. [Figure sources and rebuild instructions](presentation/README.md) are included.
+The academic edition uses 12 numbered, Python-rendered figures and layouts chosen for each page: most results plots span about 85% of the slide width, while selected comparisons use balanced text and figures. Shorter supporting text and fewer headings keep the evidence prominent; the scientific scope is unchanged. [Figure sources and rebuild instructions](presentation/README.md) are included.
 
 **Process status:** all 25 runs completed, all 125 saved epoch predictions audited, and the report and graphical presentation finished. See the [dated completion status](STATUS.md).
 

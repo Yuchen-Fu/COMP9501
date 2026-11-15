@@ -3,7 +3,8 @@
 
 Figures contain only data, axes, and short legends. Numbered captions and
 interpretive claims belong in the slide text. Each figure is exported as a
-300-dpi PNG, an editable SVG, and a vector PDF.
+300-dpi PNG, an editable SVG, and a vector PDF. The wide canvases are
+composed for a full-width slide figure, with interpretation beneath the plot.
 """
 from pathlib import Path
 import argparse
@@ -62,8 +63,8 @@ def effect(ax, row, y, color, marker='o'):
 
 def factorial(s, out):
     a = s['selections']['best_validation']['subsets']['all']
-    fig, ax = plt.subplots(figsize=(10.5, 4.8))
-    fig.subplots_adjust(left=.30, right=.96, top=.89, bottom=.19)
+    fig, ax = plt.subplots(figsize=(13.5, 4.4))
+    fig.subplots_adjust(left=.24, right=.97, top=.94, bottom=.19)
     rows = [('port_gain', 'Ports − Base', NAVY),
             ('ports_after_counts', 'Counts + Ports\nminus Counts', NAVY),
             ('interaction', 'Difference between\nport gains', MUTED)]
@@ -86,10 +87,10 @@ def factorial(s, out):
 def novelty(s, out):
     a = s['selections']['best_validation']['subsets']['all']
     cells = ['counts', 'counts+ports', 'counts+novelty']
-    labels = ['Counts', 'Counts + Ports', 'Counts + novelty']
+    labels = ['Counts', 'Counts +\nPorts', 'Counts +\nnovelty']
     colors = [MUTED, NAVY, TEAL]
-    fig, ax = plt.subplots(figsize=(10.5, 4.8))
-    fig.subplots_adjust(left=.12, right=.96, bottom=.19, top=.87)
+    fig, ax = plt.subplots(figsize=(8.2, 4.8))
+    fig.subplots_adjust(left=.13, right=.97, bottom=.23, top=.94)
     values = np.array([a['cells'][c]['per_seed'] for c in cells])
     for seed in range(5):
         ax.plot(range(3), values[:, seed], color='#ADB7BF', linewidth=1.2,
@@ -98,7 +99,8 @@ def novelty(s, out):
         mean = a['cells'][c]['mean']
         ax.scatter(x, mean, color=color, s=95, marker='D', edgecolor='white',
                    linewidth=1, zorder=4)
-        ax.text(x+.08, mean+1.0, f'{mean:.2f}', color=color, fontsize=17)
+        ax.text(x+.08, mean+1.4, f'{mean:.2f}', color=color, fontsize=16,
+                bbox={'facecolor': 'white', 'edgecolor': 'none', 'pad': 1.5, 'alpha': .94})
     ax.set(xlim=(-.2, 2.35), ylim=(10, 58),
            xticks=range(3), xticklabels=labels,
            yticks=[10, 20, 30, 40, 50], ylabel='Test F1 (%)')
@@ -117,9 +119,9 @@ def outcomes(s, out):
     cells = ['counts', 'counts+ports', 'counts+novelty']
     means = {c: {k: np.mean([r[k] for r in a['cells'][c]['confusion_per_seed']])
                  for k in ('tp', 'fp', 'fn')} for c in cells}
-    fig, (flags, missed) = plt.subplots(1, 2, figsize=(10.5, 4.8),
-                                      gridspec_kw={'width_ratios': [1.7, 1]})
-    fig.subplots_adjust(left=.22, right=.98, bottom=.20, top=.82, wspace=.22)
+    fig, (flags, missed) = plt.subplots(1, 2, figsize=(13.5, 4.4),
+                                      gridspec_kw={'width_ratios': [2.0, 1]})
+    fig.subplots_adjust(left=.18, right=.99, bottom=.19, top=.83, wspace=.20)
     for y, c in zip([2, 1, 0], cells):
         m = means[c]
         flags.barh(y, m['tp'], height=.46, color=TEAL)
@@ -139,7 +141,7 @@ def outcomes(s, out):
     fig.legend(handles=[Patch(color=TEAL, label='True-positive flags'),
                         Patch(color=CLAY, label='False-positive flags'),
                         Patch(color=MUTED, label='Missed positives')],
-               loc='upper center', bbox_to_anchor=(.53, .98), ncol=3,
+               loc='upper center', bbox_to_anchor=(.56, 1.00), ncol=3,
                frameon=False, handlelength=1.1, columnspacing=1.1)
     save(fig, out, 'alert_outcomes')
 
@@ -149,9 +151,9 @@ def robustness(s, out):
     final = s['selections']['final']
     views = [primary['subsets']['all'], primary['subsets']['days_8_9'],
              final['subsets']['all']]
-    fig, (f1, ap) = plt.subplots(1, 2, figsize=(10.5, 4.8),
+    fig, (f1, ap) = plt.subplots(1, 2, figsize=(13.5, 4.4),
                                 gridspec_kw={'width_ratios': [1.45, 1]})
-    fig.subplots_adjust(left=.23, right=.97, bottom=.20, top=.72, wspace=.26)
+    fig.subplots_adjust(left=.18, right=.98, bottom=.19, top=.77, wspace=.24)
     for j, (key, color, marker) in enumerate([
             ('ports_after_counts', NAVY, 'o'), ('ports_beyond_novelty', TEAL, 's')]):
         def oriented(row):
@@ -176,7 +178,7 @@ def robustness(s, out):
                                label='Ports after counts (CP − C)'),
                         Line2D([0], [0], color=TEAL, marker='s', linewidth=2,
                                label='Novelty versus ports (CN − CP)')],
-               loc='upper center', bbox_to_anchor=(.59, .995), ncol=1,
+               loc='upper center', bbox_to_anchor=(.57, 1.015), ncol=2,
                frameon=False, handlelength=1.4)
     save(fig, out, 'robustness_effects')
 
@@ -186,8 +188,8 @@ def share_interval(s, out):
     assert row['confidence_set_type'] == 'bounded'
     lo, hi = np.array(row['ci95_set'][0])*100
     estimate = row['estimate']*100
-    fig, ax = plt.subplots(figsize=(10.5, 4.8))
-    fig.subplots_adjust(left=.08, right=.96, bottom=.22, top=.91)
+    fig, ax = plt.subplots(figsize=(13.5, 4.4))
+    fig.subplots_adjust(left=.055, right=.97, bottom=.21, top=.94)
     ax.axvline(0, color=MUTED, linewidth=1.2, linestyle='--')
     ax.axvline(100, color=CLAY, linewidth=1.2, linestyle='--')
     ax.errorbar(estimate, 0, xerr=[[estimate-lo], [hi-estimate]], fmt='o',

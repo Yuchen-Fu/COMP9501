@@ -4,6 +4,8 @@ Reviewed 15 November 2026 (UTC+08:00).
 
 The presentation has been redesigned in response to feedback about crowded
 slides, incomplete sentences, oversized numbers, and PowerPoint-drawn diagrams.
+The second layout revision also addresses overly rigid figure-and-text columns
+by choosing a layout for each page's content.
 
 ## Design changes
 
@@ -14,9 +16,13 @@ slides, incomplete sentences, oversized numbers, and PowerPoint-drawn diagrams.
   exports preserve vectors for reuse.
 - White backgrounds, serif headings, restrained colors, and ordinary-size
   numerical annotations replace dashboard cards and large-number panels.
-- Each results slide begins with its conclusion and supplies three concise,
-  complete-sentence evidence bullets. Detailed qualifications remain in notes,
-  with the essential scope also visible on the slides.
+- Most introductory and results figures now span about 85% of the slide width,
+  with supporting text below. Selected methods and comparison pages use balanced
+  text-and-figure layouts, and the conclusion uses a simple text-led layout.
+- Results lead with a conclusion and mostly one or two complete-sentence
+  supporting statements. Redundant section and evidence headings have been
+  removed. Short captions and scope footers retain the necessary definitions;
+  detailed qualifications remain in notes.
 - PowerPoint retains editable narrative text and notes. Graphs enter as images;
   native shapes are limited to the page background and a horizontal page rule.
 

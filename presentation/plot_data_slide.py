@@ -36,8 +36,8 @@ def main():
         'svg.fonttype': 'none', 'pdf.fonttype': 42,
         'figure.facecolor': 'white', 'axes.facecolor': 'white',
     })
-    fig, axes = plt.subplots(1, 2, figsize=(10.5, 4.8))
-    fig.subplots_adjust(left=.10, right=.98, bottom=.19, top=.70, wspace=.34)
+    fig, axes = plt.subplots(1, 2, figsize=(13.5, 4.4))
+    fig.subplots_adjust(left=.075, right=.98, bottom=.19, top=.77, wspace=.24)
     for ax in axes:
         ax.set_xticks([0, 4, 8, 12, 17])
         ax.set_xlim(-.7, 17.7)
@@ -66,8 +66,8 @@ def main():
     segments = [('Train: days 0–5', 'train'), ('Validation: days 6–7', 'validation'),
                 ('Test: days 8–9', 'early'), ('Test tail: days 10–17', 'tail')]
     fig.legend(handles=[Patch(color=COLORS[key], label=label) for label, key in segments],
-               loc='upper center', bbox_to_anchor=(.55, .985), ncol=2,
-               frameon=False, fontsize=16, handlelength=1, columnspacing=2)
+               loc='upper center', bbox_to_anchor=(.53, 1.00), ncol=4,
+               frameon=False, fontsize=15.5, handlelength=1, columnspacing=1.4)
     out = ROOT/'figures'
     out.mkdir(exist_ok=True)
     for extension in ('png', 'svg', 'pdf'):

@@ -88,14 +88,13 @@ class Canvas:
 
     def header(self,s,index,total):
         self.rect(0,0,W,H)
-        self.text(s.get('section','AML RESEARCH').upper(),85,39,1420,20,TEAL,True)
-        bottom=self.text(s['title'],82,89,1430,49,NAVY,True,serif=True)
-        if bottom>205:
+        bottom=self.text(s['title'],94,69,1410,52,NAVY,True,serif=True)
+        if bottom>185:
             self.warnings.append('Title exceeds its reserved area')
-        self.line(85,822,1515,822)
-        end=self.text(s.get('footer',''),85,842,1300,18,MUTED,line_height=1.12)
+        self.line(96,822,1504,822)
+        end=self.text(s.get('footer',''),96,842,1295,20,MUTED,line_height=1.12)
         if end>885:self.warnings.append('Footer is too long')
-        self.text(f'{index} / {total}',1405,842,110,20,MUTED,align='right')
+        self.text(f'{index} / {total}',1400,842,104,20,MUTED,align='right')
 
     def svg(self):
         result=[f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" role="img">']
@@ -116,6 +115,10 @@ class Canvas:
         return '\n'.join(result+['</svg>'])
 
 
+def figure_caption(c,s,x,y,w):
+    return c.text(f'Figure {s["figure_number"]}. {s["caption"]}',x,y,w,24,MUTED,line_height=1.18)
+
+
 def render_slide(s,index,total):
     c=Canvas()
     c.header(s,index,total)
@@ -130,30 +133,53 @@ def render_slide(s,index,total):
         c.text('IBM AML HI-Small · Graph Isomorphism Network · Five-seed experiment',100,745,1390,25,MUTED)
         c.text(s['footer'],100,838,1390,20,MUTED)
         return c
-    if s.get('figure'):
-        c.image(ROOT/s['figure'],65,233,985,482,s['figure_alt'])
-        caption=f'Figure {s["figure_number"]}. {s["caption"]}'
-        end=c.text(caption,85,739,970,24,MUTED,line_height=1.18)
-        if end>809:c.warnings.append('Figure caption exceeds its reserved area')
-        c.text(s.get('evidence_label','Evidence'),1095,235,420,22,TEAL,True)
-        end=c.bullets(s['bullets'],1095,286,420,31,26)
-        if end>790:c.warnings.append(f'Evidence column is too long ({end:.0f})')
+    layout=s.get('layout','text')
+    if layout=='wide_figure':
+        # Wide evidence gets the full page width; interpretation follows below.
+        image_height=s.get('figure_height',440)
+        image_top=s.get('figure_top',186)
+        c.image(ROOT/s['figure'],96,image_top,1408,image_height,s['figure_alt'])
+        caption_top=image_top+image_height+18
+        end=figure_caption(c,s,108,caption_top,1384)
+        end=c.bullets(s['bullets'],108,max(end+22,706),1384,32,12)
+        if end>804:c.warnings.append(f'Wide-figure interpretation is too long ({end:.0f})')
+    elif layout in ('figure_left','figure_right'):
+        # Balanced explanatory pages use a wider prose column and fewer claims.
+        image_x,text_x=(96,995) if layout=='figure_left' else (684,96)
+        image_w,text_w=(820,509) if layout=='figure_left' else (820,510)
+        image_top=s.get('figure_top',215)
+        c.image(ROOT/s['figure'],image_x,image_top,image_w,480,s['figure_alt'])
+        caption_end=figure_caption(c,s,image_x,image_top+497,image_w)
+        if caption_end>804:c.warnings.append('Balanced-figure caption is too long')
+        y=s.get('text_top',248)
+        end=c.bullets(s['bullets'],text_x,y,text_w,34,34)
+        if s.get('scope'):
+            end=c.text(s['scope'],text_x,end+42,text_w,28,MUTED)
+        if end>790:c.warnings.append(f'Balanced prose is too long ({end:.0f})')
     elif s.get('entries'):
-        y=230
+        y=215
         size=29 if s['visual']=='references' else 33
         for entry in s['entries']:
-            c.text(entry['label'],85,y,410,26,TEAL,True)
-            end=c.text(entry['text'],515,y-2,990,size)
+            c.text(entry['label'],96,y,385,27,TEAL,True)
+            end=c.text(entry['text'],510,y-2,985,size)
             y=max(y+95,end+46)
         if y-46>800:c.warnings.append('Reference/literature entries are too long')
-    else:
-        y=239
+    elif layout=='statement':
+        y=220
         if s.get('lead'):
-            y=c.text(s['lead'],85,y,1390,39,TEAL,True,serif=True)+43
-        end=c.bullets(s.get('bullets',[]),100,y,1340,36,32)
+            y=c.text(s['lead'],96,y,1360,42,TEAL,True,serif=True)+58
+        end=c.bullets(s['bullets'],110,y,1315,36,34)
+        if s.get('scope'):
+            end=c.text(s['scope'],110,max(end+48,722),1315,28,MUTED)
+        if end>802:c.warnings.append('Statement slide is too long')
+    else:
+        y=224
+        if s.get('lead'):
+            y=c.text(s['lead'],96,y,1350,36,TEAL,True,serif=True)+43
+        end=c.bullets(s.get('bullets',[]),110,y,1315,36,38)
         if s.get('scope'):
             y=max(end+48,708)
-            end=c.text(s['scope'],100,y,1340,28,MUTED)
+            end=c.text(s['scope'],110,y,1315,28,MUTED)
         if end>795:c.warnings.append(f'Main text is too long ({end:.0f})')
     return c
 

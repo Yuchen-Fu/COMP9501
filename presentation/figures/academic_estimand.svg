@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="309.6pt" viewBox="0 0 648 309.6" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="590.4pt" height="324pt" viewBox="0 0 590.4 324" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-11-15T14:26:10.059349</dc:date>
+    <dc:date>2026-11-15T15:32:45.024256</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -21,25 +21,25 @@
  </defs>
  <g id="figure_1">
   <g id="patch_1">
-   <path d="M 0 309.6 
-L 648 309.6 
-L 648 0 
+   <path d="M 0 324 
+L 590.4 324 
+L 590.4 0 
 L 0 0 
 z
 " style="fill: #ffffff"/>
   </g>
   <g id="axes_1">
    <g id="line2d_1">
-    <path d="M 53.82 168.48 
-L 594.18 168.48 
-" clip-path="url(#p537fc97c02)" style="fill: none; stroke: #d7dee3; stroke-width: 1.2; stroke-linecap: square"/>
+    <path d="M 28.44 191.412 
+L 555.12 191.412 
+" clip-path="url(#p2af0db9444)" style="fill: none; stroke: #d7dee3; stroke-width: 1.2; stroke-linecap: square"/>
    </g>
    <g id="text_1">
-    <text style="font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #244c73" x="53.82" y="64.282813" transform="rotate(-0 53.82 64.282813)">Original port gain</text>
+    <text style="font-size: 18px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #244c73" x="28.44" y="74.626875" transform="rotate(-0 28.44 74.626875)">Original port gain</text>
    </g>
    <g id="text_2">
     <!-- $D_s = P_s - B_s$ -->
-    <g style="fill: #244c73" transform="translate(388.41 65.386562)">
+    <g style="fill: #244c73" transform="translate(359.61 76.006563)">
      <text>
       <tspan x="0" y="-0.234375" style="font-style: oblique; font-size: 23px; font-family: 'DejaVu Sans'; fill: #244c73">D</tspan>
       <tspan x="54.960791" y="-0.234375" style="font-style: oblique; font-size: 23px; font-family: 'DejaVu Sans'; fill: #244c73">P</tspan>
@@ -53,11 +53,11 @@ L 594.18 168.48
     </g>
    </g>
    <g id="text_3">
-    <text style="font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #247c79" x="53.82" y="132.682813" transform="rotate(-0 53.82 132.682813)">Port gain after counts</text>
+    <text style="font-size: 18px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #247c79" x="28.44" y="149.866875" transform="rotate(-0 28.44 149.866875)">Port gain after counts</text>
    </g>
    <g id="text_4">
     <!-- $N_s = CP_s - C_s$ -->
-    <g style="fill: #247c79" transform="translate(380.59 133.786563)">
+    <g style="fill: #247c79" transform="translate(351.79 151.246563)">
      <text>
       <tspan x="0" y="-0.921875" style="font-style: oblique; font-size: 23px; font-family: 'DejaVu Sans'; fill: #247c79">N</tspan>
       <tspan x="54.45542" y="-0.921875" style="font-style: oblique; font-size: 23px; font-family: 'DejaVu Sans'; fill: #247c79">C</tspan>
@@ -72,32 +72,29 @@ L 594.18 168.48
     </g>
    </g>
    <g id="text_5">
-    <text style="font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #243342" x="53.82" y="222.970812" transform="rotate(-0 53.82 222.970812)">Share explained</text>
+    <text style="font-size: 18px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #243342" x="28.44" y="252.466875" transform="rotate(-0 28.44 252.466875)">Share explained</text>
    </g>
    <g id="text_6">
     <!-- $S = 1 - \frac{\overline{N}}{\overline{D}}$ -->
-    <g style="fill: #243342" transform="translate(398.96 224.853)">
+    <g style="fill: #243342" transform="translate(372.36 254.34)">
      <text>
-      <tspan x="0" y="-0.9625" style="font-style: oblique; font-size: 25px; font-family: 'DejaVu Sans'; fill: #243342">S</tspan>
-      <tspan x="20.739746" y="-0.9625" style="font-size: 25px; font-family: 'DejaVu Sans'; fill: #243342">=</tspan>
-      <tspan x="46.557617" y="-0.9625" style="font-size: 25px; font-family: 'DejaVu Sans'; fill: #243342">1</tspan>
-      <tspan x="67.333984" y="-0.9625" style="font-size: 25px; font-family: 'DejaVu Sans'; fill: #243342">−</tspan>
-      <tspan x="93.151855" y="-12.153125" style="font-style: oblique; font-size: 17.5px; font-family: 'DejaVu Sans'; fill: #243342">N</tspan>
-      <tspan x="93.151855" y="12.74375" style="font-style: oblique; font-size: 17.5px; font-family: 'DejaVu Sans'; fill: #243342">D</tspan>
+      <tspan x="0" y="-0.076375" style="font-style: oblique; font-size: 24px; font-family: 'DejaVu Sans'; fill: #243342">S</tspan>
+      <tspan x="19.910156" y="-0.076375" style="font-size: 24px; font-family: 'DejaVu Sans'; fill: #243342">=</tspan>
+      <tspan x="44.695312" y="-0.076375" style="font-size: 24px; font-family: 'DejaVu Sans'; fill: #243342">1</tspan>
+      <tspan x="64.640625" y="-0.076375" style="font-size: 24px; font-family: 'DejaVu Sans'; fill: #243342">−</tspan>
+      <tspan x="89.425781" y="-10.7" style="font-style: oblique; font-size: 16.8px; font-family: 'DejaVu Sans'; fill: #243342">N</tspan>
+      <tspan x="89.425781" y="13.208" style="font-style: oblique; font-size: 16.8px; font-family: 'DejaVu Sans'; fill: #243342">D</tspan>
      </text>
-     <rect x="93.151855" y="-27.8125" width="13.09082" height="1.09375"/>
-     <rect x="93.151855" y="-6.665625" width="13.475342" height="1.5625"/>
-     <rect x="93.151855" y="-2.915625" width="13.475342" height="1.09375"/>
+     <rect x="89.425781" y="-25.9" width="12.567188" height="1.05"/>
+     <rect x="89.425781" y="-5.592" width="12.936328" height="1.5"/>
+     <rect x="89.425781" y="-1.992" width="12.936328" height="1.05"/>
     </g>
-   </g>
-   <g id="text_7">
-    <text style="font-size: 17px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #687581" x="324" y="282.610937" transform="rotate(-0 324 282.610937)">Bars denote means across the five paired seeds.</text>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="p537fc97c02">
-   <rect x="16.2" y="7.74" width="615.6" height="294.12"/>
+  <clipPath id="p2af0db9444">
+   <rect x="14.76" y="8.1" width="560.88" height="307.8"/>
   </clipPath>
  </defs>
 </svg>

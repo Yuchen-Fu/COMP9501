@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="309.6pt" viewBox="0 0 648 309.6" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="561.6pt" height="345.6pt" viewBox="0 0 561.6 345.6" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-11-15T14:26:09.765557</dc:date>
+    <dc:date>2026-11-15T15:32:44.756801</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -21,83 +21,80 @@
  </defs>
  <g id="figure_1">
   <g id="patch_1">
-   <path d="M 0 309.6 
-L 648 309.6 
-L 648 0 
+   <path d="M 0 345.6 
+L 561.6 345.6 
+L 561.6 0 
 L 0 0 
 z
 " style="fill: #ffffff"/>
   </g>
   <g id="axes_1">
    <g id="line2d_1">
-    <path d="M 180.36 52.2 
-L 583.92 52.2 
-" clip-path="url(#p47c9d56ea9)" style="fill: none; stroke: #d7dee3; stroke-width: 1.2; stroke-linecap: square"/>
+    <path d="M 147.42 63.36 
+L 516.78 63.36 
+" clip-path="url(#p350fe0be0a)" style="fill: none; stroke: #d7dee3; stroke-width: 1.2; stroke-linecap: square"/>
    </g>
    <g id="line2d_2">
-    <path d="M 180.36 134.28 
-L 583.92 134.28 
-" clip-path="url(#p47c9d56ea9)" style="fill: none; stroke: #d7dee3; stroke-width: 1.2; stroke-linecap: square"/>
+    <path d="M 147.42 155.7 
+L 516.78 155.7 
+" clip-path="url(#p350fe0be0a)" style="fill: none; stroke: #d7dee3; stroke-width: 1.2; stroke-linecap: square"/>
    </g>
    <g id="line2d_3">
-    <path d="M 180.36 216.36 
-L 583.92 216.36 
-" clip-path="url(#p47c9d56ea9)" style="fill: none; stroke: #d7dee3; stroke-width: 1.2; stroke-linecap: square"/>
+    <path d="M 147.42 251.46 
+L 516.78 251.46 
+" clip-path="url(#p350fe0be0a)" style="fill: none; stroke: #d7dee3; stroke-width: 1.2; stroke-linecap: square"/>
    </g>
    <g id="line2d_4">
-    <path d="M 382.14 216.36 
-L 382.14 52.2 
-" clip-path="url(#p47c9d56ea9)" style="fill: none; stroke: #d7dee3; stroke-width: 1.2; stroke-linecap: square"/>
+    <path d="M 332.1 251.46 
+L 332.1 63.36 
+" clip-path="url(#p350fe0be0a)" style="fill: none; stroke: #d7dee3; stroke-width: 1.2; stroke-linecap: square"/>
    </g>
    <g id="text_1">
-    <text style="font-size: 18px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #687581" x="281.25" y="35.278875" transform="rotate(-0 281.25 35.278875)">Ports absent</text>
+    <text style="font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #687581" x="239.76" y="44.662812" transform="rotate(-0 239.76 44.662812)">Ports absent</text>
    </g>
    <g id="text_2">
-    <text style="font-size: 18px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #687581" x="483.03" y="35.278875" transform="rotate(-0 483.03 35.278875)">Ports present</text>
+    <text style="font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #687581" x="424.44" y="44.662812" transform="rotate(-0 424.44 44.662812)">Ports present</text>
    </g>
    <g id="text_3">
-    <text style="font-size: 18px; font-family: 'DejaVu Sans'; fill: #687581" transform="translate(61.392375 88.128844)">Counts</text>
-    <text style="font-size: 18px; font-family: 'DejaVu Sans'; fill: #687581" transform="translate(62.120813 108.284906)">absent</text>
+    <text style="font-size: 18px; font-family: 'DejaVu Sans'; fill: #687581" transform="translate(40.764375 102.708844)">Counts</text>
+    <text style="font-size: 18px; font-family: 'DejaVu Sans'; fill: #687581" transform="translate(41.492813 122.864906)">absent</text>
    </g>
    <g id="text_4">
-    <text style="font-size: 18px; font-family: 'DejaVu Sans'; fill: #687581" transform="translate(61.392375 170.208844)">Counts</text>
-    <text style="font-size: 18px; font-family: 'DejaVu Sans'; fill: #687581" transform="translate(58.600969 190.364906)">present</text>
+    <text style="font-size: 18px; font-family: 'DejaVu Sans'; fill: #687581" transform="translate(40.764375 198.468844)">Counts</text>
+    <text style="font-size: 18px; font-family: 'DejaVu Sans'; fill: #687581" transform="translate(37.972969 218.624906)">present</text>
    </g>
    <g id="text_5">
-    <text style="font-weight: 700; font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #244c73" x="281.25" y="89.590813" transform="rotate(-0 281.25 89.590813)">Base</text>
+    <text style="font-weight: 700; font-size: 20px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #244c73" x="239.76" y="104.44675" transform="rotate(-0 239.76 104.44675)">Base</text>
    </g>
    <g id="text_6">
-    <text style="font-size: 15px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #687581" x="281.25" y="115.847062" transform="rotate(-0 281.25 115.847062)">B</text>
+    <text style="font-size: 17px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #687581" x="239.76" y="134.398937" transform="rotate(-0 239.76 134.398937)">B</text>
    </g>
    <g id="text_7">
-    <text style="font-weight: 700; font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #244c73" x="483.03" y="89.590813" transform="rotate(-0 483.03 89.590813)">Ports</text>
+    <text style="font-weight: 700; font-size: 20px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #244c73" x="424.44" y="104.44675" transform="rotate(-0 424.44 104.44675)">Ports</text>
    </g>
    <g id="text_8">
-    <text style="font-size: 15px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #687581" x="483.03" y="115.847062" transform="rotate(-0 483.03 115.847062)">P</text>
+    <text style="font-size: 17px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #687581" x="424.44" y="134.398937" transform="rotate(-0 424.44 134.398937)">P</text>
    </g>
    <g id="text_9">
-    <text style="font-weight: 700; font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #244c73" x="281.25" y="171.670812" transform="rotate(-0 281.25 171.670812)">Counts</text>
+    <text style="font-weight: 700; font-size: 20px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #244c73" x="239.76" y="200.20675" transform="rotate(-0 239.76 200.20675)">Counts</text>
    </g>
    <g id="text_10">
-    <text style="font-size: 15px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #687581" x="281.25" y="197.927062" transform="rotate(-0 281.25 197.927062)">C</text>
+    <text style="font-size: 17px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #687581" x="239.76" y="230.158937" transform="rotate(-0 239.76 230.158937)">C</text>
    </g>
    <g id="text_11">
-    <text style="font-weight: 700; font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #244c73" x="483.03" y="171.670812" transform="rotate(-0 483.03 171.670812)">Counts + Ports</text>
+    <text style="font-weight: 700; font-size: 20px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #244c73" x="424.44" y="200.20675" transform="rotate(-0 424.44 200.20675)">Counts + Ports</text>
    </g>
    <g id="text_12">
-    <text style="font-size: 15px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #687581" x="483.03" y="197.927062" transform="rotate(-0 483.03 197.927062)">CP</text>
+    <text style="font-size: 17px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #687581" x="424.44" y="230.158937" transform="rotate(-0 424.44 230.158937)">CP</text>
    </g>
    <g id="text_13">
-    <text style="font-size: 18px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #247c79" x="324" y="260.314875" transform="rotate(-0 324 260.314875)">Supplement: Counts + novelty (CN)</text>
-   </g>
-   <g id="text_14">
-    <text style="font-size: 15px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #687581" x="324" y="292.319062" transform="rotate(-0 324 292.319062)">Each cell uses the same GIN settings and five random seeds.</text>
+    <text style="font-size: 18px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #247c79" x="280.8" y="304.306875" transform="rotate(-0 280.8 304.306875)">Supplement: Counts + novelty (CN)</text>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="p47c9d56ea9">
-   <rect x="16.2" y="7.74" width="615.6" height="294.12"/>
+  <clipPath id="p350fe0be0a">
+   <rect x="14.04" y="8.64" width="533.52" height="328.32"/>
   </clipPath>
  </defs>
 </svg>

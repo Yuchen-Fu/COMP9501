@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="309.6pt" viewBox="0 0 648 309.6" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="972pt" height="309.6pt" viewBox="0 0 972 309.6" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-11-15T14:26:10.311055</dc:date>
+    <dc:date>2026-11-15T15:32:45.292857</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -22,86 +22,79 @@
  <g id="figure_1">
   <g id="patch_1">
    <path d="M 0 309.6 
-L 648 309.6 
-L 648 0 
+L 972 309.6 
+L 972 0 
 L 0 0 
 z
 " style="fill: #ffffff"/>
   </g>
   <g id="axes_1">
    <g id="line2d_1">
-    <path d="M 35.352 101.448 
-L 616.752 101.448 
-" clip-path="url(#pce6f1a7bfc)" style="fill: none; stroke: #d7dee3; stroke-width: 1.3; stroke-linecap: square"/>
+    <path d="M 48.24 107.604 
+L 920.34 107.604 
+" clip-path="url(#p0f623c9733)" style="fill: none; stroke: #d7dee3; stroke-width: 1.3; stroke-linecap: square"/>
    </g>
    <g id="line2d_2">
-    <path d="M 35.352 240.984 
-L 616.752 240.984 
-" clip-path="url(#pce6f1a7bfc)" style="fill: none; stroke: #d7dee3; stroke-width: 1.3; stroke-linecap: square"/>
+    <path d="M 48.24 277.92 
+L 920.34 277.92 
+" clip-path="url(#p0f623c9733)" style="fill: none; stroke: #d7dee3; stroke-width: 1.3; stroke-linecap: square"/>
    </g>
    <g id="text_1">
-    <text style="font-size: 18px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #244c73" x="324" y="34.594875" transform="rotate(-0 324 34.594875)">Earlier transfers:  u → a,  u → b,  d → c</text>
+    <text style="font-size: 20px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #244c73" x="486" y="35.14675" transform="rotate(-0 486 35.14675)">Earlier transfers:  u → a,  u → b,  d → c</text>
    </g>
    <g id="text_2">
-    <text style="font-weight: 700; font-size: 17px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="90.072" y="84.934937" transform="rotate(-0 90.072 84.934937)">Next transfer</text>
+    <text style="font-weight: 700; font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="126.9" y="88.222812" transform="rotate(-0 126.9 88.222812)">Next transfer</text>
    </g>
    <g id="text_3">
-    <text style="font-weight: 700; font-size: 17px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="263.808" y="84.934937" transform="rotate(-0 263.808 84.934937)">Prior counts</text>
+    <text style="font-weight: 700; font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="366.3" y="88.222812" transform="rotate(-0 366.3 88.222812)">Prior counts</text>
    </g>
    <g id="text_4">
-    <text style="font-weight: 700; font-size: 17px; font-family: 'DejaVu Sans'; fill: #243342" transform="translate(411.476875 75.416797)">Ports</text>
-    <text style="font-weight: 700; font-size: 17px; font-family: 'DejaVu Sans'; fill: #243342" transform="translate(397.984453 94.453078)">(in, out)</text>
+    <text style="font-weight: 700; font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="615.96" y="88.222812" transform="rotate(-0 615.96 88.222812)">Ports (in, out)</text>
    </g>
    <g id="text_5">
-    <text style="font-weight: 700; font-size: 17px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="568.872" y="84.868531" transform="rotate(-0 568.872 84.868531)">Novelty</text>
+    <text style="font-weight: 700; font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="838.26" y="88.148594" transform="rotate(-0 838.26 88.148594)">Novelty</text>
    </g>
    <g id="text_6">
-    <text style="font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="90.072" y="131.998812" transform="rotate(-0 90.072 131.998812)">u → a</text>
+    <text style="font-size: 21px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="126.9" y="144.862687" transform="rotate(-0 126.9 144.862687)">u → a</text>
    </g>
    <g id="text_7">
-    <text style="font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="263.808" y="131.998812" transform="rotate(-0 263.808 131.998812)">(2, 2; 1, 1)</text>
+    <text style="font-size: 21px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="366.3" y="144.862687" transform="rotate(-0 366.3 144.862687)">(2, 2; 1, 1)</text>
    </g>
    <g id="text_8">
-    <text style="font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="436.86" y="131.998812" transform="rotate(-0 436.86 131.998812)">(0, 0)</text>
+    <text style="font-size: 21px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="615.96" y="144.862687" transform="rotate(-0 615.96 144.862687)">(0, 0)</text>
    </g>
    <g id="text_9">
-    <text style="font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="568.872" y="131.998812" transform="rotate(-0 568.872 131.998812)">0</text>
+    <text style="font-size: 21px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="838.26" y="144.862687" transform="rotate(-0 838.26 144.862687)">0</text>
    </g>
    <g id="text_10">
-    <text style="font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="90.072" y="177.142812" transform="rotate(-0 90.072 177.142812)">u → b</text>
+    <text style="font-size: 21px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="126.9" y="199.582687" transform="rotate(-0 126.9 199.582687)">u → b</text>
    </g>
    <g id="text_11">
-    <text style="font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="263.808" y="177.142812" transform="rotate(-0 263.808 177.142812)">(2, 2; 1, 1)</text>
+    <text style="font-size: 21px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="366.3" y="199.582687" transform="rotate(-0 366.3 199.582687)">(2, 2; 1, 1)</text>
    </g>
    <g id="text_12">
-    <text style="font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="436.86" y="177.142812" transform="rotate(-0 436.86 177.142812)">(0, 1)</text>
+    <text style="font-size: 21px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="615.96" y="199.582687" transform="rotate(-0 615.96 199.582687)">(0, 1)</text>
    </g>
    <g id="text_13">
-    <text style="font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="568.872" y="177.142812" transform="rotate(-0 568.872 177.142812)">0</text>
+    <text style="font-size: 21px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="838.26" y="199.582687" transform="rotate(-0 838.26 199.582687)">0</text>
    </g>
    <g id="text_14">
-    <text style="font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="90.072" y="222.286812" transform="rotate(-0 90.072 222.286812)">u → c</text>
+    <text style="font-size: 21px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="126.9" y="254.302687" transform="rotate(-0 126.9 254.302687)">u → c</text>
    </g>
    <g id="text_15">
-    <text style="font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="263.808" y="222.286812" transform="rotate(-0 263.808 222.286812)">(2, 2; 1, 1)</text>
+    <text style="font-size: 21px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="366.3" y="254.302687" transform="rotate(-0 366.3 254.302687)">(2, 2; 1, 1)</text>
    </g>
    <g id="text_16">
-    <text style="font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="436.86" y="222.286812" transform="rotate(-0 436.86 222.286812)">(1, 2)</text>
+    <text style="font-size: 21px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243342" x="615.96" y="254.302687" transform="rotate(-0 615.96 254.302687)">(1, 2)</text>
    </g>
    <g id="text_17">
-    <text style="font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #247c79" x="568.872" y="222.286812" transform="rotate(-0 568.872 222.286812)">1</text>
-   </g>
-   <g id="text_18">
-    <text style="font-size: 16px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #687581" x="324" y="273.443" transform="rotate(-0 324 273.443)">Counts: sender total, distinct; receiver total, distinct.</text>
-   </g>
-   <g id="text_19">
-    <text style="font-size: 16px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #687581" x="324" y="299.435" transform="rotate(-0 324 299.435)">The rows are alternative next transfers, not a sequence.</text>
+    <text style="font-size: 21px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #247c79" x="838.26" y="254.302687" transform="rotate(-0 838.26 254.302687)">1</text>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="pce6f1a7bfc">
-   <rect x="16.2" y="7.74" width="615.6" height="294.12"/>
+  <clipPath id="p0f623c9733">
+   <rect x="24.3" y="7.74" width="923.4" height="294.12"/>
   </clipPath>
  </defs>
 </svg>

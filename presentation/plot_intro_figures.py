@@ -25,7 +25,6 @@ NAVY = "#244C73"
 TEAL = "#247C79"
 GRAY = "#687581"
 LIGHT = "#D7DEE3"
-PALE = "#F0F5F5"
 
 plt.rcParams.update({
     "font.family": "DejaVu Sans",
@@ -38,10 +37,10 @@ plt.rcParams.update({
 })
 
 
-def canvas(width=9, height=4.3):
+def canvas(width, height):
     fig, ax = plt.subplots(figsize=(width, height))
     fig.subplots_adjust(left=.015, right=.985, bottom=.025, top=.975)
-    ax.set(xlim=(0, 9), ylim=(0, height))
+    ax.set(xlim=(0, width), ylim=(0, height))
     ax.set_aspect("equal")
     ax.axis("off")
     return fig, ax
@@ -73,144 +72,129 @@ def node(ax, x, y, name, color=NAVY, radius=.22):
 
 
 def workflow():
-    """The figures show scoring and human assessment, not a guilt decision."""
-    fig, ax = canvas(height=3.8)
-    centers = [1.35, 4.5, 7.65]
-    for x, heading in zip(centers, ["Transactions", "Risk scores", "Analyst review"]):
-        label(ax, x, 3.35, heading, 19, weight="bold")
+    """Three stages are drawn across the page, with no explanatory sidebar."""
+    fig, ax = canvas(13.5, 3.8)
+    for x, heading in [(2.2, "Transactions"), (6.75, "Risk scores"), (11.3, "Analyst review")]:
+        label(ax, x, 3.4, heading, 21, weight="bold")
+    for y, name in [(2.65, "B"), (1.85, "C"), (1.05, "D")]:
+        arrow(ax, (1.0, 1.85), (3.05, y), NAVY, shrink=19)
+        node(ax, 3.05, y, name, TEAL, radius=.25)
+    node(ax, 1.0, 1.85, "A", radius=.25)
+    label(ax, 2.2, .35, "Account relationships", 18, GRAY)
 
-    # Incoming transfers form a directed transaction network.
-    for y, n in [(2.7, "B"), (1.9, "C"), (1.1, "D")]:
-        arrow(ax, (.65, 1.9), (2.05, y), NAVY, shrink=17)
-        node(ax, 2.05, y, n, TEAL)
-    node(ax, .65, 1.9, "A")
-    label(ax, 1.35, .55, "Account relationships", 16, GRAY)
+    for y, score, col in [(2.6, .85, TEAL), (1.85, .46, GRAY), (1.1, .18, GRAY)]:
+        ax.plot([5.45, 8.05], [y, y], color=LIGHT, lw=1.2)
+        ax.plot(5.45+2.6*score, y, "o", ms=8, color=col)
+    label(ax, 5.45, .6, "Low", 17, GRAY)
+    label(ax, 8.05, .6, "High", 17, GRAY)
 
-    # A score is a ranking signal. No invented numerical performance is shown.
-    for y, score, col in [(2.65, .85, TEAL), (1.95, .46, GRAY), (1.25, .18, GRAY)]:
-        ax.plot([3.7, 5.3], [y, y], color=LIGHT, lw=1.2)
-        ax.plot(3.7+1.6*score, y, "o", ms=8, color=col)
-    label(ax, 3.7, .85, "Low", 15, GRAY)
-    label(ax, 5.3, .85, "High", 15, GRAY)
-    label(ax, 4.5, .35, "Prioritized flags", 16, GRAY)
-
-    # The document represents an assessment, not a conclusive laundering label.
-    ax.add_patch(Rectangle((7.05, 1.05), 1.2, 1.8, facecolor="white", edgecolor=NAVY, lw=1.7))
-    for y, length in [(2.45, .77), (2.15, .77), (1.85, .5)]:
-        ax.plot([7.25, 7.25+length], [y, y], color=GRAY, lw=1.3)
-    ax.add_patch(Circle((8.1, 1.18), .30, facecolor="white", edgecolor=TEAL, lw=1.7))
-    ax.plot([8.31, 8.58], [.97, .70], color=TEAL, lw=2)
-    label(ax, 7.65, .35, "Human assessment", 16, GRAY)
-    arrow(ax, (2.67, 1.95), (3.25, 1.95), GRAY)
-    arrow(ax, (5.72, 1.95), (6.30, 1.95), GRAY)
+    ax.add_patch(Rectangle((10.55, .85), 1.5, 2.0, facecolor="white", edgecolor=NAVY, lw=1.7))
+    for y, length in [(2.4, 1.0), (2.05, 1.0), (1.7, .7)]:
+        ax.plot([10.8, 10.8+length], [y, y], color=GRAY, lw=1.3)
+    ax.add_patch(Circle((11.95, 1.0), .32, facecolor="white", edgecolor=TEAL, lw=1.7))
+    ax.plot([12.18, 12.52], [.77, .43], color=TEAL, lw=2)
+    label(ax, 11.3, .25, "Human assessment", 18, GRAY)
+    arrow(ax, (3.85, 1.85), (4.7, 1.85), GRAY)
+    arrow(ax, (8.75, 1.85), (9.6, 1.85), GRAY)
     save(fig, "workflow")
 
 
 def counterparty_breadth():
-    """Equal transfer frequency with different distinct-counterparty counts."""
-    fig, ax = canvas()
-    label(ax, 2.18, 3.95, "One relationship", 19, weight="bold")
-    label(ax, 6.75, 3.95, "Four relationships", 19, weight="bold")
-    ax.plot([4.5, 4.5], [.75, 3.45], color=LIGHT, lw=1)
-
-    for radius in [-.42, -.14, .14, .42]:
-        arrow(ax, (1.1, 2.2), (3.25, 2.2), NAVY, radius=radius, shrink=20)
-    node(ax, 1.1, 2.2, "A", radius=.27)
-    node(ax, 3.25, 2.2, "B", TEAL, radius=.27)
-
-    for y, name in [(3.32, "B"), (2.58, "C"), (1.84, "D"), (1.10, "E")]:
-        arrow(ax, (5.65, 2.2), (7.9, y), NAVY, shrink=20)
-        node(ax, 7.9, y, name, TEAL, radius=.25)
-    node(ax, 5.65, 2.2, "A", radius=.27)
-    label(ax, 2.18, .55, "4 transfers; 1 distinct counterparty", 16)
-    label(ax, 6.75, .55, "4 transfers; 4 distinct counterparties", 16)
+    """Two large ego networks compare four transfers with one or four partners."""
+    fig, ax = canvas(13.5, 4.3)
+    label(ax, 3.3, 3.95, "One relationship", 21, weight="bold")
+    label(ax, 10.1, 3.95, "Four relationships", 21, weight="bold")
+    ax.plot([6.7, 6.7], [.7, 3.5], color=LIGHT, lw=1)
+    for radius in [-.32, -.11, .11, .32]:
+        arrow(ax, (1.5, 2.15), (5.05, 2.15), NAVY, radius=radius, shrink=22)
+    node(ax, 1.5, 2.15, "A", radius=.30)
+    node(ax, 5.05, 2.15, "B", TEAL, radius=.30)
+    for y, name in [(3.3, "B"), (2.55, "C"), (1.80, "D"), (1.05, "E")]:
+        arrow(ax, (8.25, 2.15), (11.95, y), NAVY, shrink=22)
+        node(ax, 11.95, y, name, TEAL, radius=.28)
+    node(ax, 8.25, 2.15, "A", radius=.30)
+    label(ax, 3.3, .45, "4 transfers · 1 distinct recipient", 19)
+    label(ax, 10.1, .45, "4 transfers · 4 distinct recipients", 19)
     save(fig, "counterparty_breadth")
 
 
 def feature_history():
-    """Sender-side zero-based local ranks with a repeated third counterparty."""
-    fig, ax = canvas()
-    cols = [4.3, 6.1, 7.90]
+    """Sender-side counts precede each transfer; local ranks persist on repeats."""
+    fig, ax = canvas(13.5, 4.3)
+    cols = [5.7, 8.9, 12.1]
     for x, name in zip(cols, ["Transfer 1", "Transfer 2", "Transfer 3"]):
-        label(ax, x, 3.98, name, 16, GRAY)
+        label(ax, x, 3.96, name, 18, GRAY)
     for i, (x, partner) in enumerate(zip(cols, ["B", "C", "B"])):
-        node(ax, x-.46, 3.35, "A", radius=.20)
-        node(ax, x+.46, 3.35, partner, TEAL, radius=.20)
-        arrow(ax, (x-.22, 3.35), (x+.22, 3.35), NAVY)
-        label(ax, x, 2.84, "New pair" if i < 2 else "Repeated pair", 16,
+        node(ax, x-.60, 3.34, "A", radius=.24)
+        node(ax, x+.60, 3.34, partner, TEAL, radius=.24)
+        arrow(ax, (x-.30, 3.34), (x+.30, 3.34), NAVY)
+        label(ax, x, 2.78, "New pair" if i < 2 else "Repeated pair", 18,
               TEAL if i < 2 else NAVY)
-    ax.plot([.28, 8.75], [2.50, 2.50], color=LIGHT, lw=1.2)
+    ax.plot([.35, 13.1], [2.42, 2.42], color=LIGHT, lw=1.2)
     rows = [
-        (2.12, "Previous transfers", ["0", "1", "2"], INK),
-        (1.51, "Distinct recipients", ["0", "1", "2"], INK),
-        (.90, "Outgoing port", ["0", "1", "0"], NAVY),
+        (1.98, "Previous transfers", ["0", "1", "2"], INK),
+        (1.25, "Distinct recipients", ["0", "1", "2"], INK),
+        (.52, "Outgoing port", ["0", "1", "0"], NAVY),
     ]
     for y, heading, values, color in rows:
-        label(ax, .30, y, heading, 16, color, ha="left")
+        label(ax, .40, y, heading, 20, color, ha="left")
         for x, value in zip(cols, values):
-            label(ax, x, y, value, 19, color)
-    ax.plot([.28, 8.75], [.56, .56], color=LIGHT, lw=1.2)
-    label(ax, 4.5, .20, "Counts use earlier transfers; a repeated counterparty keeps its port.", 15, GRAY)
+            label(ax, x, y, value, 21, color)
     save(fig, "feature_history")
 
 
 def factorial_design():
-    """Four primary cells plus a clearly separate supplementary comparison."""
-    fig, ax = canvas()
-    # Fine grid and ordinary type avoid dashboard-card emphasis.
-    x0, x1, x2 = 2.4, 5.35, 8.3
-    for x, heading in [(3.875, "Ports absent"), (6.825, "Ports present")]:
-        label(ax, x, 3.97, heading, 18, GRAY)
-    for y, heading in [(3.05, "Counts\nabsent"), (1.85, "Counts\npresent")]:
-        label(ax, 1.12, y, heading, 18, GRAY)
-    for y in [3.65, 2.45, 1.25]:
+    """A compact, balanced-page matrix separates the supplementary cell."""
+    fig, ax = canvas(7.8, 4.8)
+    x0, x1, x2 = 1.95, 4.65, 7.35
+    for x, heading in [(3.30, "Ports absent"), (6.00, "Ports present")]:
+        label(ax, x, 4.35, heading, 19, GRAY)
+    for y, heading in [(3.35, "Counts\nabsent"), (1.95, "Counts\npresent")]:
+        label(ax, .85, y, heading, 18, GRAY)
+    for y in [4.0, 2.65, 1.25]:
         ax.plot([x0, x2], [y, y], color=LIGHT, lw=1.2)
-    ax.plot([x1, x1], [1.25, 3.65], color=LIGHT, lw=1.2)
-    for x, y, name, tag in [(3.875, 3.05, "Base", "B"), (6.825, 3.05, "Ports", "P"),
-                            (3.875, 1.85, "Counts", "C"), (6.825, 1.85, "Counts + Ports", "CP")]:
-        label(ax, x, y+.13, name, 19, NAVY, "bold")
-        label(ax, x, y-.27, tag, 15, GRAY)
-    label(ax, 4.5, .68, "Supplement: Counts + novelty (CN)", 18, TEAL)
-    label(ax, 4.5, .20, "Each cell uses the same GIN settings and five random seeds.", 15, GRAY)
+    ax.plot([x1, x1], [1.25, 4.0], color=LIGHT, lw=1.2)
+    for x, y, name, tag in [(3.30, 3.35, "Base", "B"), (6.00, 3.35, "Ports", "P"),
+                            (3.30, 1.95, "Counts", "C"), (6.00, 1.95, "Counts + Ports", "CP")]:
+        label(ax, x, y+.13, name, 20, NAVY, "bold")
+        label(ax, x, y-.32, tag, 17, GRAY)
+    label(ax, 3.9, .55, "Supplement: Counts + novelty (CN)", 18, TEAL)
     save(fig, "factorial_design")
 
 
 def estimand():
-    """The share is a ratio of mean seed contrasts, not a mean of ratios."""
-    fig, ax = canvas()
+    """Balanced-page equation panel; the ratio uses mean seed contrasts."""
+    fig, ax = canvas(8.2, 4.5)
     rows = [
-        (3.55, "Original port gain", r"$D_s = P_s - B_s$", NAVY),
-        (2.55, "Port gain after counts", r"$N_s = CP_s - C_s$", TEAL),
+        (3.6, "Original port gain", r"$D_s = P_s - B_s$", NAVY),
+        (2.5, "Port gain after counts", r"$N_s = CP_s - C_s$", TEAL),
     ]
     for y, text, formula, color in rows:
-        label(ax, .55, y, text, 19, color, ha="left")
-        label(ax, 6.4, y, formula, 23, color)
-    ax.plot([.55, 8.45], [1.95, 1.95], color=LIGHT, lw=1.2)
-    label(ax, .55, 1.23, "Share explained", 19, ha="left")
-    label(ax, 6.4, 1.23, r"$S = 1 - \frac{\overline{N}}{\overline{D}}$", 25)
-    label(ax, 4.5, .35, "Bars denote means across the five paired seeds.", 17, GRAY)
+        label(ax, .20, y, text, 18, color, ha="left")
+        label(ax, 6.0, y, formula, 23, color)
+    ax.plot([.20, 7.9], [1.82, 1.82], color=LIGHT, lw=1.2)
+    label(ax, .20, 1.0, "Share explained", 18, ha="left")
+    label(ax, 6.0, 1.0, r"$S = 1 - \frac{\overline{N}}{\overline{D}}$", 24)
     save(fig, "estimand")
 
 
 def counterexample():
-    """Three alternative next transfers share counts but differ in pair history."""
-    fig, ax = canvas()
-    label(ax, 4.5, 3.98, "Earlier transfers:  u → a,  u → b,  d → c", 18, NAVY)
-    xs = [1.08, 3.62, 6.15, 8.08]
-    for x, heading in zip(xs, ["Next transfer", "Prior counts", "Ports\n(in, out)", "Novelty"]):
-        label(ax, x, 3.24, heading, 17, weight="bold")
-    ax.plot([.28, 8.78], [2.93, 2.93], color=LIGHT, lw=1.3)
+    """Alternative next transfers share raw counts but differ in pair history."""
+    fig, ax = canvas(13.5, 4.3)
+    label(ax, 6.75, 3.98, "Earlier transfers:  u → a,  u → b,  d → c", 20, NAVY)
+    xs = [1.5, 5.0, 8.65, 11.9]
+    for x, heading in zip(xs, ["Next transfer", "Prior counts", "Ports (in, out)", "Novelty"]):
+        label(ax, x, 3.20, heading, 19, weight="bold")
+    ax.plot([.35, 13.1], [2.84, 2.84], color=LIGHT, lw=1.3)
     rows = [
         ["u → a", "(2, 2; 1, 1)", "(0, 0)", "0"],
         ["u → b", "(2, 2; 1, 1)", "(0, 1)", "0"],
         ["u → c", "(2, 2; 1, 1)", "(1, 2)", "1"],
     ]
-    for y, row in zip([2.56, 1.90, 1.24], rows):
+    for y, row in zip([2.38, 1.58, .78], rows):
         for x, value in zip(xs, row):
-            label(ax, x, y, value, 19, TEAL if value == "1" else INK)
-    ax.plot([.28, 8.78], [.89, .89], color=LIGHT, lw=1.3)
-    label(ax, 4.5, .48, "Counts: sender total, distinct; receiver total, distinct.", 16, GRAY)
-    label(ax, 4.5, .10, "The rows are alternative next transfers, not a sequence.", 16, GRAY)
+            label(ax, x, y, value, 21, TEAL if value == "1" else INK)
+    ax.plot([.35, 13.1], [.35, .35], color=LIGHT, lw=1.3)
     save(fig, "counterexample")
 
 
