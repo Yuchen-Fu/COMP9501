@@ -6,6 +6,8 @@ _COMP9501 course project · IBM AML HI-Small · GIN · counts × ports · five s
 
 **AML business presentation:** [PowerPoint with speaker notes](presentation/AML_BUSINESS_SLIDES.pptx) · [PDF slides](presentation/AML_BUSINESS_SLIDES.pdf) · [browser presentation](presentation/AML_BUSINESS_SLIDES.html) · [slide overview](presentation/preview/contact-sheet.png) · [business narrative and script](AML_BUSINESS_PRESENTATION.md).
 
+The academic edition uses 12 numbered, Python-rendered figures, clearer introductory examples, and concise conclusions supported by evidence bullets. [Figure sources and rebuild instructions](presentation/README.md) are included.
+
 **Process status:** all 25 runs completed, all 125 saved epoch predictions audited, and the report and graphical presentation finished. See the [dated completion status](STATUS.md).
 
 **Integrated branches:** [course-project guide](COURSE_PROJECT.md) · [integration record](INTEGRATION.md). Shared setup prepares `data/hi_small.pt` for both implementations. The completed five-epoch results remain the primary study; the course branch's distinct 100-epoch runner is an optional follow-up with separate outputs.

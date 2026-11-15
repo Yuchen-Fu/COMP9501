@@ -12,7 +12,7 @@ requested reporting work are complete. No training or queue process is active.
 | Queue execution | Successful | Exit code 0; completion recorded 14 November 2026 at 15:52 UTC+08:00 |
 | Independent numerical audit | Passed | 2,638 numerical comparisons and 39,682 Fieller membership checks |
 | Research report and interpretation | Complete | Full results, confidence intervals, sensitivities, and independent interpretation review |
-| AML business presentation | Complete | 19 slides, speaker notes, six statistical plots, and introductory graph diagrams |
+| AML business presentation | Complete | Academic redesign: 19 slides, speaker notes, 12 numbered Python figures, and high-resolution/vector exports |
 | Remaining planned training jobs | None | 25/25 run JSON files and 25/25 prediction archives present |
 
 The two Base/Ports seed-0 runs were inherited and verified; the remaining 23
