@@ -1,0 +1,5 @@
+[counts+novelty s0] epoch   0 loss 0.0201 | val F1 0.2255 test F1 0.2835 (thr 0.373) | AP val 0.1334 test 0.2069 | argmax F1 val 0.0000 test 0.0000 (485s)
+[counts+novelty s0] epoch   1 loss 0.0333 | val F1 0.2619 test F1 0.3800 (thr 0.451) | AP val 0.1572 test 0.3346 | argmax F1 val 0.2577 test 0.3815 (489s)
+[counts+novelty s0] epoch   2 loss 0.0092 | val F1 0.3255 test F1 0.4178 (thr 0.401) | AP val 0.2657 test 0.3723 | argmax F1 val 0.2921 test 0.3763 (479s)
+[counts+novelty s0] epoch   3 loss 0.0085 | val F1 0.3921 test F1 0.4638 (thr 0.383) | AP val 0.3392 test 0.4687 | argmax F1 val 0.3716 test 0.4738 (491s)
+[counts+novelty s0] epoch   4 loss 0.0146 | val F1 0.4164 test F1 0.5018 (thr 0.335) | AP val 0.3586 test 0.4989 | argmax F1 val 0.3623 test 0.4696 (476s)

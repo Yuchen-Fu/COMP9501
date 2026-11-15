@@ -1,0 +1,61 @@
+{
+  "status": "passed",
+  "raw_rows": 5078345,
+  "raw_laundering": 5177,
+  "raw_header": [
+    "Timestamp",
+    "From Bank",
+    "Account",
+    "To Bank",
+    "Account",
+    "Amount Received",
+    "Receiving Currency",
+    "Amount Paid",
+    "Payment Currency",
+    "Payment Format",
+    "Is Laundering"
+  ],
+  "timestamp_min": "2022-09-01T00:00:00",
+  "timestamp_max": "2022-09-18T16:18:00",
+  "timestamp_timezone": "not supplied by CSV",
+  "accounts": 515088,
+  "bank_account_concatenation_collisions": 0,
+  "currency_codes_in_first_seen_order": {
+    "US Dollar": 0,
+    "Bitcoin": 1,
+    "Euro": 2,
+    "Australian Dollar": 3,
+    "Yuan": 4,
+    "Rupee": 5,
+    "Yen": 6,
+    "Mexican Peso": 7,
+    "UK Pound": 8,
+    "Ruble": 9,
+    "Canadian Dollar": 10,
+    "Swiss Franc": 11,
+    "Brazil Real": 12,
+    "Saudi Riyal": 13,
+    "Shekel": 14
+  },
+  "payment_format_codes_in_first_seen_order": {
+    "Reinvestment": 0,
+    "Cheque": 1,
+    "Credit Card": 2,
+    "ACH": 3,
+    "Cash": 4,
+    "Wire": 5,
+    "Bitcoin": 6
+  },
+  "graph_mismatches": {
+    "u": 0,
+    "v": 0,
+    "y": 0,
+    "base_timestamp": 0,
+    "base_amount": 0,
+    "base_currency": 0,
+    "base_format": 0
+  },
+  "order": "timestamp ascending, then numpy default_rng(0).permutation(row_count)",
+  "runtime_seconds": 36.572,
+  "peak_rss_bytes": 1650757632
+}

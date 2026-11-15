@@ -1,0 +1,126 @@
+{
+  "recorded_at_utc": "2026-11-13T17:15:52.477937+00:00",
+  "git_head": "a5f660056fd54661dc7902133e6dd82c20a23bc9",
+  "python": "3.13.5",
+  "files": {
+    "src/train.py": "ffe1865db19a89d28e9bca1b5ffa7f57dcba27723c92d6533aea9ea8b1b27925",
+    "src/prepare.py": "92f5a61431ffae287a9057c6924e0596babac1c8da0dcd39721a05a51704178d",
+    "setup.sh": "38a5c362d82f17429bba85deabd1b3abf1710b02096e35cb124c8b73244704a5",
+    "requirements.txt": "947aba076209836a3b617213dba80e6498c759728f01e1075255c213c85a3205"
+  },
+  "dataset_zip_sha256": "4407435ec99e37262294b3d4e317f3adcb8a89caa0df66927d1c6ba4f46e8080",
+  "design": {
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "epochs": 5,
+    "primary_cells": [
+      "base",
+      "counts",
+      "ports",
+      "counts+ports"
+    ],
+    "supplementary_cells": [
+      "counts+novelty"
+    ],
+    "workers": 2,
+    "threads_per_worker": 2
+  },
+  "existing_runs": [
+    "base_s0",
+    "ports_s0"
+  ],
+  "packages": {
+    "torch": "2.8.0+cpu",
+    "torch_geometric": "2.6.1",
+    "pyg_lib": "0.5.0+pt28cpu",
+    "numpy": "2.5.4",
+    "pandas": "3.1.1",
+    "scikit-learn": "1.9.1",
+    "scipy": "1.18.1"
+  },
+  "training_session": 69434,
+  "staging_path": "/workspace/comp9501-onboarding/resume-kzq918eh",
+  "validation": {
+    "archive_sha256": "passed",
+    "full_raw_alignment": "passed",
+    "all_causal_features": "passed",
+    "inherited_prediction_label_alignment": "passed",
+    "original_pipeline_smoke": "10 tiny runs / 20 epochs passed before analyzer revision",
+    "analysis_tests": "12 tests passed; independently checked 119621 Fieller memberships",
+    "current_pipeline_smoke": "25 tiny runs / 125 epochs passed, revised strict analyzer, outputs separate"
+  },
+  "prepared_graph_sha256": "53892586fdbd04d32af19ec433d97d74ddb913b1680ff5671daae7215b42eeef",
+  "analysis_sha256": "198ff02b8f0a4de85a3d929627c878e04432bf53d449b96f228164b229f0b022",
+  "completion_pipeline": {
+    "script": "/workspace/comp9501-onboarding/run_to_completion.sh",
+    "log": "/workspace/comp9501-onboarding/job-yt4gws6u/progress.log",
+    "launcher_pid": 33569,
+    "exit_code": "/workspace/comp9501-onboarding/job-yt4gws6u/exit_code",
+    "trigger": "sequentially after successful completion of the training queue",
+    "required_runs": 25
+  },
+  "execution_attempts": [
+    {
+      "pid": 33569,
+      "started_at_utc": "2026-11-14T00:37:53.122054+00:00",
+      "log": "/workspace/comp9501-onboarding/job-yt4gws6u/progress.log",
+      "exit_code": "/workspace/comp9501-onboarding/job-yt4gws6u/exit_code",
+      "reason": "Resume remaining fixed-design runs with persistent stdout/stderr; four completed artifacts retained",
+      "staging_path": "/workspace/comp9501-onboarding/resume-kzq918eh",
+      "process_start_ticks": 2683786,
+      "boot_id": "2c451e20-fcf5-4e17-8390-1c0de887fd66"
+    }
+  ],
+  "current_execution": {
+    "pid": 33569,
+    "started_at_utc": "2026-11-14T00:37:53.122054+00:00",
+    "log": "/workspace/comp9501-onboarding/job-yt4gws6u/progress.log",
+    "exit_code": "/workspace/comp9501-onboarding/job-yt4gws6u/exit_code",
+    "reason": "Resume remaining fixed-design runs with persistent stdout/stderr; four completed artifacts retained",
+    "staging_path": "/workspace/comp9501-onboarding/resume-kzq918eh",
+    "process_start_ticks": 2683786,
+    "boot_id": "2c451e20-fcf5-4e17-8390-1c0de887fd66"
+  },
+  "previous_completion_pipeline": {
+    "script": "/workspace/comp9501-onboarding/after_training.sh",
+    "log": "/workspace/comp9501-onboarding/completion.log",
+    "trigger": "training lock release",
+    "required_runs": 25,
+    "session": 77541
+  },
+  "last_process_check_utc": "2026-11-14T00:39:05.115046+00:00",
+  "completion": {
+    "status": "complete",
+    "pipeline_exit_code": 0,
+    "recorded_at_utc": "2026-11-14T08:04:34.877435+00:00",
+    "runs": 25,
+    "epochs_checked": 125,
+    "new_cloud_runs": 23,
+    "inherited_runs": [
+      "base_s0",
+      "ports_s0"
+    ],
+    "numerical_checks": 2638,
+    "fieller_membership_checks": 39682,
+    "summary_sha256": "dfd65b1ecd4f4a46ba3ff130fb636ce8b3da656b44dc96244389c584e8f8e2bc",
+    "source_fingerprints_unchanged": [
+      "src/train.py",
+      "src/prepare.py",
+      "setup.sh",
+      "requirements.txt"
+    ],
+    "execution_record": "results/execution/",
+    "research_report": "RESEARCH_REPORT.md",
+    "numerical_audit": "results/final-results-audit.md",
+    "interpretation_review": "results/research-interpretation-review.md"
+  },
+  "reporting_revision": {
+    "analysis_sha256": "50815228c62db2e3ac281404868e2a986fb1930d0e8bd3e51c90cc88db311bf9",
+    "change": "After completion, report-only wording clarified the first-contact argument and the CP-minus-CN substitution contrast. Numerical summary JSON is unchanged; original completion analyzer hash is retained above."
+  }
+}
