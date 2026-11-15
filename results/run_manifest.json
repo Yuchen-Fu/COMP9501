@@ -122,5 +122,25 @@
   "reporting_revision": {
     "analysis_sha256": "50815228c62db2e3ac281404868e2a986fb1930d0e8bd3e51c90cc88db311bf9",
     "change": "After completion, report-only wording clarified the first-contact argument and the CP-minus-CN substitution contrast. Numerical summary JSON is unchanged; original completion analyzer hash is retained above."
+  },
+  "post_completion_integration": {
+    "recorded_at_utc": "2026-11-15T02:43:59.955690+00:00",
+    "research_parent": "b68610c09b763fdf70a44bc3509377a8701fd122",
+    "course_parent": "1637accdfe8d05fcf3b7a6d0d1043c1ba231a364",
+    "canonical_graph": "data/hi_small.pt",
+    "current_setup_sha256": "930de615d4423abdca7d74186f292f74eb53ed6d6842c17257c67af85268ba9c",
+    "optional_runner_sha256": "f2f4dee0f9339f3378872c15c3542ec13e6bd308e3bf8243b204d91035b170db",
+    "reference_model_commit": "252b0252afca109d1d216c411c59ff70753b25fc",
+    "reference_model_sha256": "00ef7142e81d3080114142106867e6ef3002d5a01ff5474e9f75cab957fcefe7",
+    "historical_setup_hash_note": "files.setup.sh above describes the completed experiment; recover that exact setup from research_parent. Shared setup changed only after completion.",
+    "completed_results_and_core_training_code_unchanged": true,
+    "optional_full_data_runs": 0,
+    "validation": {
+      "real_shared_setup": "passed with cached pinned archive and canonical graph",
+      "fresh_graph_setup_fixture": "216 rows, atomic canonical path, cached rerun, original full graph unchanged; dependency installs stubbed only in fixture",
+      "optional_runner_tests": "8 passed, including actual pinned GINe 16-edge 2-epoch resume equivalence; temporary outputs only",
+      "completed_results_audit": "25 runs / 125 epoch predictions / 2638 numerical checks / 39682 Fieller membership checks passed again"
+    },
+    "integration_record": "INTEGRATION.md"
   }
 }

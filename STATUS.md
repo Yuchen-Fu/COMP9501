@@ -47,3 +47,13 @@ audit records, figures, and presentation source and exports. The raw dataset,
 prepared graph, virtual environment, and Python caches are excluded; `setup.sh`
 downloads and rebuilds the data with its pinned checksum. This status is a
 completion snapshot, not a continuously running monitor.
+
+## Branch integration
+
+The original research branch and `course/port-counts-factorial` are integrated
+in one history. Shared setup uses `data/hi_small.pt`, and the completed study
+retains its original training code and numerical artifacts. The course branch's
+100-epoch implementation remains an optional, separate protocol under
+`results/factorial/`; it has no completed full-data runs. See
+[COURSE_PROJECT.md](COURSE_PROJECT.md) for the protocol comparison and
+[INTEGRATION.md](INTEGRATION.md) for verification and provenance.

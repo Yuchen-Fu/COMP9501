@@ -8,6 +8,8 @@ _COMP9501 course project · IBM AML HI-Small · GIN · counts × ports · five s
 
 **Process status:** all 25 runs completed, all 125 saved epoch predictions audited, and the report and graphical presentation finished. See the [dated completion status](STATUS.md).
 
+**Integrated branches:** [course-project guide](COURSE_PROJECT.md) · [integration record](INTEGRATION.md). Shared setup prepares `data/hi_small.pt` for both implementations. The completed five-epoch results remain the primary study; the course branch's distinct 100-epoch runner is an optional follow-up with separate outputs.
+
 <!-- ABSTRACT -->
 The proposed historical counts do not remove the port-numbering gain in this completed five-seed, five-epoch experiment. Ports improve F1 by **7.48 points [2.96, 12.00]** without counts and **14.91 [10.11, 19.71]** with counts. The explained share is **−99.35%, with 95% Fieller interval [−512.75%, +8.42%]**: no attenuation remains compatible, while substantial positive attenuation is excluded under this fixed-dataset statistical model. Exact amplification is not established. The supplementary Counts+novelty cell exceeds Counts+Ports by **9.42 points [5.73, 13.11]**. The result distinguishes marginal account counts from useful pair-history representation; it does not isolate a causal counterparty-identity effect.
 
@@ -179,7 +181,7 @@ EPOCHS=5 ./run_all.sh
 .venv/bin/python -I src/analyze.py
 ```
 
-Setup installs the pinned CPU dependencies, verifies the archive checksum, and builds `data/hi_small.pt`. The queue uses two workers with two threads each on four effective CPU cores. It skips existing run JSON files; preserve matching prediction archives and validate completed outputs before trusting a resumed experiment. Training has no epoch checkpoints, so an interrupted incomplete run restarts its five epochs. A log watcher only observes progress; its termination does not establish that training stopped.
+Shared setup verifies the pinned data archive before installing the pinned CPU dependencies and builds `data/hi_small.pt` atomically when absent. It also downloads and verifies the pinned IBM model used only by the optional course runner. Existing prepared graphs are retained. The canonical queue uses two workers with two threads each on four effective CPU cores. It skips existing run JSON files; preserve matching prediction archives and validate completed outputs before trusting a resumed experiment. The canonical trainer has no epoch checkpoints, so an interrupted incomplete run restarts its five epochs. A log watcher only observes progress; its termination does not establish that training stopped.
 
 To audit the saved experiment without training, run `.venv/bin/python -I scripts/audit_results.py`. Full-data checks are available as `scripts/audit_data.py` and `scripts/audit_raw_alignment.py` with the same interpreter. Figures can be regenerated with `python3 src/plot_results.py` in an interpreter with NumPy and Matplotlib; plotting dependencies are separate from the fixed training environment. The archive retains all 25 metric logs and prediction files plus console logs for the 23 runs executed here. It excludes the raw data, prepared graph, and virtual environment; setup downloads and rebuilds these.
 
@@ -188,6 +190,7 @@ To audit the saved experiment without training, run `.venv/bin/python -I scripts
 | `src/prepare.py` | CSV → graph, split, ordered histories, ports, counts, novelty, and strata |
 | `src/train.py` | One cell and seed; per-epoch metrics and binary test predictions |
 | `src/analyze.py` | Integrity checks, primary selection, paired contrasts, Fieller sets, and sensitivities |
+| `src/factorial.py` | Optional separate 100-epoch course protocol; it did not generate the completed results |
 | `src/plot_results.py`, `scripts/audit_*.py` | Reproduce figures and independent integrity checks |
 | `results/runs/` | Completed per-run JSON logs and prediction archives |
 | `results/summary.md`, `results/summary.json` | Complete-design analysis, generated after the required runs finish |
