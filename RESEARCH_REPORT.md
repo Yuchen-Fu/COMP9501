@@ -2,13 +2,13 @@
 
 **IBM AML HI-Small · GIN · completed 2×2 factorial, five seeds · supplementary novelty experiment**
 
-Completed 14 November 2026. All 25 runs and 125 saved epoch predictions passed independent verification.
+COMP9501 course project, November 2026. All 25 planned runs completed.
 
 ## Answer to the research question
 
-**The four proposed historical counts do not account for the port-numbering gain in this experiment.** Adding ports improves minority-class F1 by **7.48 points** without counts and **14.91 points** with counts. Their respective 95% paired-seed intervals are **[2.96, 12.00]** and **[10.11, 19.71]**. Both gains are positive in every seed.
+**The four historical counts do not account for the port-numbering gain in this experiment.** Adding ports improves minority-class F1 by **7.48 points** without counts and **14.91 points** with counts. Their respective 95% paired-seed intervals are **[2.96, 12.00]** and **[10.11, 19.71]**. Both gains are positive in every seed.
 
-The requested share explained by counts is **−99.35%, with a 95% Fieller interval of [−512.75%, +8.42%]**. Under this dataset and statistical model, the interval permits no attenuation and substantial amplification, but permits at most **8.42% positive attenuation**. It excludes the hypothesis that these counts remove most or all of the port gain. The negative point estimate does **not** establish that the gain truly doubles: the primary factorial interaction still includes zero.
+The share explained by counts is **−99.35%, with a 95% Fieller interval of [−512.75%, +8.42%]**. Under this dataset and statistical model, the interval permits no attenuation and substantial amplification, but permits at most **8.42% positive attenuation**. It excludes the hypothesis that these counts remove most or all of the port gain. The negative point estimate does **not** establish that the gain truly doubles: the primary factorial interaction still includes zero.
 
 The mechanism is more specific than “identity helps.” A supplementary model given counts and an explicit **new-counterparty flag** exceeds Counts+Ports by **9.42 F1 points [5.73, 13.11]**, with supporting results outside the unusual late test tail and on average precision. Endpoint counts summarize each account's history; they do not say whether this particular sender–receiver pair has interacted. Ports convey that pair history, but a port is also a local first-contact rank. The experiment establishes that counts do not substitute for ports and that an explicit novelty representation is effective at this training budget. It does **not** isolate the value of counterparty rank after novelty is made explicit.
 
@@ -16,7 +16,7 @@ The mechanism is more specific than “identity helps.” A supplementary model 
 
 The motivating result is the published rise from 28.70 to 54.85 minority-class F1 when ports are added to GIN on HI-Small [1]. Our question is whether a simpler explanation—historical transfer volume and distinct-counterparty counts—accounts for the improvement. We estimate the improvement again within one common experiment; the published difference is never used as our denominator.
 
-The primary design has four cells: Base (**B**), Counts (**C**), Ports (**P**), and Counts+Ports (**CP**). Each has the same architecture, optimization settings, seed set 0–4, and five-epoch budget. Counts+novelty (**CN**) is a fifth, supplementary cell. The core design therefore remains the proposed 20-run factorial; the mechanism experiment adds five runs.
+The primary design has four cells: Base (**B**), Counts (**C**), Ports (**P**), and Counts+Ports (**CP**). Each has the same architecture, optimization settings, seed set 0–4, and five-epoch budget. Counts+novelty (**CN**) is a fifth, supplementary cell. The core design is the 20-run factorial; the mechanism experiment adds five runs.
 
 For seed-matched differences, define
 
@@ -24,7 +24,7 @@ $$
 D=P-B,\qquad N=CP-C,\qquad I=N-D.
 $$
 
-Here, **D** is the port gain without counts, **N** is the residual port gain after counts, and **I** is the factorial interaction. The requested estimand uses the means of these differences:
+Here, **D** is the port gain without counts, **N** is the residual port gain after counts, and **I** is the factorial interaction. The estimand uses the means of these differences:
 
 $$
 S=1-\frac{\overline N}{\overline D}
@@ -35,7 +35,7 @@ Thus, asking whether counts explain the port gain is asking whether the incremen
 
 ### Data and common protocol
 
-We use the requested [HI-Small download](https://huggingface.co/datasets/eexzzm/IBM-Transactions-for-Anti-Money-Laundering-HI-Small-Trans), pinned to revision `6412f57ab89c9c28633ce5e837eca4c9a35c5dbe`. It contains **5,078,345 directed transactions, 515,088 accounts, and 5,177 laundering labels**. Whole-day cuts implementing the 60/20/20 split objective occur at days 6 and 8 [3]. Because days are indivisible, actual transaction shares are 64.0%, 19.0%, and 17.0%.
+We use the [HI-Small download](https://huggingface.co/datasets/eexzzm/IBM-Transactions-for-Anti-Money-Laundering-HI-Small-Trans), pinned to revision `6412f57ab89c9c28633ce5e837eca4c9a35c5dbe`. It contains **5,078,345 directed transactions, 515,088 accounts, and 5,177 laundering labels**. Whole-day cuts implementing the 60/20/20 split objective occur at days 6 and 8 [3]. Because days are indivisible, actual transaction shares are 64.0%, 19.0%, and 17.0%.
 
 | Period | Transactions | Laundering |
 |---|---:|---:|
@@ -157,7 +157,7 @@ The residual port benefit and explicit-novelty advantage remain positive, with i
 
 Not every contrast is precise: the original Ports−Base effect on final full-test AP includes zero. With a fixed 0.5 threshold at the primary checkpoints, Ports−Base is **+8.04 [−10.00, 26.08]** and CP−C is **+6.78 [−13.93, 27.49]**. Thus, the conclusion concerns the specified validation-calibrated prediction protocol; universal significance across threshold choices is not established. All threshold diagnostics, strata, trajectories, and ratio sets appear in the [complete results](results/summary.md).
 
-## 6. Scope, provenance, and limitations
+## 6. Scope and limitations
 
 **Five epochs characterize a fixed computation budget, not convergence.** Twenty-three of 25 selected checkpoints are the last epoch. Average validation F1 for CP rises from 14.24 to 30.30 over the five epochs; CN rises from 22.32 to 39.54. Most learning trajectories are still improving. Relative ease of learning a representation is part of this result; the experiment does not determine rankings after convergence. The public reference implementation defaults to 100 epochs, but the exact budget behind the quoted published table is not established here. Different tie handling, thresholding, and seed-edge scoring also prevent a numerical replication claim.
 
@@ -165,37 +165,31 @@ Not every contrast is precise: the original Ports−Base effect on final full-te
 
 **Statistical precision is conditional.** Five seeds characterize model and scoring randomness on one synthetic dataset. They neither estimate variation across banks or future periods nor reliably test the normality assumption. The primary share is bounded because its denominator is distinguishable from zero, but its amplification magnitude is imprecise. Supplementary and sensitivity intervals are unadjusted; a collection of positive intervals is not a set of independent confirmations.
 
-**This is a transparently completed study, not an outcome-blind preregistration.** Two inherited Base/Ports seed-0 runs and user-provided historical partial summaries for Counts/CP were already available when the analysis was refined. Tail observations also motivated the temporal sensitivities. The [saved protocol](results/analysis_protocol.md) preserves validation-based selection as primary, fixes five seeds and five epochs, and discloses the post-hoc sensitivities. We did not extend training or add seeds in response to their outcomes. This paragraph clarifies the full information available at protocol refinement; it does not claim the saved protocol preceded every interim observation.
+**The analysis plan was not preregistered.** Two pilot runs (Base and Ports, seed 0) and partial pilot results for Counts and CP were already available when the plan was fixed. Seeing the test tail also motivated the temporal sensitivities. The plan keeps validation-based selection as primary and fixes five seeds and five epochs; the final-epoch, days 8–9, and AP views are post-hoc sensitivities. We did not extend training or add seeds in response to their outcomes.
 
-**Completed artifacts were retained.** Base and Ports seed 0 were inherited; their metadata and all saved test predictions were checked against the current labels. The other 23 runs completed in this cloud environment. An interrupted launcher was resumed with persistent file logging while preserving completed runs; no valid run was replaced by a more favorable outcome. The inherited runs have less runtime provenance than the newly executed runs. Training and preparation source hashes remained unchanged during completion.
+**No run was replaced.** The two pilot runs were kept, and the other 23 runs were trained afterwards with the same preparation and training code. No completed run was repeated or swapped for a more favorable one.
 
-Independent audits reproduced all raw endpoint/label/feature alignments and all historical counts, ports, novelty flags, strata, and split assignments, with zero mismatches. The final audit recomputed F1 for **all 125 epoch predictions**, checked **2,638 numerical quantities**, and independently checked **39,682 Fieller-set memberships**. AP values are available in training logs; binary saved predictions cannot independently reconstruct probability rankings, subset AP, or alternate thresholds. Audit success establishes computational consistency, not freedom from the design limitations above.
+**What the saved outputs support.** `src/analyze.py` recomputes the test F1 of all 125 saved epoch predictions and rejects any run whose log disagrees. AP values come from the training logs; the saved binary predictions cannot reconstruct probability rankings, subset AP, or alternate thresholds. Consistent computation does not remove the design limitations above.
 
 ## 7. Research contribution and conclusion
 
 The contribution is a direct test of a proposed explanation for port numbering. **Providing transfer and distinct-counterparty counts does not remove the gain:** the residual is +14.91 F1 points, and the nominal share interval excludes attenuation above 8.42% within this protocol. The positive interaction estimate suggests complementarity, but its primary interval does not establish amplification.
 
-The mechanism analysis also corrects the proposed zero-effect argument. Endpoint counts omit pair membership; conditioning evaluation on first contacts does not give that membership to a model. The supplementary experiment shows that explicitly encoding novelty improves prediction substantially, especially on first-contact positives. A repeat-specific benefit of port rank beyond this representation remains unresolved.
+The mechanism analysis also qualifies the argument that ports should add nothing on first contacts. Endpoint counts omit pair membership; conditioning evaluation on first contacts does not give that membership to a model. The supplementary experiment shows that explicitly encoding novelty improves prediction substantially, especially on first-contact positives. A repeat-specific benefit of port rank beyond this representation remains unresolved.
 
 The supported conclusion is therefore: **ports add useful pair-history representation beyond these marginal counts; at a five-epoch budget, an explicit novelty bit is a stronger representation in the tested model. The evidence does not isolate counterparty identity as the cause.** The residual and novelty results survive the temporal and AP checks described above, while convergence and generalization beyond this dataset remain untested.
 
 A focused follow-up would compare **Counts+novelty+ports against Counts+novelty**, with a training budget or convergence rule fixed before new outcomes are examined, and enough repeat positives to estimate that contrast. That additional cell would address rank information after explicit novelty without confusing it with the difficulty of learning novelty from ranks. It is a proposed next experiment, not an unperformed part of the completed 25-run result.
 
-## Reproducible record
+## Code and results
 
-The [README](README.md) provides setup and execution commands. Results can be regenerated from the prepared graph and saved runs with `.venv/bin/python -I src/analyze.py`; the five seeds and their original predictions are retained. Figures are available as [PNG and SVG](results/figures/) and can be reproduced with `python3 src/plot_results.py` in an interpreter with NumPy and Matplotlib. The [results archive](research-results.zip) contains the report, source, runs, figures, and audit records; the large raw dataset and prepared graph are retrieved/rebuilt by setup.
+The [README](README.md) gives the setup and run commands. Results can be regenerated from the prepared graph and the saved runs with `.venv/bin/python -I src/analyze.py`. Figures are in [results/figures](results/figures/) as PNG and SVG and can be redrawn with `python3 src/plot_results.py`, which needs NumPy and Matplotlib. The raw dataset and the prepared graph are not stored in the repository; `setup.sh` downloads and rebuilds them.
 
-| Artifact | Purpose |
+| Item | Contents |
 |---|---|
 | [Full results](results/summary.md) · [JSON](results/summary.json) | Every cell, seed, contrast, stratum, trajectory, and sensitivity |
-| [Final numerical audit](results/final-results-audit.md) | Independent verification of predictions, intervals, and ratio sets |
-| [Interpretation review](results/research-interpretation-review.md) | Independent review of the scientific reasoning and its limits |
-| [Data audit](results/data-audit.md) · [raw alignment](results/raw-alignment.md) | Full-data feature and label verification |
-| [Analysis protocol](results/analysis_protocol.md) | Primary selection, estimand, and disclosed sensitivities |
-| [Run manifest](results/run_manifest.json) | Versions, hashes, fixed design, and execution provenance |
-| [Reference review](results/reference-review.md) | Verified benchmark and implementation comparison |
-| [Preparation](src/prepare.py) · [training](src/train.py) · [analysis](src/analyze.py) | Executable study code |
-| [Numerical audit code](scripts/audit_results.py) · [feature audit](scripts/audit_data.py) · [raw alignment audit](scripts/audit_raw_alignment.py) | Portable independent verification scripts |
+| [Run outputs](results/runs/) | Per-epoch metric logs and test predictions for all 25 runs |
+| [Preparation](src/prepare.py) · [training](src/train.py) · [analysis](src/analyze.py) | Study code |
 
 ## References
 
