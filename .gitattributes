@@ -1,9 +1,7 @@
-# Preserve generated binary research and presentation artifacts byte for byte.
 *.pdf binary
 *.pptx binary
 *.png binary
 *.npz binary
-*.zip binary
 
-# Matplotlib emits harmless trailing spaces inside SVG path definitions.
+# Matplotlib leaves trailing spaces inside SVG path definitions.
 *.svg -whitespace

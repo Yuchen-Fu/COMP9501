@@ -4,6 +4,3 @@ __pycache__/
 *.pyc
 results/logs/
 results/run_all.out
-results/factorial/*.pt
-results/factorial/*.part
-results/factorial/*.tmp

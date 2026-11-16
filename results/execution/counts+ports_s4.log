@@ -1,5 +1,0 @@
-[counts+ports s4] epoch   0 loss 0.0278 | val F1 0.1551 test F1 0.2202 (thr 0.329) | AP val 0.0717 test 0.1295 | argmax F1 val 0.0000 test 0.0000 (494s)
-[counts+ports s4] epoch   1 loss 0.0243 | val F1 0.2126 test F1 0.2791 (thr 0.350) | AP val 0.1292 test 0.2236 | argmax F1 val 0.0000 test 0.0000 (489s)
-[counts+ports s4] epoch   2 loss 0.0104 | val F1 0.2656 test F1 0.3340 (thr 0.333) | AP val 0.1816 test 0.2768 | argmax F1 val 0.1551 test 0.2097 (476s)
-[counts+ports s4] epoch   3 loss 0.0089 | val F1 0.3271 test F1 0.3936 (thr 0.264) | AP val 0.2559 test 0.3456 | argmax F1 val 0.2359 test 0.2889 (476s)
-[counts+ports s4] epoch   4 loss 0.0131 | val F1 0.3151 test F1 0.4119 (thr 0.572) | AP val 0.2404 test 0.3747 | argmax F1 val 0.3049 test 0.4031 (474s)
