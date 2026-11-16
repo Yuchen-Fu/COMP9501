@@ -1,5 +1,8 @@
-"""Estimate what counts explain of the port gain in the fixed five-seed GIN study.
+"""Estimate what counts explain of the port gain in the GIN study.
 
+The 2x2 factorial has ten seeds. Seeds 0-4 were analysed first; seeds 5-9 were added to settle the
+interaction, with the test level for that second look fixed beforehand. Counts+novelty has seeds 0-4,
+and contrasts with it are paired on those seeds.
 Primary: full-test F1 at each run's best validation epoch among epochs 1--4.
 Final-epoch and day-restricted results are explicitly post-hoc sensitivities.
 Intervals describe matched-seed variation conditional on this dataset; the
@@ -15,7 +18,10 @@ from scipy import stats
 
 CORE = ("base", "counts", "ports", "counts+ports")
 NOVELTY = "counts+novelty"
-SEEDS = tuple(range(5))
+CORE_SEEDS = tuple(range(10))
+NOVELTY_SEEDS = tuple(range(5))
+FIRST_LOOK = 5               # seeds 0-4 were analysed before seeds 5-9 were run
+SECOND_LOOK_ALPHA = 0.0294   # Pocock level for two looks; applies to the interaction on all seeds
 EPOCHS = 5
 PAIRS = {
     "count_gain": ("counts", "base"),
@@ -37,8 +43,8 @@ LABELS = {
 def summary(values):
     """Two-sided 95% t interval over independent matched seed blocks."""
     a = np.asarray(values, dtype=float)
-    if a.shape != (len(SEEDS),) or not np.isfinite(a).all():
-        raise ValueError("Expected five finite values in seed order 0..4")
+    if a.ndim != 1 or len(a) < 2 or not np.isfinite(a).all():
+        raise ValueError("Expected at least two finite per-seed values in seed order")
     mean, sd = float(a.mean()), float(a.std(ddof=1))
     se = sd / np.sqrt(len(a))
     half = float(stats.t.ppf(0.975, len(a) - 1) * se)
@@ -108,15 +114,38 @@ def fieller_share(numerator, denominator):
 
 
 def contrasts(values):
-    differences = {key: np.asarray(values[a]) - np.asarray(values[b])
-                   for key, (a, b) in PAIRS.items() if a in values and b in values}
+    """Paired contrasts. Values are in seed order; two cells are compared on the seeds both have."""
+    def paired(a, b):
+        n = min(len(values[a]), len(values[b]))
+        return np.asarray(values[a][:n]) - np.asarray(values[b][:n])
+
+    differences = {key: paired(a, b) for key, (a, b) in PAIRS.items() if a in values and b in values}
     differences["interaction"] = differences["ports_after_counts"] - differences["port_gain"]
     result = {key: {**summary(value), "p_value": p_value(value)} for key, value in differences.items()}
     for item in result.values():
+        n = len(item["per_seed"])
         # Descriptive sensitivity, not an achieved-power claim.
-        item["approx_detectable_80pct"] = float((stats.t.ppf(0.975, 4) + stats.norm.ppf(0.8)) * item["sd"] / np.sqrt(5))
+        item["approx_detectable_80pct"] = float((stats.t.ppf(0.975, n - 1) + stats.norm.ppf(0.8)) * item["sd"] / np.sqrt(n))
     return {"effects": result,
             "share_explained": fieller_share(differences["ports_after_counts"], differences["port_gain"])}
+
+
+def looks(cells):
+    """Factorial contrasts after the first seeds, on the added seeds alone, and on all seeds."""
+    values = {cell: cells[cell]["per_seed"] for cell in CORE}
+    n = len(CORE_SEEDS)
+
+    def block(start, stop):
+        return {"seeds": list(CORE_SEEDS[start:stop]),
+                **contrasts({cell: per_seed[start:stop] for cell, per_seed in values.items()})}
+
+    result = {"first_look": block(0, FIRST_LOOK), "added_seeds": block(FIRST_LOOK, n), "all_seeds": block(0, n)}
+    final = result["all_seeds"]["effects"]["interaction"]
+    half = float(stats.t.ppf(1 - SECOND_LOOK_ALPHA / 2, n - 1) * final["sd"] / np.sqrt(n))
+    result["decision"] = {"contrast": "interaction", "alpha": SECOND_LOOK_ALPHA, "p_value": final["p_value"],
+                          "interval_at_alpha": [final["mean"] - half, final["mean"] + half],
+                          "significant": bool(final["p_value"] < SECOND_LOOK_ALPHA)}
+    return result
 
 
 def select_epoch(log, selection):
@@ -142,19 +171,21 @@ def confusion(y, pred):
 def load_runs(directory, y):
     """Reject incomplete core experiments and mismatched predictions before analysis."""
     directory = Path(directory)
-    required = [(cell, seed) for cell in CORE for seed in SEEDS]
-    missing = [f"{cell}_s{seed}" for cell, seed in required
-               if not (directory / f"{cell}_s{seed}.json").is_file()
-               or not (directory / f"{cell}_s{seed}_test_pred.npz").is_file()]
+
+    def saved(cell, seed):
+        return ((directory / f"{cell}_s{seed}.json").is_file()
+                and (directory / f"{cell}_s{seed}_test_pred.npz").is_file())
+
+    missing = [f"{cell}_s{seed}" for cell in CORE for seed in CORE_SEEDS if not saved(cell, seed)]
     if missing:
         raise ValueError("Core experiment incomplete; missing " + ", ".join(missing))
-    novelty_complete = all((directory / f"{NOVELTY}_s{seed}.json").is_file()
-                           and (directory / f"{NOVELTY}_s{seed}_test_pred.npz").is_file() for seed in SEEDS)
-    cells = CORE + ((NOVELTY,) if novelty_complete else ())
+    seeds = {cell: CORE_SEEDS for cell in CORE}
+    if all(saved(NOVELTY, seed) for seed in NOVELTY_SEEDS):
+        seeds[NOVELTY] = NOVELTY_SEEDS
     runs, common_hp = {}, None
-    for cell in cells:
+    for cell, cell_seeds in seeds.items():
         runs[cell] = []
-        for seed in SEEDS:
+        for seed in cell_seeds:
             tag = directory / f"{cell}_s{seed}"
             record = json.loads(tag.with_suffix(".json").read_text())
             features = ["base"] + [key for key in ("counts", "novelty", "ports") if key in cell]
@@ -226,13 +257,16 @@ def build_summary(data, runs):
                      for metric in ("val_f1", "test_f1", "val_ap", "test_ap")}
               for cell, group in runs.items()}
     return {"protocol": {"primary_selection": "best_validation", "eligible_epochs": [1, 2, 3, 4],
-                         "seeds": list(SEEDS), "epochs": EPOCHS, "core_cells": list(CORE),
-                         "supplementary_cell": NOVELTY, "uncertainty": "paired seed t(4), Fieller ratio; conditional on dataset",
+                         "core_seeds": list(CORE_SEEDS), "supplementary_seeds": list(NOVELTY_SEEDS),
+                         "first_look_seeds": list(CORE_SEEDS[:FIRST_LOOK]), "second_look_alpha": SECOND_LOOK_ALPHA,
+                         "epochs": EPOCHS, "core_cells": list(CORE),
+                         "supplementary_cell": NOVELTY, "uncertainty": "paired seed t, Fieller ratio; conditional on dataset",
                          "posthoc_sensitivities": ["final epoch", "days 8-9", "day 10+", "final validation AP"],
                          "infinite_endpoint_encoding": "null denotes negative infinity for a lower endpoint and positive infinity for an upper endpoint"},
             "n_runs": {cell: len(group) for cell, group in runs.items()},
             "supplementary_complete": NOVELTY in runs, "daily_distribution": distribution,
             "tail_flag_baseline": {**confusion(y, test_day >= 10), "rule": "flag every test edge on day >=10; post-hoc diagnostic"},
+            "looks": looks(primary["all"]["cells"]),
             "selections": selections, "directional_consistency": consistency, "curves_per_seed": curves}
 
 
@@ -255,37 +289,87 @@ def fmt_share(item):
     return f"{100 * item['estimate']:.1f}% (95% Fieller interval {100 * lo:.1f}% to {100 * hi:.1f}%)."
 
 
+def fmt_share_short(item):
+    if item["status"] != "identified":
+        return "not identified"
+    lo, hi = item["ci95_set"][0]
+    return f"{100 * item['estimate']:.1f}% [{100 * lo:.1f}%, {100 * hi:.1f}%]"
+
+
+def seed_range(seeds):
+    return f"{seeds[0]}–{seeds[-1]}"
+
+
+def look_report(look):
+    """The factorial contrasts at the first look, on the added seeds alone, and on all seeds."""
+    first, added = seed_range(CORE_SEEDS[:FIRST_LOOK]), seed_range(CORE_SEEDS[FIRST_LOOK:])
+    decision, final = look["decision"], look["all_seeds"]["effects"]["interaction"]
+    lines = ["## Two looks at the factorial", "",
+             f"Seeds {first} were analysed first. Seeds {added} of the four factorial cells were added to settle whether the port "
+             "gain differs with and without counts. The rule was fixed before the new runs: the difference counts as established "
+             f"only if the test on all {len(CORE_SEEDS)} seeds has p < {decision['alpha']}, the Pocock level for two looks.", "",
+             "| Seeds | Ports − Base | Counts+Ports − Counts | Difference between the two | Share explained [95% Fieller interval] |",
+             "|---|---:|---:|---:|---:|"]
+    for key, label in (("first_look", f"{first}, first look"), ("added_seeds", f"{added}, added runs alone"),
+                       ("all_seeds", f"{seed_range(CORE_SEEDS)}, all")):
+        e = look[key]["effects"]
+        lines.append(f"| {label} | {fmt_effect(e['port_gain'])} | {fmt_effect(e['ports_after_counts'])} | "
+                     f"{fmt_effect(e['interaction'])} | {fmt_share_short(look[key]['share_explained'])} |")
+    if decision["significant"]:
+        verdict = f"The port gain is {'larger' if final['mean'] > 0 else 'smaller'} with counts than without."
+    else:
+        verdict = "A difference between the two port gains is not established."
+    lo, hi = decision["interval_at_alpha"]
+    lines += ["", f"On all {len(CORE_SEEDS)} seeds the difference has p = {decision['p_value']:.4f}, "
+              f"{'below' if decision['significant'] else 'not below'} {decision['alpha']}. {verdict} "
+              f"The interval that matches this level is [{lo:+.2f}, {hi:+.2f}].", "",
+              "The first look was tested at 0.05, so the two looks together do not hold the false-positive rate at 5%. "
+              "The added runs alone are an independent check and carry no adjustment.", ""]
+    return lines
+
+
 def report(res):
     cells = list(res["n_runs"])
     primary = res["selections"]["best_validation"]
     final = res["selections"]["final"]
     full = primary["subsets"]["all"]
+    extra = seed_range(NOVELTY_SEEDS)
     lines = ["# What do port numbers add beyond counterparty counts?", "",
              "## Primary experiment", "",
-             "The primary 2×2 comparison uses five seeds and five epochs per run. Each run selects the epoch with the highest "
+             f"The primary 2×2 comparison uses {len(CORE_SEEDS)} seeds ({seed_range(CORE_SEEDS)}) and five epochs per run. "
+             "Each run selects the epoch with the highest "
              "validation F1 among epochs 1–4 (earliest tie), and applies that epoch's validation-selected threshold to the full test set. "
-             "Counts+novelty is supplementary. All F1 and AP values below are percentage points. Each contrast shows its mean, "
+             f"Counts+novelty is supplementary and uses seeds {extra}; contrasts with it are paired on those seeds. "
+             "All F1 and AP values below are percentage points. Each contrast shows its mean, "
              "95% paired-seed t interval and two-sided p-value.", "",
-             "| Cell | Test F1, mean ± SD | Test AP, mean ± SD | Selected epochs, seeds 0–4 |", "|---|---:|---:|---|"]
+             "| Cell | Seeds | Test F1, mean ± SD | Test AP, mean ± SD | Selected epochs, in seed order |", "|---|---:|---:|---:|---|"]
     for cell in cells:
         f, ap = full["cells"][cell], primary["metrics"]["test_ap"]["cells"][cell]
-        lines.append(f"| {cell} | {f['mean']:.2f} ± {f['sd']:.2f} | {ap['mean']:.2f} ± {ap['sd']:.2f} | {primary['selected_epochs'][cell]} |")
-    lines += ["", "| Core contrast | Mean [95% paired-seed t interval] | Five seed differences |", "|---|---:|---|"]
+        lines.append(f"| {cell} | {len(f['per_seed'])} | {f['mean']:.2f} ± {f['sd']:.2f} | {ap['mean']:.2f} ± {ap['sd']:.2f} | "
+                     f"{primary['selected_epochs'][cell]} |")
+    lines += ["", "| Core contrast | Mean [95% paired-seed t interval] | Seed differences |", "|---|---:|---|"]
     for key in ("count_gain", "port_gain", "ports_after_counts", "interaction"):
         item = full["effects"][key]
         lines.append(f"| {LABELS[key]} | {fmt_effect(item)} | " + ", ".join(f"{x:+.2f}" for x in item["per_seed"]) + " |")
     lines += ["", "**Primary estimand: share of the port gain explained by counts.** " + fmt_share(full["share_explained"]), "",
               "This is a ratio of cell-mean contrasts, not a causal mediation proportion. Values are not constrained to 0–100%. "
-              "Failure to detect a residual gain does not establish that counts explain all of it.", "", "## Mechanism checks", "",
+              "Failure to detect a residual gain does not establish that counts explain all of it.", ""]
+    lines += look_report(res["looks"])
+    lines += ["## Mechanism checks", "",
               "| Test stratum | Transactions | Laundering | Counts+Ports − Counts [95% CI] |", "|---|---:|---:|---:|"]
     for name in ("first_contact", "repeat", "repeat_free_accounts"):
         row = primary["subsets"][name]
         lines.append(f"| {name} | {row['n_tx']:,} | {row['n_laundering']:,} | {fmt_effect(row['effects']['ports_after_counts'])} |")
     if res["supplementary_complete"]:
-        lines += ["", "Supplementary representation comparison:", "", "| Stratum | Counts+novelty − Counts [95% CI] | Counts+Ports − Counts+novelty [95% CI] |", "|---|---:|---:|"]
-        for name in ("all", "first_contact", "repeat", "repeat_free_accounts"):
-            effects = primary["subsets"][name]["effects"]
-            lines.append(f"| {name} | {fmt_effect(effects['novelty_gain'])} | {fmt_effect(effects['ports_beyond_novelty'])} |")
+        m = len(NOVELTY_SEEDS)
+        lines += ["", f"Supplementary representation comparison, on seeds {extra}:", "",
+                  "| Stratum | Counts F1 | Counts+Ports F1 | Counts+novelty F1 | Counts+novelty − Counts [95% CI] | "
+                  "Counts+Ports − Counts+novelty [95% CI] |", "|---|---:|---:|---:|---:|---:|"]
+        for name in ("all", "days_8_9", "first_contact", "repeat", "repeat_free_accounts"):
+            row = primary["subsets"][name]
+            f1 = [np.mean(row["cells"][cell]["per_seed"][:m]) for cell in ("counts", "counts+ports", NOVELTY)]
+            lines.append(f"| {name} | {f1[0]:.2f} | {f1[1]:.2f} | {f1[2]:.2f} | {fmt_effect(row['effects']['novelty_gain'])} | "
+                         f"{fmt_effect(row['effects']['ports_beyond_novelty'])} |")
     else:
         lines += ["", "Supplementary Counts+novelty runs are incomplete; no supplementary effect is reported."]
     lines += ["", "Ports equal distinct counts conditional on first contact, but the Counts-only model is not given that status. "
@@ -319,13 +403,25 @@ def report(res):
         lines.append(f"| {LABELS[key]} | {'yes' if item['same_nonzero_sign'] else 'no'} |")
     lines += ["", "Agreement in sign is directional consistency, not statistical significance.", "", "## Confusion counts", "",
               "Counts below are means across seeds at the primary selection; individual-seed TP, FP, FN and TN are retained in summary.json.", "",
-              "| Subset | Cell | TP | FP | FN |", "|---|---|---:|---:|---:|"]
+              "| Subset | Cell | Seeds | TP | FP | FN |", "|---|---|---:|---:|---:|---:|"]
+
+    def mean_counts(rows):
+        return " | ".join(f"{np.mean([row[k] for row in rows]):.1f}" for k in ("tp", "fp", "fn"))
+
     for name, subset in primary["subsets"].items():
         for cell, item in subset["cells"].items():
-            means = [np.mean([row[k] for row in item["confusion_per_seed"]]) for k in ("tp", "fp", "fn")]
-            lines.append(f"| {name} | {cell} | {means[0]:.1f} | {means[1]:.1f} | {means[2]:.1f} |")
+            rows = item["confusion_per_seed"]
+            lines.append(f"| {name} | {cell} | {len(rows)} | {mean_counts(rows)} |")
+    if res["supplementary_complete"]:
+        lines += ["", f"The same counts on seeds {extra} only, for comparing Counts and Counts+Ports with Counts+novelty:", "",
+                  "| Subset | Cell | TP | FP | FN |", "|---|---|---:|---:|---:|"]
+        for name in ("all", "days_8_9", "first_contact", "repeat"):
+            for cell in ("counts", "counts+ports", NOVELTY):
+                rows = primary["subsets"][name]["cells"][cell]["confusion_per_seed"][:len(NOVELTY_SEEDS)]
+                lines.append(f"| {name} | {cell} | {mean_counts(rows)} |")
     lines += ["", "## Scope of the evidence", "",
-              "Intervals use five independent matched seed blocks and approximate normality of seed contrasts. They quantify training/inference "
+              f"Intervals use matched seed blocks, {len(CORE_SEEDS)} for the factorial contrasts and {len(NOVELTY_SEEDS)} for contrasts with "
+              "Counts+novelty, and approximate normality of seed contrasts. They quantify training/inference "
               "seed variability on this fixed dataset, not population-wide uncertainty. Secondary intervals are unadjusted exploratory comparisons. "
               "Approximate 80%-power sensitivity thresholds based on observed paired-seed SDs are retained in JSON; these are not achieved-power claims.", "",
               "The benchmark uses full evaluation graphs, graph-specific normalization, stochastic neighbor sampling, dropout and batch statistics "

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the results figures for the slides from the 25-run summary.
+"""Render the results figures for the slides from results/summary.json.
 
 Figures contain only data, axes, and short legends. Numbered captions and
 interpretive claims belong in the slide text. Each figure is exported as a
@@ -77,8 +77,9 @@ def factorial(s, out):
                 f"{row['mean']:+.2f} [{row['ci95'][0]:.2f}, {row['ci95'][1]:.2f}]",
                 ha='center', va='bottom', color=color, fontsize=16)
     ax.axvline(0, color=MUTED, linewidth=1, linestyle='--')
-    ax.set(xlim=(-3, 22), ylim=(-.5, 2.7),
-           yticks=[2, 1, 0], yticklabels=[r[1] for r in rows],
+    intervals = [a['effects'][key]['ci95'] for key, _, _ in rows]
+    ax.set(xlim=(min(-3, min(lo for lo, _ in intervals) - 1), max(22, max(hi for _, hi in intervals) + 1)),
+           ylim=(-.5, 2.7), yticks=[2, 1, 0], yticklabels=[r[1] for r in rows],
            xticks=[0, 5, 10, 15, 20], xlabel='Test F1 difference (percentage points)')
     clean(ax)
     save(fig, out, 'factorial_gain')
@@ -91,12 +92,13 @@ def novelty(s, out):
     colors = [MUTED, NAVY, TEAL]
     fig, ax = plt.subplots(figsize=(8.2, 4.8))
     fig.subplots_adjust(left=.13, right=.97, bottom=.23, top=.94)
-    values = np.array([a['cells'][c]['per_seed'] for c in cells])
-    for seed in range(5):
+    # Counts+novelty has fewer seeds than the factorial cells; compare on the seeds all three share.
+    shared = len(a['cells']['counts+novelty']['per_seed'])
+    values = np.array([a['cells'][c]['per_seed'][:shared] for c in cells])
+    for seed in range(shared):
         ax.plot(range(3), values[:, seed], color='#ADB7BF', linewidth=1.2,
                 marker='o', markersize=4.5, alpha=.8, zorder=2)
-    for x, c, color in zip(range(3), cells, colors):
-        mean = a['cells'][c]['mean']
+    for x, mean, color in zip(range(3), values.mean(axis=1), colors):
         ax.scatter(x, mean, color=color, s=95, marker='D', edgecolor='white',
                    linewidth=1, zorder=4)
         ax.text(x+.08, mean+1.4, f'{mean:.2f}', color=color, fontsize=16,
@@ -107,7 +109,7 @@ def novelty(s, out):
     handles = [Line2D([0], [0], color='#ADB7BF', marker='o', markersize=4,
                       linewidth=1, label='Individual seed'),
                Line2D([0], [0], color=NAVY, marker='D', markersize=7,
-                      linestyle='none', label='Five-seed mean')]
+                      linestyle='none', label=f'Mean of {shared} seeds')]
     ax.legend(handles=handles, loc='lower right', frameon=False, ncol=1)
     clean(ax, 'y')
     assert all(v < 0 for v in a['effects']['ports_beyond_novelty']['per_seed'])
@@ -117,7 +119,8 @@ def novelty(s, out):
 def outcomes(s, out):
     a = s['selections']['best_validation']['subsets']['all']
     cells = ['counts', 'counts+ports', 'counts+novelty']
-    means = {c: {k: np.mean([r[k] for r in a['cells'][c]['confusion_per_seed']])
+    shared = len(a['cells']['counts+novelty']['confusion_per_seed'])
+    means = {c: {k: np.mean([r[k] for r in a['cells'][c]['confusion_per_seed'][:shared]])
                  for k in ('tp', 'fp', 'fn')} for c in cells}
     fig, (flags, missed) = plt.subplots(1, 2, figsize=(13.5, 4.4),
                                       gridspec_kw={'width_ratios': [2.0, 1]})
@@ -154,6 +157,7 @@ def robustness(s, out):
     fig, (f1, ap) = plt.subplots(1, 2, figsize=(13.5, 4.4),
                                 gridspec_kw={'width_ratios': [1.45, 1]})
     fig.subplots_adjust(left=.18, right=.98, bottom=.19, top=.77, wspace=.24)
+    f1_rows, ap_rows = [], []
     for j, (key, color, marker) in enumerate([
             ('ports_after_counts', NAVY, 'o'), ('ports_beyond_novelty', TEAL, 's')]):
         def oriented(row):
@@ -161,14 +165,18 @@ def robustness(s, out):
                 return row
             return {'mean': -row['mean'], 'ci95': [-row['ci95'][1], -row['ci95'][0]]}
         for i, view in enumerate(views):
-            effect(f1, oriented(view['effects'][key]), 2-i+(.14 if j == 0 else -.14),
-                   color, marker)
-        effect(ap, oriented(final['metrics']['val_ap']['effects'][key]),
-               1 if j == 0 else 0, color, marker)
-    f1.set(xlim=(0, 23), ylim=(-.5, 2.5), xticks=[0, 5, 10, 15, 20],
+            f1_rows.append(oriented(view['effects'][key]))
+            effect(f1, f1_rows[-1], 2-i+(.14 if j == 0 else -.14), color, marker)
+        ap_rows.append(oriented(final['metrics']['val_ap']['effects'][key]))
+        effect(ap, ap_rows[-1], 1 if j == 0 else 0, color, marker)
+
+    def limits(rows, right):
+        return (min(0, min(r['ci95'][0] for r in rows) - 1), max(right, max(r['ci95'][1] for r in rows) + 1))
+
+    f1.set(xlim=limits(f1_rows, 23), ylim=(-.5, 2.5), xticks=[0, 5, 10, 15, 20],
            yticks=[2, 1, 0], yticklabels=['Full test', 'Test days 8–9', 'Final-epoch test'],
            xlabel='F1 difference (points)')
-    ap.set(xlim=(0, 20), ylim=(-.5, 1.5), xticks=[0, 5, 10, 15, 20],
+    ap.set(xlim=limits(ap_rows, 20), ylim=(-.5, 1.5), xticks=[0, 5, 10, 15, 20],
            yticks=[], xlabel='AP difference (points)')
     f1.set_title('(a) Test F1', loc='left', pad=15)
     ap.set_title('(b) Validation AP', loc='left', pad=15)
@@ -194,13 +202,18 @@ def share_interval(s, out):
     ax.axvline(100, color=CLAY, linewidth=1.2, linestyle='--')
     ax.errorbar(estimate, 0, xerr=[[estimate-lo], [hi-estimate]], fmt='o',
                 color=TEAL, markersize=8, linewidth=2.5, capsize=7)
-    ax.text(lo, .14, f'{lo:.2f}%', ha='left', fontsize=17, color=TEAL)
-    ax.text(hi, .14, f'{hi:+.2f}%', ha='left', fontsize=17, color=TEAL)
-    ax.text(estimate, -.22, f'Estimate: {estimate:.2f}%', ha='center', fontsize=17)
+    # A white box keeps an interval label readable where it crosses a reference line.
+    box = {'facecolor': 'white', 'edgecolor': 'none', 'pad': 1.5}
+    ax.text(lo, .14, f'{lo:.2f}%', ha='left', fontsize=17, color=TEAL, bbox=box)
+    ax.text(hi, .14, f'{hi:+.2f}%', ha='left', fontsize=17, color=TEAL, bbox=box)
+    ax.text(estimate, -.22, f'Estimate: {estimate:.2f}%', ha='center', fontsize=17, bbox=box)
     ax.text(-15, .62, 'No attenuation', ha='right', fontsize=17, color=MUTED)
     ax.text(105, .62, 'Complete\nexplanation', ha='left', fontsize=17, color=CLAY)
-    ax.set(xlim=(-550, 230), ylim=(-.55, .9), yticks=[],
-           xticks=[-500, -400, -300, -200, -100, 0, 100],
+    left = min(lo, -100)
+    left -= .05 * (230 - left)
+    step = 100 if left < -450 else 50
+    ax.set(xlim=(left, 230), ylim=(-.55, .9), yticks=[],
+           xticks=np.arange(step * np.ceil(left / step), 101, step),
            xlabel='Share of port gain explained by counts (%)')
     clean(ax)
     save(fig, out, 'share_interval')
@@ -212,7 +225,7 @@ def main():
     p.add_argument('--out', type=Path, default=ROOT/'presentation/figures')
     args = p.parse_args()
     s = json.loads(args.summary.read_text())
-    assert s['supplementary_complete'] and sum(s['n_runs'].values()) == 25
+    assert s['supplementary_complete']
     args.out.mkdir(parents=True, exist_ok=True)
     for f in (factorial, novelty, outcomes, robustness, share_interval):
         f(s, args.out)

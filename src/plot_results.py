@@ -27,8 +27,9 @@ CELLS = ('base', 'counts', 'ports', 'counts+ports', 'counts+novelty')
 
 def completed_summary(path):
     summary = json.loads(path.read_text())
-    if summary['n_runs'] != {cell: 5 for cell in CELLS} or not summary['supplementary_complete']:
-        raise SystemExit('Figures require a summary of all 25 planned runs.')
+    core = {summary['n_runs'].get(cell) for cell in CELLS[:4]}
+    if len(core) != 1 or None in core or not summary['supplementary_complete']:
+        raise SystemExit('Figures require a summary of all planned runs.')
     return summary
 
 
@@ -71,7 +72,7 @@ def factorial(summary, directory):
         interaction.errorbar(x, means, yerr=ci, color=color, marker=marker, ms=7,
                              markeredgecolor='white', capsize=5, lw=1.8, label=label, zorder=4)
         for center, item in zip(x, items):
-            interaction.scatter(center + np.linspace(-0.075, 0.075, 5), item['per_seed'],
+            interaction.scatter(center + np.linspace(-0.075, 0.075, len(item['per_seed'])), item['per_seed'],
                                 color=color, marker=marker, s=28, alpha=0.6, linewidths=0, zorder=3)
     interaction.set_xticks([0, 1], ['Absent', 'Present'])
     interaction.set_xlim(-0.24, 1.24)
@@ -97,7 +98,7 @@ def factorial(summary, directory):
     forest.set_xlabel('F1 difference (percentage points)')
     forest.grid(axis='x', color='#dddddd', lw=0.6)
     fig.text(0.075, 0.105, 'B = Base; C = Counts; P = Ports; CP = Counts+Ports. Primary: full test at each run’s validation-selected epoch.', fontsize=9)
-    fig.text(0.075, 0.057, 'Five seeds per cell. Left: cell means with 95% t intervals and individual seeds. Right: paired-seed 95% t intervals.', fontsize=9)
+    fig.text(0.075, 0.057, f"Each cell has {summary['n_runs']['base']} seeds. Left: cell means with 95% t intervals and individual seeds. Right: paired-seed 95% t intervals.", fontsize=9)
     fig.text(0.075, 0.014, 'Intervals condition on this dataset and protocol; secondary comparisons are exploratory and unadjusted. No causal decomposition is implied.', fontsize=8.5)
     export(fig, directory, 'factorial_effects')
 
@@ -135,7 +136,7 @@ def sensitivities(summary, directory):
     ap.set_title('Average precision (AP)', loc='left', pad=13)
     paired_panel(f1, f1_rows, 'F1 difference (percentage points)')
     paired_panel(ap, ap_rows, 'AP difference (percentage points)')
-    fig.text(0.075, 0.105, 'Each point is a mean paired contrast across five seeds; bars are 95% t intervals conditional on this dataset and protocol.', fontsize=9)
+    fig.text(0.075, 0.105, f"Each point is a mean paired contrast across {summary['n_runs']['base']} seeds; bars are 95% t intervals conditional on this dataset and protocol.", fontsize=9)
     fig.text(0.075, 0.061, 'F1 and AP are different outcomes and use separate axes. Full-test validation-selected F1 is primary; added sensitivities are post hoc.', fontsize=9)
     fig.text(0.075, 0.018, 'Secondary comparisons are exploratory and unadjusted. Agreement in direction does not establish significance or independent replication.', fontsize=8.5)
     export(fig, directory, 'sensitivity_effects')
