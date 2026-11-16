@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render academic presentation figures from the audited 25-run summary.
+"""Render the results figures for the slides from the 25-run summary.
 
 Figures contain only data, axes, and short legends. Numbered captions and
 interpretive claims belong in the slide text. Each figure is exported as a
@@ -216,7 +216,7 @@ def main():
     args.out.mkdir(parents=True, exist_ok=True)
     for f in (factorial, novelty, outcomes, robustness, share_interval):
         f(s, args.out)
-    print('Created five 300-dpi PNG/SVG/PDF figures from the audited summary.')
+    print('Created five 300-dpi PNG/SVG/PDF figures.')
 
 
 if __name__ == '__main__':

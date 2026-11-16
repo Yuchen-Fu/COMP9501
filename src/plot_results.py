@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""Render figures from a complete five-seed summary (requires matplotlib and numpy).
+"""Draw the report figures from results/summary.json (needs numpy and matplotlib).
 
-Run with a plotting-capable Python: python3 src/plot_results.py. This script does
-not modify the training environment or recompute the statistical analysis.
+Usage: python3 src/plot_results.py
 """
 import argparse
 import json
