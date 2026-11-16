@@ -2,7 +2,7 @@
 
 _COMP9501 course project · IBM AML HI-Small · GIN · counts × ports · five seeds_
 
-**Prospective GPU follow-up:** [portable server instructions](docs/portable/README.md) · [frozen addition experiment](docs/portable/PROTOCOL.md) · [execution prompt](docs/portable/RUN_PROMPT.txt). This separate 25-run batch tests explicit novelty with ports retained; production results are pending. The completed results below are the original five-epoch study.
+**Prospective GPU follow-up:** [download complete package with data](downloads/README.md) · [portable server instructions](docs/portable/README.md) · [frozen addition experiment](docs/portable/PROTOCOL.md) · [execution prompt](docs/portable/RUN_PROMPT.txt). This separate 25-run batch tests explicit novelty with ports retained; production results are pending. The completed results below are the original five-epoch study.
 
 **Completed study:** [research report with conclusions and figures](RESEARCH_REPORT.md) · [all numerical results](results/summary.md) · [independent final audit](results/final-results-audit.md) · [download code and results](research-results.zip).
 
