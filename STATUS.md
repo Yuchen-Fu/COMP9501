@@ -1,6 +1,6 @@
 # Project status
 
-Status checked **15 November 2026, UTC+08:00**. The fixed experiment and all
+Status checked **16 November 2026, UTC+08:00**. The fixed experiment and all
 requested reporting work are complete. No training or queue process is active.
 
 | Work item | Status | Evidence |
@@ -12,7 +12,7 @@ requested reporting work are complete. No training or queue process is active.
 | Queue execution | Successful | Exit code 0; completion recorded 14 November 2026 at 15:52 UTC+08:00 |
 | Independent numerical audit | Passed | 2,638 numerical comparisons and 39,682 Fieller membership checks |
 | Research report and interpretation | Complete | Full results, confidence intervals, sensitivities, and independent interpretation review |
-| AML business presentation | Complete | 19 slides with content-specific layouts, 12 numbered Python figures, speaker notes, and high-resolution/vector exports |
+| AML business presentation | Complete | 20 slides centered on the representation research question, 11 numbered Python figures, speaker notes, and rendered exports |
 | Remaining planned training jobs | None | 25/25 run JSON files and 25/25 prediction archives present |
 
 The two Base/Ports seed-0 runs were inherited and verified; the remaining 23
@@ -20,13 +20,13 @@ runs completed in this cloud environment. Completed artifacts were retained
 when the launcher was resumed. No extra seeds, epochs, or outcome-driven
 replacement runs were added.
 
-The presentation's second layout revision gives most introductory and results
-figures about 85% of the slide width, uses balanced layouts where comparisons
-need accompanying text, and reduces competing headings and supporting text.
-The completed research results and their scientific scope are unchanged. See
-the [presentation design review](presentation/DESIGN_REVIEW.md) for export checks
-and the distinction between PDF preview inspection and PowerPoint structural
-validation.
+The current presentation asks whether explicitly providing pair novelty improves
+prediction when that fact is already recoverable from counts and ports. It gives
+Egressy et al. one background slide and emphasizes our design, paired comparison,
+five-epoch trajectories, errors, and sensitivities. The original primary factorial
+and supplementary status of novelty are preserved. All research outputs remain
+unchanged. See the [presentation update](presentation/representation-study/UPDATE_NOTES.md)
+and [export verification](presentation/representation-study/README.md).
 
 ## Research outcome
 
@@ -44,7 +44,7 @@ investigator savings, and converged performance remain untested.
 
 - [Research report](RESEARCH_REPORT.md)
 - [AML business narrative and speaker script](AML_BUSINESS_PRESENTATION.md)
-- [PowerPoint](presentation/AML_BUSINESS_SLIDES.pptx), [PDF](presentation/AML_BUSINESS_SLIDES.pdf), and [slide overview](presentation/preview/contact-sheet.png)
+- [PowerPoint](presentation/representation-study/AML_REPRESENTATION_STUDY.pptx), [PDF](presentation/representation-study/AML_REPRESENTATION_STUDY.pdf), and [slide overview](presentation/representation-study/preview/contact-sheet.png)
 - [Full numerical results](results/summary.md) and [machine-readable results](results/summary.json)
 - [Independent numerical audit](results/final-results-audit.md) and [interpretation review](results/research-interpretation-review.md)
 - [Execution record](results/execution/README.md) and [run manifest](results/run_manifest.json)

@@ -4,9 +4,9 @@ _COMP9501 course project · IBM AML HI-Small · GIN · counts × ports · five s
 
 **Completed study:** [research report with conclusions and figures](RESEARCH_REPORT.md) · [all numerical results](results/summary.md) · [independent final audit](results/final-results-audit.md) · [download code and results](research-results.zip).
 
-**AML business presentation:** [PowerPoint with speaker notes](presentation/AML_BUSINESS_SLIDES.pptx) · [PDF slides](presentation/AML_BUSINESS_SLIDES.pdf) · [browser presentation](presentation/AML_BUSINESS_SLIDES.html) · [slide overview](presentation/preview/contact-sheet.png) · [business narrative and script](AML_BUSINESS_PRESENTATION.md).
+**Research presentation:** [PowerPoint with speaker notes](presentation/representation-study/AML_REPRESENTATION_STUDY.pptx) · [PDF slides](presentation/representation-study/AML_REPRESENTATION_STUDY.pdf) · [browser presentation](presentation/representation-study/AML_REPRESENTATION_STUDY.html) · [slide overview](presentation/representation-study/preview/contact-sheet.png) · [speaker script](AML_BUSINESS_PRESENTATION.md).
 
-The academic edition uses 12 numbered, Python-rendered figures and layouts chosen for each page: most results plots span about 85% of the slide width, while selected comparisons use balanced text and figures. Shorter supporting text and fewer headings keep the evidence prominent; the scientific scope is unchanged. [Figure sources and rebuild instructions](presentation/README.md) are included.
+The current edition asks whether explicitly encoding pair novelty improves prediction when that fact is already recoverable from counts and ports. It contains 17 main slides and three appendices, with one baseline-paper slide and 11 numbered Python figures. The original factorial remains primary and the novelty comparison supplementary. [Presentation sources](presentation/representation-study/README.md) and [detailed update rationale](presentation/representation-study/UPDATE_NOTES.md) are included.
 
 **Process status:** all 25 runs completed, all 125 saved epoch predictions audited, and the report and graphical presentation finished. See the [dated completion status](STATUS.md).
 

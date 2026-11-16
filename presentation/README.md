@@ -1,5 +1,7 @@
 # AML research presentation
 
+**Current edition:** [Making pair history explicit](representation-study/README.md) centers the research question and the completed representation comparison. It includes 17 main slides, three appendices, learning curves, and actual PowerPoint-rendered previews. The earlier layout edition documented below remains available for reference.
+
 The academic edition has 16 main slides and three appendices. It introduces the
 AML review problem before the data, literature, research question, methodology,
 findings, and conclusion. Slides 2–4 explain review capacity, relationship
