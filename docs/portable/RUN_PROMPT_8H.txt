@@ -1,0 +1,4 @@
+请运行独立的8小时预算版，不改研究内容。先读README_8H.md并核验UPDATE_8H_SHA256SUMS；使用已有HI-Small数据和CUDA .venv。
+在HKU Slurm检查debug分区MaxTime和4张RTX3090/8CPU/64GB资源是否允许，然后在包根目录提交：sbatch scripts/representation/submit_8h.slurm。
+仅运行这一版：A/B/C各5个固定新种子15–19，每次20–30epochs，共15次，四卡并行；C和probe必跑。不要同时提交原25组方案，不混入其输出。程序在7小时45分触发保护，Slurm8小时硬截止；未完成则如实标为incomplete并保留断点，不能减少种子或选完成的结果报告。
+每十分钟查看results/representation_8h/batch_status.json；前几个epoch后按实测速度更新ETA，排队时间另计。完整结束回传AML_EXPLICIT_PAIR_8H_RESULTS.zip；保留服务器checkpoints。主要对比B−A，报告区间和敏感性一致性，不预设正面结论。

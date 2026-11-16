@@ -31,7 +31,9 @@ def main():
             if path.is_file() and path.name != 'build_upload.py':
                 files[str(path.relative_to(ROOT))] = path
     for relative in ('data/hi_small.pt', 'results/representation_followup/protocol.json',
-                     'results/representation_followup/planning_power.json'):
+                     'results/representation_followup/planning_power.json',
+                     'results/representation_8h/protocol.json',
+                     'results/representation_8h/planning_power.json'):
         files[relative] = ROOT / relative
     protocol = json.loads(files['results/representation_followup/protocol.json'].read_text())
     if sha(files['data/hi_small.pt']) != protocol['data']['sha256']:

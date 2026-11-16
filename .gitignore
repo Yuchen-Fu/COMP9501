@@ -12,3 +12,7 @@ results/representation_followup/logs/
 results/representation_followup/cache/
 results/representation_followup/*.lock
 AML_EXPLICIT_PAIR_*.zip
+results/representation_8h/runs/
+results/representation_8h/logs/
+results/representation_8h/cache/
+results/representation_8h/*.lock

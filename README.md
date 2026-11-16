@@ -2,6 +2,8 @@
 
 _COMP9501 course project · IBM AML HI-Small · GIN · counts × ports · five seeds_
 
+**Current requested budget:** [eight-hour experiment and submission instructions](docs/portable/README_8H.md). This separate 15-run design keeps mandatory A/B/C arms, uses 5 fresh seeds each and 20–30 epochs, and requests 4 identical GPUs. A small [GitHub update ZIP](downloads/README.md) reuses the existing data package. No production result is claimed before all runs complete.
+
 **Prospective GPU follow-up:** [download complete package with data](downloads/README.md) · [portable server instructions](docs/portable/README.md) · [frozen addition experiment](docs/portable/PROTOCOL.md) · [execution prompt](docs/portable/RUN_PROMPT.txt). This separate 25-run batch tests explicit novelty with ports retained; production results are pending. The completed results below are the original five-epoch study.
 
 **Completed study:** [research report with conclusions and figures](RESEARCH_REPORT.md) · [all numerical results](results/summary.md) · [independent final audit](results/final-results-audit.md) · [download code and results](research-results.zip).
