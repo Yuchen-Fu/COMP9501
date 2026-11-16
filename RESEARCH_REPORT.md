@@ -82,6 +82,17 @@ The plug-in calculation is `1 − 14.91 / 7.48 ≈ −0.9935`. The remaining-gai
 
 This asymmetric uncertainty gives a useful answer despite its large width. It rules out large positive attenuation under the stated model, while estimating amplification poorly. Zero explained share is compatible with the data; full explanation is not. Consistently, the interaction interval includes zero and the residual-gain interval excludes zero. We therefore conclude **non-substitution by these counts**, without claiming statistically established synergy or an exact doubling of the port gain. The share is not clipped to 0–100% and should not be interpreted as “199% identity.”
 
+### Extension to ten seeds: plan
+
+Recorded on 16 November 2026, before the new runs started.
+
+The five-seed analysis leaves one contrast open: whether the port gain is larger with counts than without (interaction +7.43, p = 0.070). Seeds 5–9 of the four factorial cells are added with the same code, prepared graph, package versions, and five-epoch budget, giving ten seeds per cell. Counts+novelty is not extended; its contrasts stay paired on seeds 0–4.
+
+- **Test.** The interaction on all ten seeds, with the same paired t test on full-test F1 at the validation-selected epoch.
+- **Threshold.** The difference counts as established only if p < 0.0294, the Pocock level for two looks.
+- **Error rate.** The first look was tested at 0.05, not 0.0294. With no true difference, this two-step procedure gives a false positive in about 7.0% of simulated studies, against 5.0% for one planned test. The five new seeds are therefore also reported on their own.
+- **Reporting.** Every factorial contrast is reported on all ten seeds whatever the outcome, and the five-seed results stay in the summary.
+
 ## 3. Why the first-contact argument needs qualification
 
 On a first contact, each raw port equals its corresponding distinct-counterparty count. This does not imply that adding ports must have zero effect when evaluating first-contact transactions.

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Primary 2x2 factorial (counts x ports) x 5 seeds, then the counts+novelty decomposition cell x 5 seeds.
-# CPU-only box (4 cores): a queue of 2-thread jobs, two at a time.
+# Primary 2x2 factorial (counts x ports) on seeds 0-9, then the counts+novelty cell on seeds 0-4.
+# CPU-only box (4 cores): a queue of 2-thread jobs, two at a time. Finished runs are skipped.
 set -euo pipefail
 cd "$(dirname "$0")"
 export EPOCHS=${EPOCHS:-5}
@@ -13,6 +13,6 @@ run() {  # run <cell> <seed>
     --out results/runs > "results/logs/${cell}_s${seed}.log" 2>&1
 }
 export -f run
-{ for s in 0 1 2 3 4; do for c in base ports counts counts+ports; do echo "$c $s"; done; done
+{ for s in 0 1 2 3 4 5 6 7 8 9; do for c in base ports counts counts+ports; do echo "$c $s"; done; done
   for s in 0 1 2 3 4; do echo "counts+novelty $s"; done; } | xargs -P 2 -L 1 bash -c 'run "$0" "$1"'
 echo "all runs done"
