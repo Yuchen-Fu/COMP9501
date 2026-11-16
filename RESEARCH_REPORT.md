@@ -65,12 +65,14 @@ Values are laundering-class F1 percentages. Mean ± SD describes seed spread, no
 
 ![Factorial means, individual seeds, and paired contrasts](results/figures/factorial_effects.png)
 
-| Primary contrast | F1 points | 95% paired interval |
-|---|---:|---:|
-| Counts − Base | +0.98 | [−7.18, +9.14] |
-| Ports − Base, D | +7.48 | [+2.96, +12.00] |
-| Counts+Ports − Counts, N | +14.91 | [+10.11, +19.71] |
-| Interaction, N − D | +7.43 | [−0.97, +15.83] |
+| Primary contrast | F1 points | 95% paired interval | p |
+|---|---:|---:|---:|
+| Counts − Base | +0.98 | [−7.18, +9.14] | 0.755 |
+| Ports − Base, D | +7.48 | [+2.96, +12.00] | 0.010 |
+| Counts+Ports − Counts, N | +14.91 | [+10.11, +19.71] | 0.001 |
+| Interaction, N − D | +7.43 | [−0.97, +15.83] | 0.070 |
+
+The research question is answered by N. If counts explained the port gain, N would be zero; it is 14.91 with p = 0.001. The two contrasts that are not significant are the effect of counts alone and the interaction.
 
 The residual improvement is large: Counts+Ports finds **213.2 more laundering transactions** and makes **483.0 fewer false alerts** than Counts, averaged over seeds. It is not merely a small F1 change induced by a few predictions. Counts alone is unstable relative to Base, but this does not show that counts are useless: their combination with ports reaches 39.57 F1 versus 31.16 for Ports. The question is substitution, and the combination clearly retains a port benefit.
 
@@ -157,11 +159,15 @@ The residual port benefit and explicit-novelty advantage remain positive, with i
 
 Not every contrast is precise: the original Ports−Base effect on final full-test AP includes zero. With a fixed 0.5 threshold at the primary checkpoints, Ports−Base is **+8.04 [−10.00, 26.08]** and CP−C is **+6.78 [−13.93, 27.49]**. Thus, the conclusion concerns the specified validation-calibrated prediction protocol; universal significance across threshold choices is not established. All threshold diagnostics, strata, trajectories, and ratio sets appear in the [complete results](results/summary.md).
 
+The interaction is where the views disagree. It is +7.43 (p = 0.070) in the primary view and significant on days 8–9 (+4.74, p = 0.009), at the final epoch (+9.24, p = 0.023), and in full-test AP (+10.52, p = 0.012), but not in validation AP (+3.63, p = 0.184) or at a fixed 0.5 threshold. Two things widen the primary interval. Days 10–17 hold 40.7% of the test positives in 1,108 transactions whose normalized timestamps lie almost entirely above the range seen in training, and F1 there varies between seeds with a standard deviation of 5 to 10 points per cell, against 1.5 to 2.6 on days 8–9. And one Base run (seed 0) selects epoch 2 on a validation dip, with test F1 18.53 where its final epoch reaches 25.72. A larger port gain with counts is therefore suggested by most test-based views but is not established by the primary test.
+
 ## 6. Scope and limitations
 
 **Five epochs characterize a fixed computation budget, not convergence.** Twenty-three of 25 selected checkpoints are the last epoch. Average validation F1 for CP rises from 14.24 to 30.30 over the five epochs; CN rises from 22.32 to 39.54. Most learning trajectories are still improving. Relative ease of learning a representation is part of this result; the experiment does not determine rankings after convergence. The public reference implementation defaults to 100 epochs, but the exact budget behind the quoted published table is not established here. Different tie handling, thresholding, and seed-edge scoring also prevent a numerical replication claim.
 
-**Earlier history features do not make evaluation online causal.** Validation message passing uses the train+validation graph; test uses the entire graph. Those graphs include edges later than an individual target, and features are normalized separately within each cumulative graph. The study therefore concerns a transductive temporal-split protocol. Active dropout, sampled neighbors, and BatchNorm batch statistics also make evaluation stochastic; they were kept unchanged across all cells. Linear scaling of growing counts and numerical rank encodings can influence the comparison.
+**Earlier history features do not make evaluation online causal.** Validation message passing uses the train+validation graph; test uses the entire graph. Those graphs include edges later than an individual target, and features are normalized separately within each cumulative graph. The study therefore concerns a transductive temporal-split protocol. Active dropout, sampled neighbors, and BatchNorm batch statistics also make evaluation stochastic; they were kept unchanged across all cells.
+
+**The history features were not rescaled.** Counts and ports enter after plain z-normalization. The sender-side ones are heavy-tailed: on the train graph, the number of earlier out-transfers has median 9 and 90th percentile 62, but 99th percentile 68,878. After normalization, 90% of the values lie within 0.01 of each other, so the model mostly sees whether the sender is a hub. A log transform was not tried. The weak effect of counts alone, and part of the advantage of a binary novelty bit over numerical ranks, may reflect this scaling.
 
 **Statistical precision is conditional.** Five seeds characterize model and scoring randomness on one synthetic dataset. They neither estimate variation across banks or future periods nor reliably test the normality assumption. The primary share is bounded because its denominator is distinguishable from zero, but its amplification magnitude is imprecise. Supplementary and sensitivity intervals are unadjusted; a collection of positive intervals is not a set of independent confirmations.
 

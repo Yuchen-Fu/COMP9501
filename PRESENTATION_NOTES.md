@@ -20,12 +20,40 @@ material. It uses the same figures and numbers, and its speaker notes go further
 3. **Method.** One model, retrained with and without counts and with and without ports, so the
    port gain is measured twice under identical conditions. Five seeds, five epochs, and
    validation alone picks the threshold and the epoch.
-4. **Significance.** The gain does not shrink (+7.48 F1 points without counts, +14.91 with them)
-   and counts explain at most 8.4% of it. What ports add is relationship history: whether these
-   two accounts have transacted before. One explicit bit for that does better than ports here.
+4. **Significance.** The gain does not shrink. With counts already in the model, ports still add
+   14.91 F1 points (p = 0.001), so ports keep at least 92% of their gain and counts explain at
+   most 8% of it. What ports add is relationship history: whether these two accounts have
+   transacted before. One explicit bit for that beats ports by 9.42 points (p = 0.002).
 
 In one sentence: port numbers are not counts in disguise; they carry whether a pair is new, and
 saying that outright works better at this training budget.
+
+## What is statistically significant
+
+Each model has five seeds, compared seed by seed with a paired t test. A difference is
+significant when p < 0.05, which is the same as its 95% interval excluding zero.
+
+| Claim | Difference in F1 points | p | Significant |
+|---|---:|---:|---|
+| Ports help without counts | +7.48 [+2.96, +12.00] | 0.010 | yes |
+| Ports still help with counts | +14.91 [+10.11, +19.71] | 0.001 | yes |
+| A new-pair bit beats ports | +9.42 [+5.73, +13.11] | 0.002 | yes |
+| Counts help on their own | +0.98 [-7.18, +9.14] | 0.755 | no |
+| The port gain is larger with counts | +7.43 [-0.97, +15.83] | 0.070 | not in the primary test |
+
+The second row answers the research question. If counts explained the port gain, that row would
+be zero. It is 14.91 with p = 0.001.
+
+**About the -99%.** It is the share formula applied to these numbers: 1 - 14.91 / 7.48. It is
+negative because the gain is larger with counts, and its interval (-512.7% to +8.4%) is wide
+because the formula divides by the small gain of 7.48. Do not present -99% as the finding. Say:
+"Ports keep at least 92% of their gain when counts are added, so counts explain at most 8%."
+
+**About the last row.** The primary test just misses. The same difference is significant on days
+8-9 (p = 0.009), at the final epoch (p = 0.023) and in average precision (p = 0.012). It is not
+significant in validation AP (p = 0.184) or at a fixed 0.5 threshold. That is 5 of the 10 views
+in `results/summary.md`. Say "the gain is larger with counts in most test-based views" and give
+the primary p-value with it. Do not swap in another view as if it had been the planned test.
 
 ## Running example
 
@@ -144,17 +172,19 @@ About one minute per slide. Each title states the slide's conclusion.
 
 - Show: `factorial_gain.png`.
 - Say: Without counts, ports add 7.48 F1 points. With counts already in the model, ports add
-  14.91. The gain did not shrink, and it is positive in all five seeds both times.
-- Careful: do not say the gain doubled. The difference between the two gains is +7.43 with an
-  interval from -0.97 to 15.83, which includes zero.
+  14.91. Both gains are significant, p = 0.010 and p = 0.001, and both are positive in all five
+  seeds. The gain did not shrink.
+- Careful: whether the second gain is larger than the first is the weaker claim, p = 0.070 in
+  the primary test. Do not say the gain doubled.
 
-### 11. Counts can explain at most about eight percent of the port gain.
+### 11. Ports keep at least 92 percent of their gain when counts are added.
 
 - Show: `share_interval.png`.
-- Say: The share explained is minus 99 percent. It is negative because the gain is larger with
-  counts than without. The interval is wide on the negative side, but its upper end is what
-  matters: 8.4 percent. Counts explaining most of the gain is ruled out.
-- Careful: do not clip the share to 0-100% and do not call it a causal fraction.
+- Say: If counts explained ports, adding counts would remove the port gain. It removes none of
+  it. Ports keep at least 92 percent, so counts explain at most 8 percent. The formula's own
+  estimate is minus 99 percent, which only says the gain grew.
+- Careful: do not present minus 99 percent as the finding, do not clip the share to 0-100%, and
+  do not call it a causal fraction.
 
 ### 12. Counts and ports together reveal whether a pair is new.
 
@@ -206,9 +236,9 @@ About one minute per slide. Each title states the slide's conclusion.
 
 - Show: two columns, what the evidence supports and what to test next.
 - Say: The four counts do not explain away the port gain. An explicit new-pair bit is the
-  strongest input we tested at five epochs. Next: train longer, add ports on top of the bit, and
-  rescore a later period using only what is known at decision time. All of this rests on one
-  synthetic dataset, five epochs and full-graph scoring.
+  strongest input we tested at five epochs. Next: more seeds and longer training, log-scaled
+  counts, ports on top of the bit, and scoring with only what is known at decision time. All of
+  this rests on one synthetic dataset, five epochs and full-graph scoring.
 
 ## Numbers to quote
 
@@ -223,16 +253,28 @@ of transfers are five-seed means at each model's own validation threshold.
 | Counts+Ports | 39.57 ± 0.81 | 664.4 | 1,078.4 | 946.6 |
 | Counts+novelty | 48.99 ± 2.45 | 881.6 | 1,102.4 | 729.4 |
 
-| Contrast | F1 points [95% interval] |
-|---|---:|
-| Counts - Base | +0.98 [-7.18, +9.14] |
-| Ports - Base (port gain without counts) | +7.48 [+2.96, +12.00] |
-| Counts+Ports - Counts (port gain with counts) | +14.91 [+10.11, +19.71] |
-| Difference between the two port gains | +7.43 [-0.97, +15.83] |
-| Counts+novelty - Counts | +24.33 [+21.47, +27.19] |
-| Counts+novelty - Counts+Ports | +9.42 [+5.73, +13.11] |
+| Contrast | F1 points [95% interval] | p |
+|---|---:|---:|
+| Counts - Base | +0.98 [-7.18, +9.14] | 0.755 |
+| Ports - Base (port gain without counts) | +7.48 [+2.96, +12.00] | 0.010 |
+| Counts+Ports - Counts (port gain with counts) | +14.91 [+10.11, +19.71] | 0.001 |
+| Difference between the two port gains | +7.43 [-0.97, +15.83] | 0.070 |
+| Counts+novelty - Counts | +24.33 [+21.47, +27.19] | <0.001 |
+| Counts+novelty - Counts+Ports | +9.42 [+5.73, +13.11] | 0.002 |
 
 Share of the port gain explained by counts: -99.35%, 95% Fieller interval -512.75% to +8.42%.
+The same interval as a ratio: the port gain with counts is 1.99 times the gain without, interval
+0.92 to 6.13.
+
+The difference between the two port gains, in every view the analysis reports:
+
+| Outcome | Best validation epoch | Final epoch |
+|---|---:|---:|
+| Full test F1 (primary is the left cell) | +7.43 [-0.97, +15.83], p = 0.070 | +9.24 [+2.10, +16.37], p = 0.023 |
+| Days 8-9 F1 | +4.74 [+1.97, +7.51], p = 0.009 | +5.09 [+2.46, +7.72], p = 0.006 |
+| Full test AP | +10.52 [+3.85, +17.19], p = 0.012 | +12.54 [+3.53, +21.54], p = 0.018 |
+| Validation AP | +3.63 [-2.65, +9.91], p = 0.184 | +2.78 [-3.79, +9.34], p = 0.306 |
+| Full test F1 at a fixed 0.5 threshold | -1.26 [-22.60, +20.08], p = 0.877 | +1.02 [-24.93, +26.97], p = 0.918 |
 
 | Test subset | Labels / transfers | Counts | Counts+Ports | Counts+novelty | Counts+novelty - Counts+Ports |
 |---|---:|---:|---:|---:|---:|
@@ -271,6 +313,25 @@ All in `presentation/figures/`, as PNG, SVG and PDF.
 | `academic_estimand.png` | The two gains as a diagram (slide 6, backup) |
 
 ## Questions to expect
+
+**Is anything here statistically significant?** Yes. Ports help without counts (p = 0.010),
+ports still help with counts (p = 0.001), and the new-pair bit beats ports (p = 0.002). Two
+things are not significant: counts on their own, and, in the primary test, whether the port gain
+is larger with counts (p = 0.070).
+
+**Why is the interval of the share so wide?** The share divides by the port gain without counts,
+7.48, whose own interval runs from 2.96 to 12.00. Dividing by a small, uncertain number
+stretches the interval. Most of the noise comes from days 10-17. They hold 40.7% of the labels
+in 1,108 transfers, their normalised timestamps lie almost entirely above the training range, and F1 on
+them varies between seeds with a standard deviation of 5 to 10 points, against 1.5 to 2.6 on
+days 8-9.
+
+**Were the counts given a fair chance?** Not fully. The sender-side counts are heavy-tailed. On
+the training graph the number of earlier transfers has median 9 and 90th percentile 62, but
+99th percentile 68,878. After plain z-normalisation, 90% of the values lie within 0.01 of each
+other, so the model mostly sees whether the sender is a hub. A log transform was not tried.
+This is the reason to be careful with "counts add nothing", and the first thing to change in a
+rerun.
 
 **Is the result driven by the late test days?** No. On days 8-9 alone the port gain with counts
 is +8.98 [6.59, 11.37] and the bit's advantage over ports is +9.21 [6.96, 11.46]. First contacts
@@ -315,7 +376,8 @@ the full graph including later transactions, and flags are not cases.
 
 - That ports are useless, or that counts are useless.
 - That the new-pair bit explains the port gain, or that ranks add nothing once the bit is known.
-- That the port gain doubles with counts.
+- That the port gain doubles with counts. It is larger in most test-based views, with p = 0.070
+  in the primary test.
 - That the share is a causal fraction, or that it lies between 0 and 100%.
 - That the review queue gets shorter.
 - That anything here is ready to deploy.
@@ -338,4 +400,26 @@ for name, m in groups.items():
     print(f"{name}: first contacts are {share:.1f}% of transfers and hold {labels:.1f}% of labels")
 ```
 
-Run it with `.venv/bin/python -I` from the repository root after `bash setup.sh`.
+The scaling of the sender-side counts and the timestamp range of days 10-17 come from it too:
+
+```python
+import numpy as np
+import torch
+
+d = torch.load("data/hi_small.pt", weights_only=False)
+train = (d["split"] == 0).numpy()
+out_total = d["counts"][:, 0].numpy()[train].astype(float)
+p50, p90, p99 = np.percentile(out_total, [50, 90, 99])
+print(f"earlier out-transfers: median {p50:.0f}, p90 {p90:.0f}, p99 {p99:.0f}")
+print(f"z-range of the lower 90% of values: {p90 / out_total.std():.4f}")
+
+ts = d["base"][:, 0].numpy()
+z_train = (ts[train] - ts[train].mean()) / ts[train].std()
+z_all = (ts - ts.mean()) / ts.std()
+tail = ts // 86400 >= 10
+print(f"timestamp z in training: up to {z_train.max():.2f}")
+print(f"timestamp z on days 10-17: {z_all[tail].min():.2f} to {z_all[tail].max():.2f}")
+```
+
+Run both with `.venv/bin/python -I` from the repository root after `bash setup.sh`. The
+seed-to-seed standard deviations by period are in `results/summary.json`.

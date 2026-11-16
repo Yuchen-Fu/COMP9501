@@ -114,18 +114,24 @@ All 25 runs finished. F1 and AP are percentages for the laundering class on the 
 | Counts+Ports | 39.57 ± 0.81 | 35.55 ± 3.33 |
 | Counts+novelty | 48.99 ± 2.45 | 46.81 ± 5.70 |
 
-| Contrast | F1 points [95% interval] |
-|---|---:|
-| Counts - Base | +0.98 [-7.18, +9.14] |
-| Ports - Base | +7.48 [+2.96, +12.00] |
-| Counts+Ports - Counts | +14.91 [+10.11, +19.71] |
-| (Counts+Ports - Counts) - (Ports - Base) | +7.43 [-0.97, +15.83] |
-| Counts+novelty - Counts+Ports | +9.42 [+5.73, +13.11] |
+| Contrast | F1 points [95% interval] | p |
+|---|---:|---:|
+| Counts - Base | +0.98 [-7.18, +9.14] | 0.755 |
+| Ports - Base | +7.48 [+2.96, +12.00] | 0.010 |
+| Counts+Ports - Counts | +14.91 [+10.11, +19.71] | 0.001 |
+| (Counts+Ports - Counts) - (Ports - Base) | +7.43 [-0.97, +15.83] | 0.070 |
+| Counts+novelty - Counts+Ports | +9.42 [+5.73, +13.11] | 0.002 |
 
-**Counts do not replace ports.** The share explained is -99.4%, with a 95% Fieller interval from
--512.7% to +8.4%. The data are compatible with no attenuation at all, and with at most 8.4%
-attenuation. The port gain looks larger once counts are present, but the interaction interval
-includes zero, so a larger gain is not established.
+**Counts do not replace ports.** If counts explained the port gain, ports would add nothing once
+counts are in the model. They add 14.91 points (p = 0.001). In ratio terms ports keep at least
+92% of their gain: the share explained is -99.4%, with a 95% Fieller interval from -512.7% to
++8.4%, so counts explain at most 8.4%. The interval is wide because the share divides by the
+small port gain of 7.48.
+
+The share is negative because the port gain is larger with counts than without. That difference
+is +7.43 with p = 0.070 in the primary view. It is significant on days 8-9, at the final epoch
+and in test AP, and it is not in validation AP or at a fixed 0.5 threshold: 5 of the 10 views in
+[results/summary.md](results/summary.md). A larger gain is suggested, not established.
 
 **An explicit new-pair flag does better than ports.** Counts+novelty beats Counts+Ports by 9.42
 points on average and in every seed. Counts and ports together already determine the flag, because a pair is new
@@ -158,6 +164,11 @@ protocol. Strata, AP, confusion counts and per-seed values are in
   last epoch. The reference code defaults to 100 epochs, and thresholding, tie order and scoring
   differ from it, so the F1 values here are not a replication of the published ones.
 - Scoring is stochastic because dropout stays on and neighbours are sampled.
+- Days 10-17 have normalised timestamps almost entirely above the range seen in training. F1 on them varies
+  between seeds far more than on days 8-9, which is the main source of noise in full-test F1.
+- Counts and ports enter after a plain z-normalisation. The sender-side ones are heavy-tailed, so
+  the values of ordinary accounts are compressed. A log transform was not tried, and the weak
+  effect of counts alone may partly reflect this.
 - The evidence is one synthetic dataset. Five seeds measure training and scoring variation, not
   variation across banks or periods.
 - The analysis plan was fixed after two pilot runs (Base and Ports, seed 0) and partial pilot
