@@ -1,0 +1,77 @@
+{
+  "units": "absolute F1 percentage points",
+  "method": "two-sided paired t test, noncentral t power with known planning SD",
+  "alpha": 0.05,
+  "target_power": 0.8,
+  "pilot_contrast": "CN minus CP at best validation F1 among original eligible epochs1..4",
+  "pilot_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "pilot_cp_f1": [
+    40.27640671273445,
+    38.923700700331736,
+    38.738207547169814,
+    40.56047197640118,
+    39.359010402024175
+  ],
+  "pilot_cn_f1": [
+    50.17782088587132,
+    52.01560468140442,
+    49.74169741697417,
+    45.96590909090909,
+    47.04519119351101
+  ],
+  "pilot_differences": [
+    9.901414173136871,
+    13.091903981072683,
+    11.003489869804355,
+    5.405437114507912,
+    7.686180791486834
+  ],
+  "pilot_difference_sd": 2.9725786801045335,
+  "sd_95_interval_normal_assumption": [
+    1.7809703959342504,
+    8.541870213955178
+  ],
+  "mdes_using_pilot_sd": {
+    "5": 4.999868320999994,
+    "10": 2.9606924421434204
+  },
+  "sensitivity": [
+    {
+      "paired_sd": 2,
+      "n5_mdes": 3.36399393191111,
+      "n10_mdes": 1.9920027429109501
+    },
+    {
+      "paired_sd": 3,
+      "n5_mdes": 5.045990897866664,
+      "n10_mdes": 2.988004114366425
+    },
+    {
+      "paired_sd": 4,
+      "n5_mdes": 6.7279878638222215,
+      "n10_mdes": 3.9840054858219
+    },
+    {
+      "paired_sd": 5,
+      "n5_mdes": 8.409984829777775,
+      "n10_mdes": 4.980006857277377
+    },
+    {
+      "paired_sd": 6,
+      "n5_mdes": 10.091981795733327,
+      "n10_mdes": 5.976008228732852
+    }
+  ],
+  "limitations": [
+    "The pilot estimates a different contrast under a different protocol. B-A variance is unknown.",
+    "The estimate conditions on one fixed graph and is not population or bank generalization power.",
+    "The 80% calculation applies to the primary F1 test only; it does not guarantee the joint F1-plus-AP strong-support criterion.",
+    "A detectable effect is not a business minimum meaningful effect or proof of equivalence after a null result."
+  ]
+}

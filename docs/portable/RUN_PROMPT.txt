@@ -1,0 +1,8 @@
+请在当前解压的 AML_EXPLICIT_PAIR_STUDY 目录运行完整实验。先读 README.md、PROTOCOL.md 和 VALIDATION.md，核验 PACKAGE_SHA256SUMS，并确认学校的 GPU 调度方式。只适配 Python/CUDA 环境和调度资源，不要更改研究方案，也不要在登录节点启动训练。
+
+服务器已确认是 HKU 的 gpu3gate1 登录入口，使用 Slurm，支持 --gpus=rtx_4090:1；剩余 GPU 配额 2,806 分钟、家目录剩余约 28 GB。不要升级系统。可用 Conda 新建 Python 3.12 环境，执行 scripts/representation/install.sh cuda。模板申请单张 RTX4090、4 CPU、32 GB 内存、24 小时；只按调度器要求补充分区/账户，不虚构名称。在包根目录 sbatch scripts/representation/submit.slurm。脚本运行：
+.venv/bin/python -I scripts/representation/run_batch.py --device cuda
+
+这是固定 25 次训练：A=cp 和 B=cpn 各 10 个新种子，C=cn 必跑 5 个种子。保留 20–50 epochs 的验证停止规则、共享缩放、eval-mode 评估及全部分析/probe。不要为了得到正面结果更改种子、阈值、训练预算或主要终点；不要自动降级 CPU、缩小 batch 或删除失败运行。
+
+预检失败时报告具体错误及 GPU/驱动/内存信息。每十分钟检查 batch_status.json；首个完整 epoch 后给出基于实测、注明不确定性的时间估计。断线后先确认已有任务是否仍在运行，避免重复启动；需要恢复时重复原命令。全部完成后核验主分析和 probe 完整性，返回 AML_EXPLICIT_PAIR_RESULTS.zip，保留服务器上的 checkpoints。请如实报告不支持假设或敏感性检查不一致的结果，不把训练停止说成证明收敛。

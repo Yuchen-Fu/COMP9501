@@ -1,0 +1,253 @@
+{
+  "schema_version": 2,
+  "study_id": "explicit_pair_history_followup_v1",
+  "created_utc": "2026-11-16T14:36:31.496818+00:00",
+  "research_question": "Does explicitly providing pair novelty improve AML prediction when counts and both port ranks are retained, under a shared validation-governed training protocol?",
+  "design_history": "Prospective follow-up to inspected five-epoch results on the same HI-Small graph; not a previously untouched test set or cross-dataset replication.",
+  "data": {
+    "path": "data/hi_small.pt",
+    "sha256": "53892586fdbd04d32af19ec433d97d74ddb913b1680ff5671daae7215b42eeef",
+    "split": "original day cut points 6 and 8",
+    "graph_scope": "cumulative transductive graphs",
+    "original_results": "results/runs (immutable pilot evidence)",
+    "source_url": "https://huggingface.co/datasets/eexzzm/IBM-Transactions-for-Anti-Money-Laundering-HI-Small-Trans",
+    "source_revision": "6412f57ab89c9c28633ce5e837eca4c9a35c5dbe",
+    "archive_sha256": "4407435ec99e37262294b3d4e317f3adcb8a89caa0df66927d1c6ba4f46e8080",
+    "tie_order": "timestamp then fixed label-independent permutation from NumPy default_rng(0)",
+    "novelty_definition": "first observed directed sender-receiver pair within this dataset history"
+  },
+  "model": {
+    "architecture": "original two-layer GIN, fixed reference hyperparameters",
+    "input_dimension": 11,
+    "slots": [
+      "time",
+      "amount",
+      "currency",
+      "format",
+      "out_total",
+      "out_distinct",
+      "in_total",
+      "in_distinct",
+      "in_port",
+      "out_port",
+      "novelty"
+    ],
+    "arms": {
+      "cp": "base+counts+ports+0",
+      "cpn": "base+counts+ports+novelty",
+      "cn": "base+counts+0+0+novelty"
+    },
+    "matched_initialization": true,
+    "source": "src/train.py"
+  },
+  "preprocessing": {
+    "continuous_fit": "training transfers only",
+    "apply": "one frozen affine transform across all splits and arms",
+    "shared_pairs": [
+      [
+        5,
+        9
+      ],
+      [
+        7,
+        8
+      ]
+    ],
+    "shared_pair_fit": "pool training values of the distinct-count and corresponding port columns with equal weight; sample standard deviation (ddof=1)",
+    "other_columns": "independent training mean and sample standard deviation; zero scale replaced by one",
+    "novelty": "raw 0/1",
+    "missing_slots": "zero after normalization",
+    "invariant": "Both raw and float32 normalized distinct-count/port equalities must reproduce novelty on every edge",
+    "interpretation": "Novelty is a linearly separable deterministic predicate in counts+ports, not new information or increased theoretical expressivity."
+  },
+  "training": {
+    "max_epochs": 50,
+    "min_epochs": 20,
+    "patience": 10,
+    "min_delta": 0.001,
+    "threads": 2,
+    "selection": "exact maximum validation AP; earliest tie",
+    "stopping": "after at least20 epochs, stop after10 epochs without a cumulative >=0.001 AP improvement over plateau reference, or at50",
+    "threshold": "maximum validation F1 at selected checkpoint; first argmax",
+    "test_access": "deferred until individual run training complete",
+    "evaluation": "model.eval, fixed seed-specific split sampling, restore training RNG",
+    "epoch_randomness": "reseed independently by seed block and epoch",
+    "fixed_epochs": [
+      5,
+      10,
+      20
+    ],
+    "checkpointing": "last/best/fixed epochs with model+optimizer+RNG"
+  },
+  "analysis": {
+    "primary_selection": "best_validation",
+    "primary_metric": "test_f1",
+    "seeds": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "cells": [
+      "cp",
+      "cpn",
+      "cn"
+    ],
+    "primary_contrast": "cpn - cp",
+    "corroborating_metric": "test_ap",
+    "strong_support_rule": "primary F1 and corroborating AP paired 95% intervals both strictly above zero; otherwise report narrower or inconclusive evidence",
+    "secondary_contrasts": [
+      "cn - cp",
+      "cpn - cn"
+    ],
+    "uncertainty": "paired Student t 95% intervals with df=n_paired-1; main contrast n=10; secondary shared-seed intersections n=5; fixed-data training variability only; secondary unadjusted",
+    "sensitivities": [
+      "epoch_5",
+      "epoch_10",
+      "epoch_20",
+      "final",
+      "days8-9",
+      "first_contact",
+      "repeat"
+    ],
+    "cap_rule": "report capped/unplateaued runs; no automatic convergence claim",
+    "no_adaptation": "no outcome-driven groups, seeds, budget extensions, or endpoint switching",
+    "seeds_by_cell": {
+      "cp": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "cpn": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "cn": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    "power": {
+      "alpha": 0.05,
+      "target_power": 0.8,
+      "test": "two-sided paired t with noncentral-t power",
+      "planning_source": "Pilot CN-CP (replacement), not observed B-A variance; different protocol",
+      "pilot_paired_sd_f1_points": 2.9725786801045335,
+      "mdes_f1_points": {
+        "5": 4.999868320999994,
+        "10": 2.9606924421434204
+      },
+      "sensitivity": [
+        {
+          "paired_sd_f1_points": 2,
+          "n_seeds": 5,
+          "mdes_f1_points": 3.36399393191111
+        },
+        {
+          "paired_sd_f1_points": 2,
+          "n_seeds": 10,
+          "mdes_f1_points": 1.9920027429109501
+        },
+        {
+          "paired_sd_f1_points": 3,
+          "n_seeds": 5,
+          "mdes_f1_points": 5.045990897866664
+        },
+        {
+          "paired_sd_f1_points": 3,
+          "n_seeds": 10,
+          "mdes_f1_points": 2.988004114366425
+        },
+        {
+          "paired_sd_f1_points": 4,
+          "n_seeds": 5,
+          "mdes_f1_points": 6.7279878638222215
+        },
+        {
+          "paired_sd_f1_points": 4,
+          "n_seeds": 10,
+          "mdes_f1_points": 3.9840054858219
+        },
+        {
+          "paired_sd_f1_points": 5,
+          "n_seeds": 5,
+          "mdes_f1_points": 8.409984829777775
+        },
+        {
+          "paired_sd_f1_points": 5,
+          "n_seeds": 10,
+          "mdes_f1_points": 4.980006857277377
+        },
+        {
+          "paired_sd_f1_points": 6,
+          "n_seeds": 5,
+          "mdes_f1_points": 10.091981795733327
+        },
+        {
+          "paired_sd_f1_points": 6,
+          "n_seeds": 10,
+          "mdes_f1_points": 5.976008228732852
+        }
+      ],
+      "interpretation": "Planning sensitivity, not guaranteed power or business materiality; primary F1 test only, not joint F1/AP success; no outcome-driven seed extensions.",
+      "details_file": "planning_power.json"
+    },
+    "robustness_rule": "Separate descriptive within-benchmark robustness flag: primary F1 and AP intervals positive, and B-A F1/AP point contrasts positive for days8-9 at primary checkpoint, fixed epoch20, and final checkpoint. No endpoint switching; no convergence or cross-dataset claim."
+  },
+  "execution": {
+    "workers": 1,
+    "device": "explicit CLI choice cuda by default; no silent CPU fallback",
+    "poll_seconds": 60,
+    "status_record_seconds": 600,
+    "failure_policy": "stop on first failure; retain checkpoints; same-command rerun resumes; require all25 before main contrasts",
+    "analyze_after_complete": true,
+    "hardware": "single GPU; CPU neighbor sampling; full-data one-batch smoke before production",
+    "results_policy": "do not change code, protocol, seeds, or budgets after production starts; no optional stopping based on effects"
+  },
+  "status": "frozen_before_followup_production_training",
+  "probe": {
+    "arm": "cp",
+    "selection": "best_validation",
+    "representation": "penultimate_25d",
+    "sample_sizes": {
+      "train": 100000,
+      "validation": 50000,
+      "test": 100000
+    },
+    "C": 1.0,
+    "max_iter": 2000,
+    "sample_seed_offset": 4000000,
+    "sampling_seed_offset": 5000000,
+    "interpretation": "Exploratory linear decodability only; cannot establish causal model use or prove absence of nonlinear encoding.",
+    "controls": [
+      "raw CP input linear probe",
+      "deterministic novelty oracle"
+    ],
+    "fit": "training features and labels only; train-fitted StandardScaler; representative random subsets without balancing",
+    "threshold": "fixed 0.5 plus threshold maximizing balanced accuracy on validation only"
+  }
+}

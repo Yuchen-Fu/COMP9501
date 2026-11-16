@@ -7,3 +7,8 @@ results/run_all.out
 results/factorial/*.pt
 results/factorial/*.part
 results/factorial/*.tmp
+results/representation_followup/runs/
+results/representation_followup/logs/
+results/representation_followup/cache/
+results/representation_followup/*.lock
+AML_EXPLICIT_PAIR_*.zip
