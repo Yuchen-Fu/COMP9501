@@ -47,6 +47,8 @@ The follow-up uses shared train-only scaling for each port/distinct-count pair, 
 
 ## Presentation and repository history
 
+The [latest user-refined deck, with a revised cover title](presentation/reviewed-2026-11-17/Beyond_Counterparty_Counts_AML.pptx), presents both completed experiments. Only its cover title/subtitle were edited; the user's remaining 13 slides and all speaker notes are preserved. Read the [slide-specific review](presentation/reviewed-2026-11-17/REVIEW_ZH.md) for recommended method disclosures and minor corrections that have **not** yet been applied. A [PDF preview](presentation/reviewed-2026-11-17/Beyond_Counterparty_Counts_AML.pdf) is included.
+
 The [detailed presentation revision plan](presentation/representation-study/REVISION_PLAN.md) follows the controlled addition result: 14 main slides and four backup slides, with complete claims, supporting evidence, captions and speaking guidance. Existing [representation-study slides](presentation/representation-study/README.md) and [pilot speaking notes](PRESENTATION_NOTES.md) are historical pilot material; the binary deck has not been rebuilt for this follow-up.
 
 All development lines and the supplied results are integrated on **main**, verified as the default and only remote branch on 17 November 2026. The [integration record](docs/repository-integration-2026-11-17.md) explains how presentation changes, statistical code, original evidence and unexecuted plans were preserved. Legacy coursework and audit artifacts remain available in this repository and its commit history.
