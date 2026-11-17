@@ -84,10 +84,6 @@ The plug-in calculation is `1 − 14.91 / 7.48 ≈ −0.9935`. The remaining-gai
 
 This asymmetric uncertainty gives a useful answer despite its large width. It rules out large positive attenuation under the stated model, while estimating amplification poorly. Zero explained share is compatible with the data; full explanation is not. Consistently, the interaction interval includes zero and the residual-gain interval excludes zero. We therefore conclude **non-substitution by these counts**, without claiming statistically established synergy or an exact doubling of the port gain. The share is not clipped to 0–100% and should not be interpreted as “199% identity.”
 
-### Unexecuted factorial extension proposal
-
-A ten-seed extension was proposed on a parallel development line. Its [historical proposal](docs/ten_seed_factorial_proposal.md) and optional scripts are retained. No completed outputs for that extension were supplied; it is not the completed 15-run GPU addition experiment.
-
 ## 3. Why the first-contact argument needs qualification
 
 On a first contact, each raw port equals its corresponding distinct-counterparty count. This does not imply that adding ports must have zero effect when evaluating first-contact transactions.
@@ -195,7 +191,7 @@ A focused follow-up would compare **Counts+novelty+ports against Counts+novelty*
 
 ## Code and results
 
-The [README](README.md) gives the setup and run commands. Results can be regenerated from the prepared graph and the saved runs with `.venv/bin/python -I src/analyze.py`. Figures are in [results/figures](results/figures/) as PNG and SVG and can be redrawn with `python3 src/plot_results.py`, which needs NumPy and Matplotlib. The raw dataset and the prepared graph are not stored in the repository; `setup.sh` downloads and rebuilds them.
+The [README](README.md) gives the setup and run commands. Results can be regenerated from the prepared graph and the saved runs with `.venv/bin/python -I src/analyze.py`. Figures are in [results/figures](results/figures/) as PNG and can be redrawn with `python3 src/plot_results.py`, which needs NumPy and Matplotlib. The raw dataset and the prepared graph are not stored in the repository; `scripts/prepare_data.sh` downloads the pinned dataset and rebuilds the graph. Exact replay of the frozen GPU protocol requires the original prepared graph; see `docs/DATA.md`.
 
 | Item | Contents |
 |---|---|

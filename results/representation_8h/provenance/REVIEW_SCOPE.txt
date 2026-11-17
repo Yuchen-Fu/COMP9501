@@ -1,4 +1,0 @@
-This archive contains reports, plots, run metadata and logs.
-It deliberately omits transaction-level probability archives and model checkpoints.
-It supports review of summary consistency and protocol compliance, not independent prediction-level recomputation.
-Keep the full results archive and checkpoints on the server.

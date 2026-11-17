@@ -1,0 +1,43 @@
+{
+  "recorded_at_utc": "2026-11-13T17:15:52.477937+00:00",
+  "git_head": "a5f660056fd54661dc7902133e6dd82c20a23bc9",
+  "python": "3.13.5",
+  "packages": {
+    "torch": "2.8.0+cpu",
+    "torch_geometric": "2.6.1",
+    "pyg_lib": "0.5.0+pt28cpu",
+    "numpy": "2.5.4",
+    "pandas": "3.1.1",
+    "scikit-learn": "1.9.1",
+    "scipy": "1.18.1"
+  },
+  "design": {
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "epochs": 5,
+    "primary_cells": [
+      "base",
+      "counts",
+      "ports",
+      "counts+ports"
+    ],
+    "supplementary_cells": [
+      "counts+novelty"
+    ],
+    "workers": 2,
+    "threads_per_worker": 2
+  },
+  "files": {
+    "src/train.py": "ffe1865db19a89d28e9bca1b5ffa7f57dcba27723c92d6533aea9ea8b1b27925",
+    "src/prepare.py": "92f5a61431ffae287a9057c6924e0596babac1c8da0dcd39721a05a51704178d",
+    "setup.sh": "38a5c362d82f17429bba85deabd1b3abf1710b02096e35cb124c8b73244704a5",
+    "requirements.txt": "947aba076209836a3b617213dba80e6498c759728f01e1075255c213c85a3205"
+  },
+  "dataset_zip_sha256": "4407435ec99e37262294b3d4e317f3adcb8a89caa0df66927d1c6ba4f46e8080",
+  "prepared_graph_sha256": "53892586fdbd04d32af19ec433d97d74ddb913b1680ff5671daae7215b42eeef"
+}
