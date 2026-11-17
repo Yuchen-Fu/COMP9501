@@ -9,6 +9,7 @@ This 16-slide presentation revises the user's supplied deck directly. It preserv
 - [Editable PowerPoint](Beyond_Counterparty_Counts_FINAL.pptx)
 - [Rendered PDF](Beyond_Counterparty_Counts_FINAL.pdf)
 - [Complete English speaker notes](SPEAKER_NOTES.md)
+- Revised conclusion: [one-slide PowerPoint](Conclusion_Three_Findings.pptx), [one-page PDF](Conclusion_Three_Findings.pdf), [Chinese speaking notes](CONCLUSION_ZH.md). The standalone slide has no fixed page number and can replace the conclusion in a different version of the deck.
 - Slide overviews: [1–8](preview/overview-01.jpg), [9–16](preview/overview-09.jpg)
 - [Counts and Ports explained in Chinese](COUNTS_PORTS_ZH.md)
 - [Python-generated figures](figures/) in PNG, PDF and SVG
@@ -30,7 +31,7 @@ This 16-slide presentation revises the user's supplied deck directly. It preserv
 | 12 | Repeats RQ2: **Does a first-contact flag improve detection beyond counts?** The subtitle answers: **Yes. The flag adds 24.33 F1 points beyond counts (95% CI [21.47, 27.19]).** The separate replacement comparison, +9.42 [5.73, 13.11], leads into Q3. |
 | 13 | Repeats RQ3: **Where are the extra detections when the flag replaces ports?** The subtitle answers: **On first contacts: laundering recall rises from 47.1% to 64.0%.** The caption names Counts + flag versus Counts + Ports and the original protocol. All five seeds detect more first-contact positives; mean true-positive changes are +224.6 on first contacts and −7.4 on repeated pairs. First-contact F1 rises by 11.40 points [7.54, 15.26]. |
 | 14 | Retained the completed addition follow-up with its own Python interval plot. The primary F1 and AP intervals cross zero; no positive addition benefit was established. |
-| 15 | Replaced the conclusion with three complete, evidence-supported sentences. The scope is stated beneath them: original five-epoch HI-Small protocol, five paired seeds, supplementary flag comparison. |
+| 15 | Restored the user's approved three complete conclusions in a vertical layout: the residual port gain, both flag comparisons, and first-contact recall with agreement across all five seeds. The research contribution appears beneath them, and the notes explain the AML feature-design implication. The scope remains explicit. A standalone copy is supplied for replacing the conclusion in other deck versions. |
 | 16 | Updated sources/materials links and consistent page numbering. |
 
 Speaker notes provide the question, interpretation and transition for each slide. The presentation has no backup section and no oversized numerical cards.

@@ -353,12 +353,13 @@ def main():
     notes(s[11], "This completed follow-up asks a different question: does an explicit flag help when counts and ports are both retained? Raw counts and ports already determine the flag, so this tests an explicit representation of available information, not added information. All arms have eleven slots, matched initialization and parameter count, training-only shared count-port scaling, and evaluation-mode scoring. Runs use new seeds fifteen to nineteen and twenty to thirty epochs with validation stopping. The exact highest validation-AP checkpoint is selected, followed by a validation-F1 threshold. The paired F1 change is minus 7.21 points with interval minus 15.46 to plus 1.03; AP is minus 4.49 with interval minus 19.11 to plus 10.13. A positive addition benefit is not established, nor are harm or equivalence proved. Nine of fifteen runs reached the cap, so stopping is not convergence. This protocol has no Counts-only arm and cannot directly re-test the plus 24.33 contrast. Its third arm, Counts plus flag, is included in the full report, and its secondary contrasts are unresolved. The protocol changed several things, so differences between studies cannot be attributed only to training duration. I now return to the positive findings established in the original experiment.")
 
     clear(s[12], INK); header(s[12], "Conclusions", "A first-contact flag helps find laundering on new pairs", dark=True)
-    for y, value in [(2.4, "• Ports add 14.91 F1 points even when all four historical counts are already provided."),
-                     (3.65, "• Adding the flag to Counts improves F1 by 24.33 points; replacing ports with the flag adds 9.42 points."),
-                     (4.9, "• The extra detections are on first contacts: laundering recall rises from 47.1% to 64.0%.")]:
-        text(s[12], value, .95, y, 11.1, .95, 23, serif=True, ink=BG)
-    text(s[12], "Positive findings: original five-epoch HI-Small protocol · Five paired seeds · Supplementary flag comparison.", .95, 6.4, 11.2, .45, 12, ink="CCD5DC")
-    notes(s[12], "The main finding is simple: in the original experiment, a first-contact flag helps find laundering on new pairs. Question 1: ports still help when counts are provided, with a 14.91-point F1 gain. Question 2: adding the first-contact flag to Counts improves F1 by 24.33 points. A separate replacement comparison on that slide keeps counts and replaces ports with the flag, improving F1 by 9.42 points. Question 3 locates the extra detections from that replacement: first-contact recall rises from 47.1 to 64.0 percent, and all five seeds detect more first-contact positives. These are results from the original five-epoch HI-Small protocol, with the flag comparison supplementary and the count decomposition descriptive. The follow-up has already shown that an additional benefit on top of retained ports was not established. The practical research contribution is to evaluate pair-specific history alongside account-level activity counts, and to show which transactions account for the observed prediction gain. Thank you; I welcome questions.")
+    for y, value in [(2.15, "• Account-history counts do not remove the port benefit. Ports still improve F1 by 14.91 points after all four counts are supplied."),
+                     (3.43, "• Under the original protocol, the first-contact flag improves F1 by 24.33 points beyond counts. Replacing ports with the flag improves F1 by 9.42 points."),
+                     (4.80, "• The extra detections are on first contacts: laundering recall rises from 47.1% to 64.0%, and all five seeds detect more of these laundering transfers.")]:
+        text(s[12], value, .95, y, 11.1, 1.10, 22, serif=True, ink=BG)
+    text(s[12], "Contribution: separate account activity from pair history and quantify where detection improves.", .95, 6.17, 11.2, .35, 15, serif=True, ink="CCD5DC")
+    text(s[12], "Scope: original five-epoch HI-Small protocol · Five paired seeds · Supplementary flag comparison; descriptive error analysis.", .95, 6.65, 11.2, .25, 11, ink="CCD5DC")
+    notes(s[12], "I close with three concrete findings. First, account-history counts do not remove the port benefit. After all four counts are supplied, ports still improve F1 by 14.91 points. Second, under the original experimental protocol, a first-contact flag has clear predictive value. Adding it to Counts improves F1 by 24.33 points, and replacing ports with the flag, while retaining counts, improves F1 by 9.42 points. Third, we locate the additional detections: laundering recall on first-contact transfers rises from 47.1 to 64.0 percent, and every one of the five seeds detects more of these laundering transfers. Our research contribution is to distinguish account-level activity from the history of the specific account pair through controlled feature comparisons, and to quantify both the predictive value of a simple relationship flag and the transaction group where detection improves. For AML feature design, the implication is to consider whether the current sender has previously paid this receiver alongside cumulative transaction and counterparty counts. This study provides evidence for that relationship feature on the current benchmark and protocol; the observed patterns are not proof of laundering by themselves. The flag comparison is supplementary, the detection breakdown is descriptive, and the completed follow-up did not establish an additional benefit when ports were retained. These boundaries do not change the three reported findings. Thank you; I welcome questions.")
 
     replace_text(s[13], "What do port numbers add?", "Beyond Counterparty Counts")
     text(s[13], "4", .89, 4.15, .33, .35, 20, serif=True, ink=BLUE)
@@ -399,7 +400,22 @@ def main():
     target = HERE / "Beyond_Counterparty_Counts_FINAL.pptx"
     prs.save(target)
     (HERE / "SPEAKER_NOTES.md").write_text("\n".join(notes_md))
-    print(f"Saved {target} ({len(prs.slides)} slides); four result figures, two definition figures and English notes.")
+    # Also deliver the conclusion alone so it can replace a page in another deck.
+    single = Presentation(target)
+    conclusion_index = 14
+    conclusion_slide = single.slides[conclusion_index]
+    for sh in list(conclusion_slide.shapes):
+        if sh.has_text_frame and sh.text.strip().isdigit() and sh.top > Inches(6.7):
+            sh._element.getparent().remove(sh._element)
+    for index in reversed(range(len(single.slides))):
+        if index == conclusion_index:
+            continue
+        slide_id = single.slides._sldIdLst[index]
+        single.part.drop_rel(slide_id.rId)
+        single.slides._sldIdLst.remove(slide_id)
+    single.core_properties.title = "Conclusion: three findings about counts and pair history"
+    single.save(HERE / "Conclusion_Three_Findings.pptx")
+    print(f"Saved {target} ({len(prs.slides)} slides), a one-slide conclusion, four result figures, two definition figures and English notes.")
 
 
 if __name__ == "__main__":
