@@ -1,0 +1,96 @@
+{
+  "status": "metadata_and_summary_verified",
+  "received_date_hong_kong": "2026-11-17",
+  "archive_sha256": "a655632b923e94017b33b2cc0c9af22e1108a0b32f2f2c773164d15ba45a06dc",
+  "payload_files_verified": 83,
+  "frozen_protocol_identical": true,
+  "runtime_source_matches_before_editorial_fix": {
+    "src/representation_diagnostics.py": true,
+    "src/representation_train.py": true,
+    "src/representation_probe.py": true,
+    "src/representation_analyze.py": true,
+    "src/train.py": true,
+    "scripts/representation/run_8h.py": true,
+    "scripts/representation/run_batch.py": true,
+    "scripts/representation/smoke.py": true
+  },
+  "runs": 15,
+  "epochs": 416,
+  "capped_runs": 9,
+  "primary_effect": {
+    "n": 5,
+    "seeds": [
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "positive_arm": "cpn",
+    "reference_arm": "cp",
+    "f1": {
+      "mean": -7.213948523779544,
+      "sd": 6.63850643231542,
+      "ci95": [
+        -15.45674296262973,
+        1.028845915070642
+      ],
+      "per_seed": [
+        -0.22317388998096632,
+        -11.630222238598286,
+        -14.83859054784672,
+        -8.991059889576537,
+        -0.3866960528952106
+      ],
+      "n": 5,
+      "df": 4,
+      "seeds": [
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "interval_direction": "unresolved",
+      "paired_arm_means": {
+        "cpn": 26.757311660467906,
+        "cp": 33.97126018424745
+      }
+    },
+    "ap": {
+      "mean": -4.493112497670017,
+      "sd": 11.774284072683741,
+      "ci95": [
+        -19.112817135345438,
+        10.126592140005405
+      ],
+      "per_seed": [
+        -7.833441968393577,
+        -1.5030854457812737,
+        3.049806716930867,
+        -23.117303322722258,
+        6.938461531616156
+      ],
+      "n": 5,
+      "df": 4,
+      "seeds": [
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "interval_direction": "unresolved",
+      "paired_arm_means": {
+        "cpn": 27.93332880800616,
+        "cp": 32.42644130567618
+      }
+    }
+  },
+  "prediction_level_recomputation": false,
+  "missing_from_review_bundle": [
+    "transaction probability archives",
+    "model checkpoints"
+  ],
+  "editorial_correction": "One stale sentence now says all three arms use five seeds; numerical records unchanged."
+}

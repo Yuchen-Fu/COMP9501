@@ -1,0 +1,357 @@
+{
+  "status": "complete",
+  "n_runs": 15,
+  "design": {
+    "cells": [
+      "cp",
+      "cpn",
+      "cn"
+    ],
+    "seeds_by_cell": {
+      "cp": [
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "cpn": [
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "cn": [
+        15,
+        16,
+        17,
+        18,
+        19
+      ]
+    },
+    "paired_seeds": {
+      "explicit_addition": [
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "explicit_replacement": [
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "ranks_after_novelty": [
+        15,
+        16,
+        17,
+        18,
+        19
+      ]
+    },
+    "seeds": [
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "n_runs": 15
+  },
+  "primary_selection": "best_validation",
+  "primary_metric": "test_f1",
+  "primary_effect": {
+    "n": 5,
+    "seeds": [
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "positive_arm": "cpn",
+    "reference_arm": "cp",
+    "f1": {
+      "mean": -7.213948523779544,
+      "sd": 6.63850643231542,
+      "ci95": [
+        -15.45674296262973,
+        1.028845915070642
+      ],
+      "per_seed": [
+        -0.22317388998096632,
+        -11.630222238598286,
+        -14.83859054784672,
+        -8.991059889576537,
+        -0.3866960528952106
+      ],
+      "n": 5,
+      "df": 4,
+      "seeds": [
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "interval_direction": "unresolved",
+      "paired_arm_means": {
+        "cpn": 26.757311660467906,
+        "cp": 33.97126018424745
+      }
+    },
+    "ap": {
+      "mean": -4.493112497670017,
+      "sd": 11.774284072683741,
+      "ci95": [
+        -19.112817135345438,
+        10.126592140005405
+      ],
+      "per_seed": [
+        -7.833441968393577,
+        -1.5030854457812737,
+        3.049806716930867,
+        -23.117303322722258,
+        6.938461531616156
+      ],
+      "n": 5,
+      "df": 4,
+      "seeds": [
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "interval_direction": "unresolved",
+      "paired_arm_means": {
+        "cpn": 27.93332880800616,
+        "cp": 32.42644130567618
+      }
+    }
+  },
+  "conclusion": {
+    "status": "inconclusive",
+    "statement": "The primary F1 interval includes zero; the experiment does not establish a positive addition effect or equivalence.",
+    "rule": "The broad prediction claim requires positive 95% intervals for both primary F1 and corroborating AP.",
+    "mechanism": "No outcome identifies failure to infer novelty inside the model; input effects are not a causal decomposition of internal computation."
+  },
+  "stopping": [
+    {
+      "cell": "cp",
+      "seed": 15,
+      "epochs_completed": 30,
+      "stop_reason": "maximum_epochs",
+      "hit_epoch_cap": true,
+      "selected_epoch": 21,
+      "selected_within_last_five_epochs": false,
+      "last_plateau_epochs": 9,
+      "validation_ap_first": 0.058651128040850736,
+      "validation_ap_final": 0.347772358681551
+    },
+    {
+      "cell": "cp",
+      "seed": 16,
+      "epochs_completed": 30,
+      "stop_reason": "maximum_epochs",
+      "hit_epoch_cap": true,
+      "selected_epoch": 28,
+      "selected_within_last_five_epochs": true,
+      "last_plateau_epochs": 2,
+      "validation_ap_first": 0.0752988323717429,
+      "validation_ap_final": 0.41955958322490017
+    },
+    {
+      "cell": "cp",
+      "seed": 17,
+      "epochs_completed": 30,
+      "stop_reason": "maximum_epochs",
+      "hit_epoch_cap": true,
+      "selected_epoch": 21,
+      "selected_within_last_five_epochs": false,
+      "last_plateau_epochs": 9,
+      "validation_ap_first": 0.06621243596891406,
+      "validation_ap_final": 0.24011579486942103
+    },
+    {
+      "cell": "cp",
+      "seed": 18,
+      "epochs_completed": 30,
+      "stop_reason": "maximum_epochs",
+      "hit_epoch_cap": true,
+      "selected_epoch": 23,
+      "selected_within_last_five_epochs": false,
+      "last_plateau_epochs": 7,
+      "validation_ap_first": 0.0803723945804824,
+      "validation_ap_final": 0.31448030222459156
+    },
+    {
+      "cell": "cp",
+      "seed": 19,
+      "epochs_completed": 30,
+      "stop_reason": "maximum_epochs",
+      "hit_epoch_cap": true,
+      "selected_epoch": 29,
+      "selected_within_last_five_epochs": true,
+      "last_plateau_epochs": 1,
+      "validation_ap_first": 0.0728946292401846,
+      "validation_ap_final": 0.3663647100519034
+    },
+    {
+      "cell": "cpn",
+      "seed": 15,
+      "epochs_completed": 22,
+      "stop_reason": "validation_ap_plateau",
+      "hit_epoch_cap": false,
+      "selected_epoch": 12,
+      "selected_within_last_five_epochs": false,
+      "last_plateau_epochs": 10,
+      "validation_ap_first": 0.06794461518515557,
+      "validation_ap_final": 0.13193529763246367
+    },
+    {
+      "cell": "cpn",
+      "seed": 16,
+      "epochs_completed": 23,
+      "stop_reason": "validation_ap_plateau",
+      "hit_epoch_cap": false,
+      "selected_epoch": 13,
+      "selected_within_last_five_epochs": false,
+      "last_plateau_epochs": 10,
+      "validation_ap_first": 0.07673415141522186,
+      "validation_ap_final": 0.42261771149863725
+    },
+    {
+      "cell": "cpn",
+      "seed": 17,
+      "epochs_completed": 29,
+      "stop_reason": "validation_ap_plateau",
+      "hit_epoch_cap": false,
+      "selected_epoch": 19,
+      "selected_within_last_five_epochs": false,
+      "last_plateau_epochs": 10,
+      "validation_ap_first": 0.09164780600554306,
+      "validation_ap_final": 0.391732188173801
+    },
+    {
+      "cell": "cpn",
+      "seed": 18,
+      "epochs_completed": 22,
+      "stop_reason": "validation_ap_plateau",
+      "hit_epoch_cap": false,
+      "selected_epoch": 12,
+      "selected_within_last_five_epochs": false,
+      "last_plateau_epochs": 10,
+      "validation_ap_first": 0.0907564738389315,
+      "validation_ap_final": 0.17101361931726147
+    },
+    {
+      "cell": "cpn",
+      "seed": 19,
+      "epochs_completed": 30,
+      "stop_reason": "maximum_epochs",
+      "hit_epoch_cap": true,
+      "selected_epoch": 25,
+      "selected_within_last_five_epochs": false,
+      "last_plateau_epochs": 5,
+      "validation_ap_first": 0.15299460125424022,
+      "validation_ap_final": 0.44613216338695166
+    },
+    {
+      "cell": "cn",
+      "seed": 15,
+      "epochs_completed": 22,
+      "stop_reason": "validation_ap_plateau",
+      "hit_epoch_cap": false,
+      "selected_epoch": 12,
+      "selected_within_last_five_epochs": false,
+      "last_plateau_epochs": 10,
+      "validation_ap_first": 0.07999706746707086,
+      "validation_ap_final": 0.38199788299556986
+    },
+    {
+      "cell": "cn",
+      "seed": 16,
+      "epochs_completed": 30,
+      "stop_reason": "maximum_epochs",
+      "hit_epoch_cap": true,
+      "selected_epoch": 28,
+      "selected_within_last_five_epochs": true,
+      "last_plateau_epochs": 2,
+      "validation_ap_first": 0.09810872995033629,
+      "validation_ap_final": 0.4214220742794624
+    },
+    {
+      "cell": "cn",
+      "seed": 17,
+      "epochs_completed": 30,
+      "stop_reason": "maximum_epochs",
+      "hit_epoch_cap": true,
+      "selected_epoch": 27,
+      "selected_within_last_five_epochs": true,
+      "last_plateau_epochs": 3,
+      "validation_ap_first": 0.1732239280672371,
+      "validation_ap_final": 0.38049898862737647
+    },
+    {
+      "cell": "cn",
+      "seed": 18,
+      "epochs_completed": 28,
+      "stop_reason": "validation_ap_plateau",
+      "hit_epoch_cap": false,
+      "selected_epoch": 18,
+      "selected_within_last_five_epochs": false,
+      "last_plateau_epochs": 10,
+      "validation_ap_first": 0.10027892780665604,
+      "validation_ap_final": 0.1662177517239731
+    },
+    {
+      "cell": "cn",
+      "seed": 19,
+      "epochs_completed": 30,
+      "stop_reason": "maximum_epochs",
+      "hit_epoch_cap": true,
+      "selected_epoch": 30,
+      "selected_within_last_five_epochs": true,
+      "last_plateau_epochs": 0,
+      "validation_ap_first": 0.1334479597204473,
+      "validation_ap_final": 0.4413152574594205
+    }
+  ],
+  "within_benchmark_robustness": {
+    "status": "primary_not_supported",
+    "rule": "Primary F1/AP intervals positive, and F1/AP point contrasts positive on days 8–9, fixed epoch 20 and final epoch.",
+    "checks": [
+      {
+        "selection": "best_validation",
+        "subset": "days_8_9",
+        "status": "direction_not_preserved",
+        "f1_mean_points": -6.890992651753504,
+        "ap_mean_points": -2.3900538043949466,
+        "paired_n": 5
+      },
+      {
+        "selection": "epoch_20",
+        "subset": "all",
+        "status": "direction_not_preserved",
+        "f1_mean_points": -0.4621473696942978,
+        "ap_mean_points": 4.742822662666391,
+        "paired_n": 5
+      },
+      {
+        "selection": "final",
+        "subset": "all",
+        "status": "direction_not_preserved",
+        "f1_mean_points": -5.0512944806587186,
+        "ap_mean_points": -3.8985747620613624,
+        "paired_n": 5
+      }
+    ],
+    "capped_runs": 9,
+    "interpretation": "Sensitivity directions are descriptive, reuse the same data, and do not establish convergence, cross-dataset generalization or additional multiplicity-controlled discoveries."
+  }
+}

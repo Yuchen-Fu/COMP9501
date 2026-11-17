@@ -1,0 +1,38 @@
+
+2026-11-16T16:56:25.832908+00:00 START cpn_s19; GPU slot 3
+[cpn_s19] epoch 01 loss 0.028557 val AP 0.15299 val F1 0.22420 stale 0/10 (54.4s)
+[cpn_s19] epoch 02 loss 0.017320 val AP 0.12145 val F1 0.23044 stale 1/10 (54.0s)
+[cpn_s19] epoch 03 loss 0.016259 val AP 0.08150 val F1 0.19712 stale 2/10 (54.1s)
+[cpn_s19] epoch 04 loss 0.016084 val AP 0.14221 val F1 0.24433 stale 3/10 (54.1s)
+[cpn_s19] epoch 05 loss 0.015145 val AP 0.28216 val F1 0.34993 stale 0/10 (54.2s)
+[cpn_s19] epoch 06 loss 0.014695 val AP 0.29132 val F1 0.36401 stale 0/10 (54.0s)
+[cpn_s19] epoch 07 loss 0.014266 val AP 0.33831 val F1 0.38367 stale 0/10 (53.8s)
+[cpn_s19] epoch 08 loss 0.014252 val AP 0.32756 val F1 0.38458 stale 1/10 (53.5s)
+[cpn_s19] epoch 09 loss 0.013537 val AP 0.30334 val F1 0.37494 stale 2/10 (53.4s)
+[cpn_s19] epoch 10 loss 0.013499 val AP 0.38713 val F1 0.43776 stale 0/10 (53.5s)
+[cpn_s19] epoch 11 loss 0.013351 val AP 0.39919 val F1 0.45440 stale 0/10 (53.2s)
+[cpn_s19] epoch 12 loss 0.013367 val AP 0.33486 val F1 0.39461 stale 1/10 (53.3s)
+[cpn_s19] epoch 13 loss 0.012867 val AP 0.36321 val F1 0.41035 stale 2/10 (53.3s)
+[cpn_s19] epoch 14 loss 0.012957 val AP 0.40040 val F1 0.46948 stale 0/10 (53.3s)
+[cpn_s19] epoch 15 loss 0.012833 val AP 0.42882 val F1 0.46147 stale 0/10 (53.3s)
+[cpn_s19] epoch 16 loss 0.013008 val AP 0.41011 val F1 0.46656 stale 1/10 (53.3s)
+[cpn_s19] epoch 17 loss 0.012649 val AP 0.40083 val F1 0.46114 stale 2/10 (53.2s)
+[cpn_s19] epoch 18 loss 0.012591 val AP 0.41177 val F1 0.48891 stale 3/10 (53.4s)
+[cpn_s19] epoch 19 loss 0.012709 val AP 0.43819 val F1 0.49597 stale 0/10 (53.2s)
+[cpn_s19] epoch 20 loss 0.012617 val AP 0.41511 val F1 0.46762 stale 1/10 (53.3s)
+[cpn_s19] epoch 21 loss 0.012420 val AP 0.16572 val F1 0.24503 stale 2/10 (53.2s)
+[cpn_s19] epoch 22 loss 0.012432 val AP 0.44960 val F1 0.48804 stale 0/10 (53.3s)
+[cpn_s19] epoch 23 loss 0.012306 val AP 0.30659 val F1 0.41989 stale 1/10 (53.3s)
+[cpn_s19] epoch 24 loss 0.012412 val AP 0.43414 val F1 0.47031 stale 2/10 (53.4s)
+[cpn_s19] epoch 25 loss 0.012221 val AP 0.46722 val F1 0.50242 stale 0/10 (53.5s)
+[cpn_s19] epoch 26 loss 0.012357 val AP 0.44484 val F1 0.49473 stale 1/10 (53.5s)
+[cpn_s19] epoch 27 loss 0.012303 val AP 0.39806 val F1 0.46198 stale 2/10 (53.1s)
+[cpn_s19] epoch 28 loss 0.012884 val AP 0.36335 val F1 0.41278 stale 3/10 (53.0s)
+[cpn_s19] epoch 29 loss 0.012238 val AP 0.42698 val F1 0.47007 stale 4/10 (52.8s)
+[cpn_s19] epoch 30 loss 0.012187 val AP 0.44613 val F1 0.48580 stale 5/10 (52.9s)
+[cpn_s19] scored best_validation epoch 25 test F1 0.29613 AP 0.32507
+[cpn_s19] scored epoch_5 epoch 5 test F1 0.35268 AP 0.32874
+[cpn_s19] scored epoch_10 epoch 10 test F1 0.04941 AP 0.01912
+[cpn_s19] scored epoch_20 epoch 20 test F1 0.24715 AP 0.18404
+[cpn_s19] scored final epoch 30 test F1 0.19679 AP 0.33065
+[cpn_s19] COMPLETE epochs=30 best=25 stop=maximum_epochs

@@ -1,0 +1,25 @@
+{
+  "device": "cuda",
+  "protocol_sha256": "7d8106c6156872550ea9c845b31e993e99543c3757eff238a4bc299848b8c019",
+  "python_version": "3.12.16",
+  "packages": {
+    "torch": "2.8.0+cu126",
+    "torch-geometric": "2.6.1",
+    "pyg-lib": "0.4.0+pt28cu126",
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "scikit-learn": "1.6.1",
+    "pandas": "2.2.3",
+    "matplotlib": "3.10.1"
+  },
+  "sources": {
+    "src/representation_diagnostics.py": "5c88e9ce614b8c0a5c826b37ff44f64484b7f8179ad9d016d0be3aa1eb4e9e17",
+    "src/representation_train.py": "bb35ec9383e73b8f4665ee920197d2a1dbbfbfd15ed4106371312841bc438e0f",
+    "src/representation_probe.py": "541f99b1d8428dd7cd98996d16f57464e8d06103b6efe4372ea3c6150e12ee15",
+    "src/representation_analyze.py": "821072415c2b9dee7ea50b53707c2058e6c580483f6014f88ff0a8149811ffff",
+    "src/train.py": "ffe1865db19a89d28e9bca1b5ffa7f57dcba27723c92d6533aea9ea8b1b27925",
+    "scripts/representation/run_8h.py": "785239adbc65b1f5b7a5c83f6efa4156455cfced7358561b163bf288aa52f935",
+    "scripts/representation/run_batch.py": "d3f949fc754a415f5191ff1b803f1e072d5de203a6a2900a61c546cecd6d5b94",
+    "scripts/representation/smoke.py": "20e552d1b83ff17dd1c6f366daf474781741a1a05230dcfd7205a1f5d1be417b"
+  }
+}

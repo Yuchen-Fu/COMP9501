@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render daily HI-Small volume and prevalence from audited summary values."""
+"""Render daily HI-Small volume and laundering prevalence from results/summary.json."""
 from pathlib import Path
 import json
 import os

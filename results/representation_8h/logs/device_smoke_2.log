@@ -1,0 +1,61 @@
+
+2026-11-16T15:36:51.276932+00:00 START device_smoke_2; GPU slot 2
+{
+  "status": "passed",
+  "toy_data_only": false,
+  "device": {
+    "type": "cuda",
+    "torch_version": "2.8.0+cu126",
+    "index": 0,
+    "name": "NVIDIA GeForce RTX 3090",
+    "capability": [
+      8,
+      6
+    ],
+    "memory_bytes": 25296044032,
+    "visible_device_count": 1,
+    "cuda_runtime": "12.6",
+    "cudnn_version": 91002,
+    "deterministic_algorithms": true,
+    "cublas_workspace": ":4096:8",
+    "tf32": false
+  },
+  "seconds": 5.979124547971878,
+  "arms": [
+    {
+      "cell": "cp",
+      "training_targets": 360,
+      "evaluation_targets": 120,
+      "finite_loss": true,
+      "repeatable_eval": true,
+      "state_preserved": true
+    },
+    {
+      "cell": "cpn",
+      "training_targets": 360,
+      "evaluation_targets": 120,
+      "finite_loss": true,
+      "repeatable_eval": true,
+      "state_preserved": true
+    },
+    {
+      "cell": "cn",
+      "training_targets": 360,
+      "evaluation_targets": 120,
+      "finite_loss": true,
+      "repeatable_eval": true,
+      "state_preserved": true
+    }
+  ],
+  "matched_initialization": true,
+  "matched_scaling": true,
+  "shared_scaling_preserves_novelty_equality": true,
+  "full_data_batch_check": {
+    "training_targets": 8192,
+    "validation_targets": 8192,
+    "seconds": 3.685314436967019,
+    "cuda_peak_allocated_bytes": 2379581952,
+    "note": "One training batch and one validation batch, discarded; no AML performance metrics computed."
+  },
+  "limitations": "A sampled batch checks likely memory needs; later neighborhoods can be larger."
+}

@@ -1,0 +1,7 @@
+
+2026-11-16T17:31:15.542037+00:00 START probe; GPU slot 0
+[probe cp_s15] COMPLETE raw AUROC=0.9998 representation AUROC=0.9381
+[probe cp_s16] COMPLETE raw AUROC=0.9993 representation AUROC=0.7607
+[probe cp_s17] COMPLETE raw AUROC=1.0000 representation AUROC=0.9330
+[probe cp_s18] COMPLETE raw AUROC=0.9994 representation AUROC=0.9552
+[probe cp_s19] COMPLETE raw AUROC=0.9998 representation AUROC=0.9599

@@ -1,0 +1,43 @@
+{
+  "status": "complete",
+  "completed": 15,
+  "required": 15,
+  "conclusion": {
+    "status": "inconclusive",
+    "statement": "The primary F1 interval includes zero; the experiment does not establish a positive addition effect or equivalence.",
+    "rule": "The broad prediction claim requires positive 95% intervals for both primary F1 and corroborating AP.",
+    "mechanism": "No outcome identifies failure to infer novelty inside the model; input effects are not a causal decomposition of internal computation."
+  },
+  "within_benchmark_robustness": {
+    "status": "primary_not_supported",
+    "rule": "Primary F1/AP intervals positive, and F1/AP point contrasts positive on days 8–9, fixed epoch 20 and final epoch.",
+    "checks": [
+      {
+        "selection": "best_validation",
+        "subset": "days_8_9",
+        "status": "direction_not_preserved",
+        "f1_mean_points": -6.890992651753504,
+        "ap_mean_points": -2.3900538043949466,
+        "paired_n": 5
+      },
+      {
+        "selection": "epoch_20",
+        "subset": "all",
+        "status": "direction_not_preserved",
+        "f1_mean_points": -0.4621473696942978,
+        "ap_mean_points": 4.742822662666391,
+        "paired_n": 5
+      },
+      {
+        "selection": "final",
+        "subset": "all",
+        "status": "direction_not_preserved",
+        "f1_mean_points": -5.0512944806587186,
+        "ap_mean_points": -3.8985747620613624,
+        "paired_n": 5
+      }
+    ],
+    "capped_runs": 9,
+    "interpretation": "Sensitivity directions are descriptive, reuse the same data, and do not establish convergence, cross-dataset generalization or additional multiplicity-controlled discoveries."
+  }
+}

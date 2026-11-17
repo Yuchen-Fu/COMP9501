@@ -2,7 +2,7 @@
 
 ## Primary experiment
 
-The primary 2×2 comparison uses five seeds and five epochs per run. Each run selects the epoch with the highest validation F1 among epochs 1–4 (earliest tie), and applies that epoch's validation-selected threshold to the full test set. Counts+novelty is supplementary. All F1 and AP values below are percentage points.
+The primary 2×2 comparison uses five seeds and five epochs per run. Each run selects the epoch with the highest validation F1 among epochs 1–4 (earliest tie), and applies that epoch's validation-selected threshold to the full test set. Counts+novelty is supplementary. All F1 and AP values below are percentage points. Each contrast shows its mean, 95% paired-seed t interval and two-sided p-value.
 
 | Cell | Test F1, mean ± SD | Test AP, mean ± SD | Selected epochs, seeds 0–4 |
 |---|---:|---:|---|
@@ -14,10 +14,10 @@ The primary 2×2 comparison uses five seeds and five epochs per run. Each run se
 
 | Core contrast | Mean [95% paired-seed t interval] | Five seed differences |
 |---|---:|---|
-| Counts − Base | +0.98 [-7.18, +9.14] | +11.22, +3.66, -3.69, -1.58, -4.72 |
-| Ports − Base | +7.48 [+2.96, +12.00] | +11.11, +5.86, +11.69, +4.58, +4.15 |
-| Counts+Ports − Counts | +14.91 [+10.11, +19.71] | +10.53, +11.65, +14.81, +19.00, +18.56 |
-| (Counts+Ports − Counts) − (Ports − Base) | +7.43 [-0.97, +15.83] | -0.58, +5.79, +3.12, +14.42, +14.41 |
+| Counts − Base | +0.98 [-7.18, +9.14], p=0.755 | +11.22, +3.66, -3.69, -1.58, -4.72 |
+| Ports − Base | +7.48 [+2.96, +12.00], p=0.010 | +11.11, +5.86, +11.69, +4.58, +4.15 |
+| Counts+Ports − Counts | +14.91 [+10.11, +19.71], p<0.001 | +10.53, +11.65, +14.81, +19.00, +18.56 |
+| (Counts+Ports − Counts) − (Ports − Base) | +7.43 [-0.97, +15.83], p=0.070 | -0.58, +5.79, +3.12, +14.42, +14.41 |
 
 **Primary estimand: share of the port gain explained by counts.** -99.4% (95% Fieller interval -512.7% to 8.4%).
 
@@ -27,18 +27,18 @@ This is a ratio of cell-mean contrasts, not a causal mediation proportion. Value
 
 | Test stratum | Transactions | Laundering | Counts+Ports − Counts [95% CI] |
 |---|---:|---:|---:|
-| first_contact | 37,221 | 1,325 | +12.65 [+7.14, +18.15] |
-| repeat | 826,679 | 286 | +8.92 [+3.28, +14.57] |
-| repeat_free_accounts | 2,349 | 23 | -4.42 [-7.67, -1.18] |
+| first_contact | 37,221 | 1,325 | +12.65 [+7.14, +18.15], p=0.003 |
+| repeat | 826,679 | 286 | +8.92 [+3.28, +14.57], p=0.012 |
+| repeat_free_accounts | 2,349 | 23 | -4.42 [-7.67, -1.18], p=0.019 |
 
 Supplementary representation comparison:
 
 | Stratum | Counts+novelty − Counts [95% CI] | Counts+Ports − Counts+novelty [95% CI] |
 |---|---:|---:|
-| all | +24.33 [+21.47, +27.19] | -9.42 [-13.11, -5.73] |
-| first_contact | +24.05 [+21.00, +27.09] | -11.40 [-15.26, -7.54] |
-| repeat | +4.87 [-5.32, +15.07] | +4.05 [-3.93, +12.03] |
-| repeat_free_accounts | -3.58 [-9.73, +2.57] | -0.84 [-9.70, +8.02] |
+| all | +24.33 [+21.47, +27.19], p<0.001 | -9.42 [-13.11, -5.73], p=0.002 |
+| first_contact | +24.05 [+21.00, +27.09], p<0.001 | -11.40 [-15.26, -7.54], p=0.001 |
+| repeat | +4.87 [-5.32, +15.07], p=0.255 | +4.05 [-3.93, +12.03], p=0.231 |
+| repeat_free_accounts | -3.58 [-9.73, +2.57], p=0.181 | -0.84 [-9.70, +8.02], p=0.805 |
 
 Ports equal distinct counts conditional on first contact, but the Counts-only model is not given that status. Counts and ports together reveal novelty; neighboring repeated edges can also transmit rank information. These strata do not isolate a causal identity mechanism. The supplementary contrast substitutes the port representation for an explicit novelty flag; it does not add ports to Counts+novelty. The JSON key ports_beyond_novelty is retained for compatibility and denotes this substitution contrast only.
 
@@ -48,16 +48,26 @@ Final-epoch and day-specific analyses were added after inspection of Base and Po
 
 | Selection / subset | Ports − Base [95% CI] | Counts+Ports − Counts [95% CI] | Share explained |
 |---|---:|---:|---|
-| best validation / all | +7.48 [+2.96, +12.00] | +14.91 [+10.11, +19.71] | -99.4% (95% Fieller interval -512.7% to 8.4%). |
-| best validation / days_8_9 | +4.24 [+2.89, +5.59] | +8.98 [+6.59, +11.37] | -111.9% (95% Fieller interval -233.0% to -39.3%). |
-| final epoch / all | +6.04 [+2.01, +10.07] | +15.28 [+9.87, +20.69] | -152.9% (95% Fieller interval -714.5% to -23.7%). |
-| final epoch / days_8_9 | +4.01 [+3.06, +4.97] | +9.10 [+6.44, +11.76] | -126.7% (95% Fieller interval -216.0% to -57.8%). |
+| best validation / all | +7.48 [+2.96, +12.00], p=0.010 | +14.91 [+10.11, +19.71], p<0.001 | -99.4% (95% Fieller interval -512.7% to 8.4%). |
+| best validation / days_8_9 | +4.24 [+2.89, +5.59], p<0.001 | +8.98 [+6.59, +11.37], p<0.001 | -111.9% (95% Fieller interval -233.0% to -39.3%). |
+| final epoch / all | +6.04 [+2.01, +10.07], p=0.014 | +15.28 [+9.87, +20.69], p=0.001 | -152.9% (95% Fieller interval -714.5% to -23.7%). |
+| final epoch / days_8_9 | +4.01 [+3.06, +4.97], p<0.001 | +9.10 [+6.44, +11.76], p<0.001 | -126.7% (95% Fieller interval -216.0% to -57.8%). |
 
 | Final-epoch diagnostic | Ports − Base [95% CI] | Counts+Ports − Counts [95% CI] |
 |---|---:|---:|
-| val_ap | +8.18 [+5.00, +11.37] | +10.96 [+6.14, +15.78] |
-| test_ap | +5.68 [-2.11, +13.48] | +18.22 [+12.33, +24.11] |
-| test_f1_argmax | +8.04 [-10.00, +26.08] | +9.06 [-15.45, +33.58] |
+| val_ap | +8.18 [+5.00, +11.37], p=0.002 | +10.96 [+6.14, +15.78], p=0.003 |
+| test_ap | +5.68 [-2.11, +13.48], p=0.113 | +18.22 [+12.33, +24.11], p=0.001 |
+| test_f1_argmax | +8.04 [-10.00, +26.08], p=0.284 | +9.06 [-15.45, +33.58], p=0.363 |
+
+The interaction is the port gain with counts minus the port gain without them. A positive value means the gain is larger with counts, which is the same statement as a negative share.
+
+| Outcome | Interaction, best validation epoch | Interaction, final epoch |
+|---|---:|---:|
+| Full test F1 | +7.43 [-0.97, +15.83], p=0.070 | +9.24 [+2.10, +16.37], p=0.023 |
+| Days 8–9 F1 | +4.74 [+1.97, +7.51], p=0.009 | +5.09 [+2.46, +7.72], p=0.006 |
+| Full test AP | +10.52 [+3.85, +17.19], p=0.012 | +12.54 [+3.53, +21.54], p=0.018 |
+| Validation AP | +3.63 [-2.65, +9.91], p=0.184 | +2.78 [-3.79, +9.34], p=0.306 |
+| Full test F1 at a fixed 0.5 threshold | -1.26 [-22.60, +20.08], p=0.877 | +1.02 [-24.93, +26.97], p=0.918 |
 
 The post-hoc rule ‘flag day 10 onward’ has test F1 48.18, TP=655, FP=453, FN=956. This diagnoses temporal composition; it is not a validated detector.
 

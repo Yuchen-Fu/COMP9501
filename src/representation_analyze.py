@@ -419,7 +419,7 @@ def report(summary, path, include_figures=True):
         rows = primary['cells'][cell]['confusion_per_seed']
         values = [float(np.mean([row[key] for row in rows])) for key in ('tp', 'fp', 'fn', 'flagged', 'precision', 'recall')]
         lines.append('| ' + LABELS[cell] + ' | ' + ' | '.join(f'{value:.2f}' for value in values) + ' |')
-    lines += ['', 'A and B use the same ten seed blocks. C uses five; its matched contrasts are reported above. Each model has its own validation-selected threshold, so this table does not compare performance at a fixed investigator workload. Alerts are transactions, not distinct cases.', '',
+    lines += ['', f'A and B use the same {len(design["seeds_by_cell"]["cp"])} seed blocks. C uses {len(design["seeds_by_cell"]["cn"])}; its matched contrasts are reported above. Each model has its own validation-selected threshold, so this table does not compare performance at a fixed investigator workload. Alerts are transactions, not distinct cases.', '',
               '## Fixed-checkpoint and temporal checks', '',
               '| Selection / test subset | Paired n | CPN − CP, F1 [95% CI] | CPN − CP, AP [95% CI] |', '|---|---:|---:|---:|']
     for selection, subset in [('best_validation','days_8_9'), ('epoch_5','all'), ('epoch_10','all'), ('epoch_20','all'), ('final','all')]:

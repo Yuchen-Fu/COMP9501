@@ -1,11 +1,11 @@
+> Historical integration record. All development lines now live on `main`; see [the17 November consolidation](docs/repository-integration-2026-11-17.md).
+
 # Integration of the research and course branches
 
 Integrated on **15 November 2026 (UTC+08:00)** from:
 
-- Completed research: `b68610c09b763fdf70a44bc3509377a8701fd122` on
-  `claude/cloud-setup-port-gnn-research-o13ou8`.
-- Course implementation: `1637accdfe8d05fcf3b7a6d0d1043c1ba231a364` on
-  `course/port-counts-factorial`.
+- Completed research: `b68610c09b763fdf70a44bc3509377a8701fd122`.
+- Course implementation: `1637accdfe8d05fcf3b7a6d0d1043c1ba231a364`.
 - Common ancestor: `a5f660056fd54661dc7902133e6dd82c20a23bc9`.
 
 Both histories are retained through a merge. There were no textual merge

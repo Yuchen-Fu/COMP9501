@@ -1,0 +1,27 @@
+{
+  "updated_utc": "2026-11-16T17:32:03.585973+00:00",
+  "stage": "complete",
+  "active": null,
+  "completed": 15,
+  "required": 15,
+  "completed_jobs": [
+    "cp_s15",
+    "cpn_s15",
+    "cn_s15",
+    "cp_s16",
+    "cpn_s16",
+    "cn_s16",
+    "cp_s17",
+    "cpn_s17",
+    "cn_s17",
+    "cp_s18",
+    "cpn_s18",
+    "cn_s18",
+    "cp_s19",
+    "cpn_s19",
+    "cn_s19"
+  ],
+  "epochs_completed": 416,
+  "mean_epoch_seconds_observed": 54.37469716839223,
+  "note": "Stopping depends only on validation; a finish time is not fixed in advance."
+}

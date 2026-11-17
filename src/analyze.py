@@ -45,6 +45,14 @@ def summary(values):
     return {"mean": mean, "sd": sd, "per_seed": a.tolist(), "ci95": [mean - half, mean + half]}
 
 
+def p_value(values):
+    """Two-sided p-value of the paired t test that the mean seed difference is zero."""
+    a = np.asarray(values, dtype=float)
+    if a.std(ddof=1) == 0:
+        return 1.0 if a.mean() == 0 else 0.0
+    return float(stats.ttest_1samp(a, 0.0).pvalue)
+
+
 def quadratic_set(a, b, c):
     """Solve a*x*x+b*x+c <= 0; None denotes an infinite endpoint in JSON."""
     scale = max(abs(a), abs(b), abs(c))
@@ -103,7 +111,7 @@ def contrasts(values):
     differences = {key: np.asarray(values[a]) - np.asarray(values[b])
                    for key, (a, b) in PAIRS.items() if a in values and b in values}
     differences["interaction"] = differences["ports_after_counts"] - differences["port_gain"]
-    result = {key: summary(value) for key, value in differences.items()}
+    result = {key: {**summary(value), "p_value": p_value(value)} for key, value in differences.items()}
     for item in result.values():
         # Descriptive sensitivity, not an achieved-power claim.
         item["approx_detectable_80pct"] = float((stats.t.ppf(0.975, 4) + stats.norm.ppf(0.8)) * item["sd"] / np.sqrt(5))
@@ -230,7 +238,8 @@ def build_summary(data, runs):
 
 def fmt_effect(item):
     lo, hi = item["ci95"]
-    return f"{item['mean']:+.2f} [{lo:+.2f}, {hi:+.2f}]"
+    p = "p<0.001" if item["p_value"] < 0.001 else f"p={item['p_value']:.3f}"
+    return f"{item['mean']:+.2f} [{lo:+.2f}, {hi:+.2f}], {p}"
 
 
 def fmt_share(item):
@@ -255,7 +264,8 @@ def report(res):
              "## Primary experiment", "",
              "The primary 2×2 comparison uses five seeds and five epochs per run. Each run selects the epoch with the highest "
              "validation F1 among epochs 1–4 (earliest tie), and applies that epoch's validation-selected threshold to the full test set. "
-             "Counts+novelty is supplementary. All F1 and AP values below are percentage points.", "",
+             "Counts+novelty is supplementary. All F1 and AP values below are percentage points. Each contrast shows its mean, "
+             "95% paired-seed t interval and two-sided p-value.", "",
              "| Cell | Test F1, mean ± SD | Test AP, mean ± SD | Selected epochs, seeds 0–4 |", "|---|---:|---:|---|"]
     for cell in cells:
         f, ap = full["cells"][cell], primary["metrics"]["test_ap"]["cells"][cell]
@@ -294,6 +304,13 @@ def report(res):
     for metric in ("val_ap", "test_ap", "test_f1_argmax"):
         e = final["metrics"][metric]["effects"]
         lines.append(f"| {metric} | {fmt_effect(e['port_gain'])} | {fmt_effect(e['ports_after_counts'])} |")
+    lines += ["", "The interaction is the port gain with counts minus the port gain without them. A positive value means the gain is "
+              "larger with counts, which is the same statement as a negative share.", "",
+              "| Outcome | Interaction, best validation epoch | Interaction, final epoch |", "|---|---:|---:|"]
+    for label, kind, key in (("Full test F1", "subsets", "all"), ("Days 8–9 F1", "subsets", "days_8_9"),
+                             ("Full test AP", "metrics", "test_ap"), ("Validation AP", "metrics", "val_ap"),
+                             ("Full test F1 at a fixed 0.5 threshold", "metrics", "test_f1_argmax")):
+        lines.append(f"| {label} | {fmt_effect(primary[kind][key]['effects']['interaction'])} | {fmt_effect(final[kind][key]['effects']['interaction'])} |")
     baseline = res["tail_flag_baseline"]
     lines += ["", f"The post-hoc rule ‘flag day 10 onward’ has test F1 {baseline['f1']:.2f}, TP={baseline['tp']:,}, "
               f"FP={baseline['fp']:,}, FN={baseline['fn']:,}. This diagnoses temporal composition; it is not a validated detector.", "",

@@ -1,3 +1,5 @@
+> **Historical pilot completion status.** The completed 15-run GPU addition study is reported in [the follow-up report](results/representation_8h/FOLLOWUP_REPORT.md). Do not pool these protocols or use the pilot replacement result as proof of an addition benefit.
+
 # Project status
 
 Status checked **16 November 2026, UTC+08:00**. The fixed experiment and all
@@ -58,7 +60,7 @@ completion snapshot, not a continuously running monitor.
 
 ## Branch integration
 
-The original research branch and `course/port-counts-factorial` are integrated
+The original research and course development lines are integrated
 in one history. Shared setup uses `data/hi_small.pt`, and the completed study
 retains its original training code and numerical artifacts. The course branch's
 100-epoch implementation remains an optional, separate protocol under

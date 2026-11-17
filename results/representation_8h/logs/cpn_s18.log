@@ -1,0 +1,30 @@
+
+2026-11-16T16:34:29.420923+00:00 START cpn_s18; GPU slot 3
+[cpn_s18] epoch 01 loss 0.025160 val AP 0.09076 val F1 0.17152 stale 0/10 (54.6s)
+[cpn_s18] epoch 02 loss 0.017251 val AP 0.10951 val F1 0.21308 stale 0/10 (54.1s)
+[cpn_s18] epoch 03 loss 0.016565 val AP 0.11960 val F1 0.24043 stale 0/10 (54.2s)
+[cpn_s18] epoch 04 loss 0.015885 val AP 0.08706 val F1 0.18702 stale 1/10 (54.1s)
+[cpn_s18] epoch 05 loss 0.015102 val AP 0.23436 val F1 0.35007 stale 0/10 (54.0s)
+[cpn_s18] epoch 06 loss 0.014717 val AP 0.15224 val F1 0.27569 stale 1/10 (53.9s)
+[cpn_s18] epoch 07 loss 0.014359 val AP 0.15379 val F1 0.25057 stale 2/10 (53.9s)
+[cpn_s18] epoch 08 loss 0.014131 val AP 0.21965 val F1 0.36615 stale 3/10 (53.8s)
+[cpn_s18] epoch 09 loss 0.013697 val AP 0.28446 val F1 0.38448 stale 0/10 (54.1s)
+[cpn_s18] epoch 10 loss 0.014092 val AP 0.16112 val F1 0.26954 stale 1/10 (53.9s)
+[cpn_s18] epoch 11 loss 0.013539 val AP 0.25706 val F1 0.35774 stale 2/10 (54.0s)
+[cpn_s18] epoch 12 loss 0.013238 val AP 0.34467 val F1 0.42159 stale 0/10 (54.0s)
+[cpn_s18] epoch 13 loss 0.013393 val AP 0.17078 val F1 0.31630 stale 1/10 (53.9s)
+[cpn_s18] epoch 14 loss 0.013615 val AP 0.30878 val F1 0.38175 stale 2/10 (54.0s)
+[cpn_s18] epoch 15 loss 0.013100 val AP 0.21054 val F1 0.32624 stale 3/10 (54.2s)
+[cpn_s18] epoch 16 loss 0.013118 val AP 0.28592 val F1 0.39911 stale 4/10 (54.1s)
+[cpn_s18] epoch 17 loss 0.012961 val AP 0.32461 val F1 0.39212 stale 5/10 (54.3s)
+[cpn_s18] epoch 18 loss 0.012981 val AP 0.32509 val F1 0.40560 stale 6/10 (54.1s)
+[cpn_s18] epoch 19 loss 0.012597 val AP 0.11932 val F1 0.25150 stale 7/10 (54.1s)
+[cpn_s18] epoch 20 loss 0.012542 val AP 0.13921 val F1 0.27809 stale 8/10 (53.9s)
+[cpn_s18] epoch 21 loss 0.012507 val AP 0.27261 val F1 0.41511 stale 9/10 (53.9s)
+[cpn_s18] epoch 22 loss 0.012737 val AP 0.17101 val F1 0.30964 stale 10/10 (53.9s)
+[cpn_s18] scored best_validation epoch 12 test F1 0.19759 AP 0.09533
+[cpn_s18] scored epoch_5 epoch 5 test F1 0.27165 AP 0.16937
+[cpn_s18] scored epoch_10 epoch 10 test F1 0.19476 AP 0.09465
+[cpn_s18] scored epoch_20 epoch 20 test F1 0.10477 AP 0.05839
+[cpn_s18] scored final epoch 22 test F1 0.07473 AP 0.03118
+[cpn_s18] COMPLETE epochs=22 best=12 stop=validation_ap_plateau

@@ -1,6 +1,6 @@
 # Making pair history explicit
 
-**Follow-up notice (17 November 2026):** the user reports that the controlled addition experiment did not support an explicit-novelty benefit. The files below remain the historical five-epoch presentation. Use the [revised storyline](FOLLOWUP_STORYLINE.md) and [provisional follow-up interpretation](../../results/representation_8h/reported/INTERPRETATION.md) when discussing the new results; the new machine-readable outputs have not yet been received here.
+**Follow-up notice (17 November 2026):** the completed controlled addition experiment did not establish an explicit-novelty benefit. Its [actual server report](../../results/representation_8h/FOLLOWUP_REPORT.md) and [import provenance](../../results/representation_8h/IMPORT_NOTES.md) are now available. The decks below remain the historical five-epoch presentation; the [revised storyline](FOLLOWUP_STORYLINE.md) describes the required research update.
 
 This edition centers the presentation on a specific representation question:
 
