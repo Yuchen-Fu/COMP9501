@@ -116,6 +116,55 @@ def savefig(fig, name):
     plt.close(fig)
 
 
+def definition_figures():
+    """Illustrate feature definitions with a fixed, fully worked example."""
+    fig, ax = plt.subplots(figsize=(11.8, 2.05), layout="constrained")
+    ax.axis("off")
+    rows = [["1. S → A", "0", "0", "0", "Yes"],
+            ["2. S → B", "1", "1", "1", "Yes"],
+            ["3. S → A", "2", "2", "0", "No: repeat"],
+            ["4. S → C", "3", "2", "2", "Yes"]]
+    labels = ["Current transfer", "Earlier outgoing\ntransfers", "Earlier distinct\nreceivers", "S's outgoing port\nfor this receiver", "Pair new?"]
+    table = ax.table(cellText=rows, colLabels=labels, cellLoc="center", loc="center",
+                     colWidths=[.19, .20, .20, .25, .16], bbox=[0, 0, 1, 1])
+    table.auto_set_font_size(False)
+    table.set_fontsize(13)
+    for (row, col), cell in table.get_celld().items():
+        cell.set_edgecolor("#"+GRID)
+        cell.set_linewidth(.6)
+        cell.set_facecolor("#"+BG if row % 2 else "#F1F0EB")
+        cell.get_text().set_color("#"+INK)
+        if row == 0:
+            cell.set_height(.28)
+            cell.set_facecolor("#E7EBEE")
+            cell.get_text().set_fontweight("semibold")
+            cell.get_text().set_fontsize(12)
+        elif col in (1, 2):
+            cell.get_text().set_color("#"+BLUE)
+        elif col == 3:
+            cell.get_text().set_color("#"+TEAL)
+            cell.get_text().set_fontweight("semibold")
+    savefig(fig, "example1_counts_vs_ports")
+
+    fig, ax = plt.subplots(figsize=(11.8, 3.1), layout="constrained")
+    ax.set(xlim=(0, 1), ylim=(0, 1))
+    ax.axis("off")
+    ax.text(.5, .94, "Earlier transfers, in order:  S → A,  S → B,  D → B,  S → A",
+            ha="center", va="center", fontsize=13)
+    ax.text(.01, .72, "Sender S", fontsize=17, fontweight="semibold")
+    ax.text(.64, .72, "Receiver B", fontsize=17, fontweight="semibold")
+    ax.annotate("", xy=(.60, .74), xytext=(.36, .74),
+                arrowprops={"arrowstyle": "->", "color": "#"+INK, "lw": 1.7})
+    ax.text(.48, .60, "Current transfer: S → B", ha="center", fontsize=12)
+    for x, lines in [(.01, ["Earlier outgoing transfers: 3", "Earlier distinct receivers: 2"]),
+                     (.64, ["Earlier incoming transfers: 2", "Earlier distinct senders: 2"])]:
+        ax.text(x, .43, lines[0], fontsize=14, color="#"+BLUE)
+        ax.text(x, .28, lines[1], fontsize=14, color="#"+BLUE)
+    ax.text(.01, .07, "Outgoing port for B: 1", fontsize=14, color="#"+TEAL)
+    ax.text(.64, .07, "Incoming port for S: 0", fontsize=14, color="#"+TEAL)
+    savefig(fig, "example2_four_counts_two_ports")
+
+
 def figures(original, followup):
     for path in (REPO / "presentation/representation-study/fonts").glob("*.ttf"):
         font_manager.fontManager.addfont(path)
@@ -125,6 +174,7 @@ def figures(original, followup):
                          "text.color": "#"+INK, "axes.labelcolor": "#"+INK,
                          "xtick.color": "#"+MUTED, "ytick.color": "#"+MUTED,
                          "axes.edgecolor": "#"+GRID, "pdf.fonttype": 42, "svg.fonttype": "none"})
+    definition_figures()
     full = original["subsets"]["all"]
     # Figure 1: original factorial, same-seed pairs; no new intervals.
     fig, ax = plt.subplots(figsize=(7.4, 3.45), layout="constrained")
@@ -225,8 +275,17 @@ def main():
     notes(s[0], "This project starts from Egressy and colleagues' finding that port numbering improves AML graph learning. I ask whether account-level counts can substitute for ports, whether a simple first-contact flag helps, and where the improvement appears. The main finding is straightforward: under our original protocol, replacing ports with the flag identifies more laundering on first-contact transfers. I will show the controlled comparisons and then a separate follow-up. All results refer to HI-Small.")
     notes(s[1], s[1].notes_slide.notes_text_frame.text.replace("What gives laundering away is the shape of the flows.", "The shape of the flows can provide evidence; legitimate activity can also form these patterns, so a shape is not itself proof of laundering."))
     notes(s[3], s[3].notes_slide.notes_text_frame.text.replace("Together they can, in theory, detect any pattern in a directed multigraph.", "Under the paper's theoretical assumptions, sufficiently expressive GNNs with all three adaptations can detect any directed subgraph pattern. This is not a guarantee about our particular two-layer trained model."))
-    text(s[4], "First contact means the first observed directed pair within this dataset window.", .89, 6.3, 11.6, .35, 13, ink=MUTED)
-    notes(s[4], "Ports are local labels assigned in first-contact order. In the example, S pays A, then B, then A again, so the outgoing ports are zero, one, zero. Before each transfer, S has seen zero, one, two distinct receivers. A first contact has port equal to the previous distinct count; a repeat has a smaller port. The receiver has the corresponding incoming count and port. First contact means first observed within this dataset window, not necessarily the first interaction in real banking history. Egressy et al. already motivate the use of timestamps for port ordering. Our question is how useful a simple property of that history is in this task.")
+    clear(s[4])
+    header(s[4], "Feature definitions", "Counts measure activity; ports label counterparties", "Example: S sends to A, then B, then A again, then C.")
+    text(s[4], "Counts: historical totals", .89, 2.48, 5.55, .35, 19, ink=BLUE, bold=True)
+    text(s[4], "How many transfers has S sent?\nHow many different receivers has S paid?", .89, 2.93, 5.55, .78, 18)
+    text(s[4], "Port: a local counterparty label", 6.9, 2.48, 5.55, .35, 19, ink=TEAL, bold=True)
+    text(s[4], "S labels receivers 0, 1, 2, … at first contact.\nThe same receiver keeps the same label.", 6.9, 2.93, 5.55, .78, 18)
+    picture(s[4], "example1_counts_vs_ports", .89, 3.92, 11.6, 1.98,
+            "Four transfers S to A, B, A and C. Earlier transfer counts are 0,1,2,3; distinct receiver counts 0,1,2,2; outgoing ports 0,1,0,2.")
+    text(s[4], "On the fourth transfer: 3 earlier payments, 2 earlier receivers, and port 2 for the new receiver C.", .89, 6.05, 11.6, .37, 17, serif=True)
+    text(s[4], "Counts exclude the current transfer. Ports start at 0 and are local to each account; they are not global account IDs.", .89, 6.55, 11.6, .33, 12, ink=MUTED)
+    notes(s[4], "Count means a historical total. We use two types on each side of a transfer: the number of earlier transfers and the number of earlier distinct counterparties. Port means a local label for a counterparty, assigned in first-contact order starting at zero. It is not a network-service port or a global account ID. In the table, S pays A, B, A, then C. Before the third transfer, S has sent two transfers to two receivers; A keeps port zero because S has paid A before. Before the fourth transfer, S has sent three transfers but has seen only two receivers, A and B. C is new, so it receives port two. This fourth row makes the difference between transfer count and distinct-counterparty count explicit. Counts summarize how much activity there has been; a port labels the particular counterparty involved now. We calculate counts before the current transaction in the fixed timestamp and tie order. Next, I show both sides of one transaction and all six feature values used by the models.")
     replace_text(s[5], s[5].shapes[1].text, "What do ports add beyond account counts?\nCan a first-contact flag capture useful pair history?")
     replace_text(s[5], "QUESTION 1 · EXPERIMENT 1", "QUESTION 1 · FACTORIAL")
     replace_text(s[5], "Do counts remove the port gain?", "Do counts replace ports?")
@@ -304,14 +363,32 @@ def main():
     text(s[13], "Project code, frozen protocols, results and full analysis:\ngithub.com/Yuchen-Fu/COMP9501", 1.33, 5.15, 11.1, .8, 16)
     notes(s[13], "The first paper motivates directed multigraph port numbering and its theoretical role. The second supplies the synthetic AML benchmark; the third establishes the GIN framework. The repository links contain the model conventions, project code, both completed experiments and full statistical scope. The research-result figures were generated in Python directly from saved JSON, with no new training or hypothesis tests. There are 25 original runs and 15 follow-up runs. The first-contact error decomposition is descriptive; it is not a new causal attribution or multiplicity-controlled finding.")
 
+    # Insert an explicit four-count / two-port example before the questions.
+    feature_slide = prs.slides.add_slide(s[4].slide_layout)
+    clear(feature_slide)
+    note_body = deepcopy(s[4].notes_slide.notes_placeholder._element)
+    note_body.xpath(".//p:cNvPr")[0].set("id", "100")
+    feature_slide.notes_slide._element.spTree.insert_element_before(note_body, "p:extLst")
+    slide_id = prs.slides._sldIdLst[-1]
+    prs.slides._sldIdLst.remove(slide_id)
+    prs.slides._sldIdLst.insert(5, slide_id)
+    header(feature_slide, "Feature definitions", "Each transfer has four counts and two ports", "The sender records outgoing history; the receiver records incoming history.")
+    picture(feature_slide, "example2_four_counts_two_ports", .89, 2.45, 11.6, 2.9,
+            "Earlier transfers S to A, S to B, D to B, S to A. The next S to B has sender counts 3 and 2, receiver counts 2 and 2, incoming port 0 and outgoing port 1.")
+    text(feature_slide, "Counts = [3, 2, 2, 2]", .89, 5.56, 5.55, .4, 21, serif=True, ink=BLUE)
+    text(feature_slide, "Ports = [0, 1]  (incoming, outgoing)", 6.9, 5.56, 5.55, .4, 21, serif=True, ink=TEAL)
+    text(feature_slide, "Novelty asks: has S paid B before? Yes → first-contact flag = 0 (repeat).", .89, 6.12, 11.6, .42, 19, serif=True)
+    text(feature_slide, "Raw values before scaling. History starts at the beginning of the observed dataset; first contact means first observed directed pair.", .89, 6.65, 11.6, .28, 11.5, ink=MUTED)
+    notes(feature_slide, "For each current sender-to-receiver transfer, Counts supplies four numbers in this order: the sender's earlier outgoing transfer count, its earlier distinct-receiver count, the receiver's earlier incoming transfer count, and its earlier distinct-sender count. Ports supplies two local labels: the receiver's incoming label for this sender and the sender's outgoing label for this receiver. These are different numbering lists. In the worked history S to A, S to B, D to B, S to A, S has sent three times to two receivers. B has received twice from two senders. The next transfer S to B therefore has Counts [3,2,2,2]. S met A first and B second, so its outgoing port for B is one. B received from S first and D second, so its incoming port for S is zero. Ports are stored in incoming-then-outgoing order, [0,1], matching the code. Counts plus Ports supplies all six values, alongside the transaction's own fields. Novelty is a separate one-bit flag: one for the first observed directed pair and zero for a repeated pair; it is zero here. The raw port equals the corresponding earlier distinct count on first contacts and is smaller on repeats. These are raw values before normalization. With the feature definitions clear, I can now state the research questions.")
+
     # Renumber every actual page and export the complete English speaking notes.
-    notes_md = ["# Beyond Counterparty Counts — speaker notes", "", "15 slides, including cover and references. No backup section.", ""]
+    notes_md = ["# Beyond Counterparty Counts — speaker notes", "", f"{len(prs.slides)} slides, including cover and references. No backup section.", ""]
     for i, slide in enumerate(prs.slides, 1):
         if i > 1:
             footer = [sh for sh in slide.shapes if sh.has_text_frame and sh.text.strip().isdigit() and sh.top > Inches(6.7)]
             for sh in footer:
                 sh._element.getparent().remove(sh._element)
-            dark = i in (6, 14)
+            dark = i in (7, 15)
             text(slide, str(i), 12.25, 6.94, .35, .23, 11, ink="CCD5DC" if dark else MUTED)
         notes_md += [f"## Slide {i}", "", slide.notes_slide.notes_text_frame.text, ""]
     prs.core_properties.title = "Beyond Counterparty Counts: Ports and Pair Novelty in AML Graph Learning"
@@ -319,7 +396,7 @@ def main():
     target = HERE / "Beyond_Counterparty_Counts_FINAL.pptx"
     prs.save(target)
     (HERE / "SPEAKER_NOTES.md").write_text("\n".join(notes_md))
-    print(f"Saved {target} ({len(prs.slides)} slides); four Python figures and English notes.")
+    print(f"Saved {target} ({len(prs.slides)} slides); four result figures, two definition figures and English notes.")
 
 
 if __name__ == "__main__":
