@@ -28,6 +28,7 @@ from pptx.util import Inches, Pt
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
 SOURCE = HERE / "source/user_refined_2026-11-17.pptx"
+CONCLUSION_SOURCE = HERE / "source/user_conclusion_layout_2026-11-17.pptx"
 FIGURES = HERE / "figures"
 BG, INK, BLUE, TEAL, MUTED, GRID = "FAF9F5", "15232F", "1F4F8A", "38786F", "56646F", "CFCABC"
 CP, CN = "counts+ports", "counts+novelty"
@@ -108,6 +109,47 @@ def picture(slide, name, x, y, width, height, description):
 
 def notes(slide, value):
     slide.notes_slide.notes_text_frame.text = value
+
+
+def conclusion_layout(slide):
+    """Use the user's one-slide, three-column template with updated findings."""
+    template = Presentation(CONCLUSION_SOURCE).slides[0]
+    clear(slide, INK)
+    slide._element.cSld.replace(slide._element.cSld.bg, deepcopy(template._element.cSld.bg))
+    for shape in template.shapes:
+        if shape.has_text_frame and shape.text.strip().isdigit() and shape.top > Inches(6.7):
+            continue
+        slide.shapes._spTree.insert_element_before(deepcopy(shape._element), "p:extLst")
+    replace_text(slide,
+                 "Account-level counts do not substitute for ports, and explicit pair novelty provides a useful feature for AML detection",
+                 "A first-contact flag helps find laundering on new pairs")
+    for before, after in [
+            ("TESTED AN EXPLANATION", "PORTS STILL HELP AFTER COUNTS"),
+            ("IDENTIFIED A PAIR FEATURE", "THE FLAG IMPROVES DETECTION"),
+            ("INFORMS FEATURE DESIGN", "EXTRA DETECTIONS: FIRST CONTACTS")]:
+        replace_text(slide, before, after)
+    bodies = [
+        ("Ports retain a 14.91-point F1 benefit after the four historical counts are supplied.",
+         "Ports still improve F1 by 14.91 points after all four historical counts are supplied."),
+        ("Adding pair novelty to those counts improves F1 by 24.33 points.",
+         "Adding the flag to Counts improves F1 by 24.33 points. Replacing ports with the flag adds 9.42 points."),
+        ("These results support evaluating pair-specific history alongside account-level activity summaries in AML feature design.",
+         "First-contact laundering recall rises from 47.1% to 64.0%, with more detections in all five seeds.")]
+    for before, after in bodies:
+        body = replace_text(slide, before, after)
+        body.height = Inches(1.60)
+    footnotes = [
+        ("95% interval 10.11 to 19.71", "95% CI [10.11, 19.71]"),
+        ("95% interval 21.47 to 27.19", "Addition: 95% CI [21.47, 27.19]\nReplacement: 95% CI [5.73, 13.11]"),
+        ("“Has this sender paid this receiver before?”", "First-contact F1: +11.40 points\n95% CI [7.54, 15.26]")]
+    for before, after in footnotes:
+        footnote = replace_text(slide, before, after)
+        footnote.top = Inches(5.12)
+        footnote.height = Inches(.60)
+    text(slide, "Contribution: distinguish account activity from pair history and quantify where detection improves.",
+         .889, 6.03, 11.902, .38, 14, serif=True, ink="CCD5DC")
+    text(slide, "Original five-epoch HI-Small protocol · Five paired seeds · Supplementary flag comparison; descriptive error analysis.",
+         .889, 6.55, 11.902, .27, 11, ink="CCD5DC")
 
 
 def savefig(fig, name):
@@ -352,13 +394,7 @@ def main():
     text(s[11], "No Counts-only arm: this does not re-test the +24.33 result. The two protocols are not pooled.\nThe third arm, Counts + flag, is retained in the full report; its secondary contrasts are inconclusive.", .89, 6.35, 11.6, .47, 12, ink=MUTED)
     notes(s[11], "This completed follow-up asks a different question: does an explicit flag help when counts and ports are both retained? Raw counts and ports already determine the flag, so this tests an explicit representation of available information, not added information. All arms have eleven slots, matched initialization and parameter count, training-only shared count-port scaling, and evaluation-mode scoring. Runs use new seeds fifteen to nineteen and twenty to thirty epochs with validation stopping. The exact highest validation-AP checkpoint is selected, followed by a validation-F1 threshold. The paired F1 change is minus 7.21 points with interval minus 15.46 to plus 1.03; AP is minus 4.49 with interval minus 19.11 to plus 10.13. A positive addition benefit is not established, nor are harm or equivalence proved. Nine of fifteen runs reached the cap, so stopping is not convergence. This protocol has no Counts-only arm and cannot directly re-test the plus 24.33 contrast. Its third arm, Counts plus flag, is included in the full report, and its secondary contrasts are unresolved. The protocol changed several things, so differences between studies cannot be attributed only to training duration. I now return to the positive findings established in the original experiment.")
 
-    clear(s[12], INK); header(s[12], "Conclusions", "A first-contact flag helps find laundering on new pairs", dark=True)
-    for y, value in [(2.15, "• Account-history counts do not remove the port benefit. Ports still improve F1 by 14.91 points after all four counts are supplied."),
-                     (3.43, "• Under the original protocol, the first-contact flag improves F1 by 24.33 points beyond counts. Replacing ports with the flag improves F1 by 9.42 points."),
-                     (4.80, "• The extra detections are on first contacts: laundering recall rises from 47.1% to 64.0%, and all five seeds detect more of these laundering transfers.")]:
-        text(s[12], value, .95, y, 11.1, 1.10, 22, serif=True, ink=BG)
-    text(s[12], "Contribution: separate account activity from pair history and quantify where detection improves.", .95, 6.17, 11.2, .35, 15, serif=True, ink="CCD5DC")
-    text(s[12], "Scope: original five-epoch HI-Small protocol · Five paired seeds · Supplementary flag comparison; descriptive error analysis.", .95, 6.65, 11.2, .25, 11, ink="CCD5DC")
+    conclusion_layout(s[12])
     notes(s[12], "I close with three concrete findings. First, account-history counts do not remove the port benefit. After all four counts are supplied, ports still improve F1 by 14.91 points. Second, under the original experimental protocol, a first-contact flag has clear predictive value. Adding it to Counts improves F1 by 24.33 points, and replacing ports with the flag, while retaining counts, improves F1 by 9.42 points. Third, we locate the additional detections: laundering recall on first-contact transfers rises from 47.1 to 64.0 percent, and every one of the five seeds detects more of these laundering transfers. Our research contribution is to distinguish account-level activity from the history of the specific account pair through controlled feature comparisons, and to quantify both the predictive value of a simple relationship flag and the transaction group where detection improves. For AML feature design, the implication is to consider whether the current sender has previously paid this receiver alongside cumulative transaction and counterparty counts. This study provides evidence for that relationship feature on the current benchmark and protocol; the observed patterns are not proof of laundering by themselves. The flag comparison is supplementary, the detection breakdown is descriptive, and the completed follow-up did not establish an additional benefit when ports were retained. These boundaries do not change the three reported findings. Thank you; I welcome questions.")
 
     replace_text(s[13], "What do port numbers add?", "Beyond Counterparty Counts")
