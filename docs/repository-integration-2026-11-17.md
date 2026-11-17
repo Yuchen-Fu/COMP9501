@@ -13,4 +13,10 @@ Integration decisions:
 - Present the actual GPU results as current evidence. Historical decks and notes are labelled as pilot material; they do not establish a positive addition effect in the follow-up.
 - Correct one report-only seed-count sentence in the GPU report. Preserve the original uploaded report and its checksum provenance.
 
-Current links use `main`; archived commits and immutable server artifacts retain their original provenance. The former remote branches may be deleted only after their recorded tips are ancestors of the published `main` head.
+Current links use `main`; archived commits and immutable server artifacts retain their original provenance. The former branch tips were retained as ancestors of the published merge. On 17 November 2026, a fresh remote check confirmed that **`main` is both the default and the only remote branch**. The last former default branch had already been removed when this final check was made. Local stale remote-tracking references were pruned, and `origin/HEAD` now points to `origin/main`.
+
+## Detailed follow-up interpretation
+
+The [full Chinese report](../DETAILED_FOLLOWUP_REPORT.md) now separates the unsupported addition claim from the original replacement finding. It adds descriptive error decompositions, mathematical clarification of the novelty predicate, probe interpretation, and concrete manuscript changes. The [presentation revision plan](../presentation/representation-study/REVISION_PLAN.md) provides 14 main slides plus four backup slides and seven Python-generated figures. The historical binary deck is retained, not silently replaced with an unrendered update.
+
+`src/report_followup.py` reads the saved JSON records and writes `analysis_notes.json` plus PNG/PDF/SVG figures. No training run, endpoint, frozen protocol or saved prediction was changed; no additional hypothesis test or probe fit was run. Newly reported alert decompositions are explicitly labelled post-hoc and descriptive.

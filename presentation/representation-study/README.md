@@ -2,6 +2,8 @@
 
 **Follow-up notice (17 November 2026):** the completed controlled addition experiment did not establish an explicit-novelty benefit. Its [actual server report](../../results/representation_8h/FOLLOWUP_REPORT.md) and [import provenance](../../results/representation_8h/IMPORT_NOTES.md) are now available. The decks below remain the historical five-epoch presentation; the [revised storyline](FOLLOWUP_STORYLINE.md) describes the required research update.
 
+For the completed study, use the [detailed 14-slide revision plan and four appendices](REVISION_PLAN.md), [full Chinese results and analysis](../../DETAILED_FOLLOWUP_REPORT.md), and [seven figures generated from full-precision records](../../results/representation_8h/detailed_figures/). These are the current manuscript/presentation recommendations; the binary decks below have not been rebuilt to incorporate them.
+
 This edition centers the presentation on a specific representation question:
 
 > Under the same five-epoch GIN protocol, does explicitly encoding pair novelty improve AML prediction when that fact is already recoverable from historical counts and port numbers?

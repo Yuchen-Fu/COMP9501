@@ -1,0 +1,580 @@
+{
+  "status": "descriptive analysis of saved results; no additional fits or tests",
+  "source_sha256": {
+    "summary.json": "cf270744357f75ba1f57ed7e6fa639291f3d86f7aac26e42a6d62963fce75d58",
+    "diagnostics.json": "5c4056e3b64ec0e0b356bcf9283d1974dabdc16d90661b526905aab7d1d35d7e",
+    "probes/probe_summary.json": "26d725a07cad2b5ee61ff3b06fbf00301277a3953aee2b4efd2aedda1ed2bbc3",
+    "runs/cp_s15.json": "2648444f53072b15a5dabef3c198f6988f54f393eb9994ecac43bdc2e00886ac",
+    "runs/cp_s16.json": "a0ba1fc199663b97f636eff9a8133d6a61020ec0bb24b7048a52a3cc4c79daca",
+    "runs/cp_s17.json": "8aff0457ff2de3d288c6ca7b8b7d1c7bbd1d7bfb68d81ce607eb6ae1474b00fa",
+    "runs/cp_s18.json": "32a52c98fce36881c58638a88b60064503294a4cc75115c74a2a4b10c4e63ccc",
+    "runs/cp_s19.json": "140d7809b81999a140153bfefe3556fc6ceb0878344ff182caef30952748dff5",
+    "runs/cpn_s15.json": "97440db9ce70be07a03b557d0bb923e6ffdd8d0af2de45aa0a1d9cfa97308f7c",
+    "runs/cpn_s16.json": "5241656cfbf64c6e480eff856d9e8796b1e89c40e35084c0ef9bcef092f9adba",
+    "runs/cpn_s17.json": "a66d3a45fe45e0c7aa115c874f49ab0ae83a4998cf33f360fd6a0da532e95fe7",
+    "runs/cpn_s18.json": "40b5cdf8be934b7f6f49bd091e6cfc82a1b6a4ab60510374f7e0e456c46726f6",
+    "runs/cpn_s19.json": "051c3f9e58583a1aa04165347a6e85c0284cb16ba03a5f63bcd1c362d6364774",
+    "runs/cn_s15.json": "6d16019a0803d674712cb102842a95b976569edf916ee8440bd5d6fb272a5b8c",
+    "runs/cn_s16.json": "b3767057001128b11ce0e92c792a5ec87c6fbd1aa0ab10aef1d71521695ad3ef",
+    "runs/cn_s17.json": "9f8a1f87e4d1af8fbf11554ddf8288430322bc054348f39ebe6cff4e7f58cf4b",
+    "runs/cn_s18.json": "ddd9daccd69d46799306e62f3d483024163807dc5c561c30c90312575f5fc0eb",
+    "runs/cn_s19.json": "2a35060807a7cc0e1152369770ad6725ae72b331f673eff830b3a81a89253acf"
+  },
+  "seeds": [
+    15,
+    16,
+    17,
+    18,
+    19
+  ],
+  "confusion_means": {
+    "all": {
+      "cp": {
+        "tp": 693.6,
+        "fp": 1751.4,
+        "fn": 917.4,
+        "tn": 860537.6,
+        "flagged": 2445.0,
+        "precision": 33.67508932222195,
+        "recall": 43.05400372439478
+      },
+      "cpn": {
+        "tp": 794.8,
+        "fp": 3545.6,
+        "fn": 816.2,
+        "tn": 858743.4,
+        "flagged": 4340.4,
+        "precision": 19.18888349784903,
+        "recall": 49.33581626319057
+      },
+      "cn": {
+        "tp": 967.2,
+        "fp": 2557.8,
+        "fn": 643.8,
+        "tn": 859731.2,
+        "flagged": 3525.0,
+        "precision": 29.132733487730775,
+        "recall": 60.03724394785847
+      }
+    },
+    "days_8_9": {
+      "cp": {
+        "tp": 344.0,
+        "fp": 1696.8,
+        "fn": 612.0,
+        "tn": 860139.2,
+        "flagged": 2040.8,
+        "precision": 22.281075175559952,
+        "recall": 35.98326359832636
+      },
+      "cpn": {
+        "tp": 402.0,
+        "fp": 3434.0,
+        "fn": 554.0,
+        "tn": 858402.0,
+        "flagged": 3836.0,
+        "precision": 11.322562741250454,
+        "recall": 42.05020920502092
+      },
+      "cn": {
+        "tp": 476.4,
+        "fp": 2417.4,
+        "fn": 479.6,
+        "tn": 859418.6,
+        "flagged": 2893.8,
+        "precision": 18.04122899111112,
+        "recall": 49.8326359832636
+      }
+    },
+    "day_10_plus": {
+      "cp": {
+        "tp": 349.6,
+        "fp": 54.6,
+        "fn": 305.4,
+        "tn": 398.4,
+        "flagged": 404.2,
+        "precision": 88.66764596191557,
+        "recall": 53.37404580152672
+      },
+      "cpn": {
+        "tp": 392.8,
+        "fp": 111.6,
+        "fn": 262.2,
+        "tn": 341.4,
+        "flagged": 504.4,
+        "precision": 81.50632779684693,
+        "recall": 59.969465648854964
+      },
+      "cn": {
+        "tp": 490.8,
+        "fp": 140.4,
+        "fn": 164.2,
+        "tn": 312.6,
+        "flagged": 631.2,
+        "precision": 78.21191819825592,
+        "recall": 74.93129770992365
+      }
+    },
+    "first_contact": {
+      "cp": {
+        "tp": 636.4,
+        "fp": 824.4,
+        "fn": 688.6,
+        "tn": 35071.6,
+        "flagged": 1460.8,
+        "precision": 47.3936470723231,
+        "recall": 48.030188679245285
+      },
+      "cpn": {
+        "tp": 732.0,
+        "fp": 1155.4,
+        "fn": 593.0,
+        "tn": 34740.6,
+        "flagged": 1887.4,
+        "precision": 37.87793653576062,
+        "recall": 55.245283018867916
+      },
+      "cn": {
+        "tp": 898.6,
+        "fp": 1232.4,
+        "fn": 426.4,
+        "tn": 34663.6,
+        "flagged": 2131.0,
+        "precision": 42.0871284552687,
+        "recall": 67.81886792452829
+      }
+    },
+    "repeat": {
+      "cp": {
+        "tp": 57.2,
+        "fp": 927.0,
+        "fn": 228.8,
+        "tn": 825466.0,
+        "flagged": 984.2,
+        "precision": 9.355446792674343,
+        "recall": 20.0
+      },
+      "cpn": {
+        "tp": 62.8,
+        "fp": 2390.2,
+        "fn": 223.2,
+        "tn": 824002.8,
+        "flagged": 2453.0,
+        "precision": 3.397990447663166,
+        "recall": 21.958041958041957
+      },
+      "cn": {
+        "tp": 68.6,
+        "fp": 1325.4,
+        "fn": 217.4,
+        "tn": 825067.6,
+        "flagged": 1394.0,
+        "precision": 8.278034724354875,
+        "recall": 23.986013986013987
+      }
+    }
+  },
+  "addition_confusion_changes": {
+    "all": {
+      "tp": {
+        "per_seed": [
+          467,
+          212,
+          125,
+          -470,
+          172
+        ],
+        "mean": 101.2
+      },
+      "fp": {
+        "per_seed": [
+          3308,
+          2055,
+          4229,
+          -1660,
+          1039
+        ],
+        "mean": 1794.2
+      },
+      "fn": {
+        "per_seed": [
+          -467,
+          -212,
+          -125,
+          470,
+          -172
+        ],
+        "mean": -101.2
+      },
+      "flagged": {
+        "per_seed": [
+          3775,
+          2267,
+          4354,
+          -2130,
+          1211
+        ],
+        "mean": 1895.4
+      },
+      "precision": {
+        "per_seed": [
+          -32.294947166574836,
+          -19.883741988156235,
+          -13.745442369022962,
+          -2.2297240853800844,
+          -4.277173512730485
+        ],
+        "mean": -14.486205824372922
+      },
+      "recall": {
+        "per_seed": [
+          28.988206083178152,
+          13.159528243327124,
+          7.75915580384855,
+          -29.174425822470518,
+          10.676598386095591
+        ],
+        "mean": 6.281812538795779
+      }
+    },
+    "days_8_9": {
+      "tp": {
+        "per_seed": [
+          209,
+          74,
+          70,
+          -182,
+          119
+        ],
+        "mean": 58.0
+      },
+      "fp": {
+        "per_seed": [
+          3165,
+          1940,
+          4188,
+          -1630,
+          1023
+        ],
+        "mean": 1737.2
+      },
+      "fn": {
+        "per_seed": [
+          -209,
+          -74,
+          -70,
+          182,
+          -119
+        ],
+        "mean": -58.0
+      },
+      "flagged": {
+        "per_seed": [
+          3374,
+          2014,
+          4258,
+          -1812,
+          1142
+        ],
+        "mean": 1795.2
+      },
+      "precision": {
+        "per_seed": [
+          -29.38334937665814,
+          -15.938389043026381,
+          -8.6982586118507,
+          0.8136165826843804,
+          -1.5861817226966526
+        ],
+        "mean": -10.9585124343095
+      },
+      "recall": {
+        "per_seed": [
+          21.86192468619247,
+          7.740585774058573,
+          7.322175732217573,
+          -19.037656903765694,
+          12.447698744769877
+        ],
+        "mean": 6.066945606694559
+      }
+    },
+    "day_10_plus": {
+      "tp": {
+        "per_seed": [
+          258,
+          138,
+          55,
+          -288,
+          53
+        ],
+        "mean": 43.2
+      },
+      "fp": {
+        "per_seed": [
+          143,
+          115,
+          41,
+          -30,
+          16
+        ],
+        "mean": 57.0
+      },
+      "fn": {
+        "per_seed": [
+          -258,
+          -138,
+          -55,
+          288,
+          -53
+        ],
+        "mean": -43.2
+      },
+      "flagged": {
+        "per_seed": [
+          401,
+          253,
+          96,
+          -318,
+          69
+        ],
+        "mean": 100.2
+      },
+      "precision": {
+        "per_seed": [
+          -22.193327169055323,
+          -11.74391201885311,
+          -2.489521967232335,
+          3.6374469352796552,
+          -3.0172766054820954
+        ],
+        "mean": -7.161318165068641
+      },
+      "recall": {
+        "per_seed": [
+          39.38931297709924,
+          21.068702290076338,
+          8.396946564885496,
+          -43.969465648854964,
+          8.091603053435115
+        ],
+        "mean": 6.595419847328243
+      }
+    },
+    "first_contact": {
+      "tp": {
+        "per_seed": [
+          423,
+          195,
+          116,
+          -442,
+          186
+        ],
+        "mean": 95.6
+      },
+      "fp": {
+        "per_seed": [
+          964,
+          773,
+          -98,
+          -215,
+          231
+        ],
+        "mean": 331.0
+      },
+      "fn": {
+        "per_seed": [
+          -423,
+          -195,
+          -116,
+          442,
+          -186
+        ],
+        "mean": -95.6
+      },
+      "flagged": {
+        "per_seed": [
+          1387,
+          968,
+          18,
+          -657,
+          417
+        ],
+        "mean": 426.6
+      },
+      "precision": {
+        "per_seed": [
+          -22.4557594625594,
+          -16.82784785782347,
+          4.883735692800499,
+          -13.69083579142751,
+          0.512154736197509
+        ],
+        "mean": -9.515710536562475
+      },
+      "recall": {
+        "per_seed": [
+          31.92452830188679,
+          14.716981132075468,
+          8.754716981132077,
+          -33.35849056603774,
+          14.03773584905661
+        ],
+        "mean": 7.215094339622641
+      }
+    },
+    "repeat": {
+      "tp": {
+        "per_seed": [
+          44,
+          17,
+          9,
+          -28,
+          -14
+        ],
+        "mean": 5.6
+      },
+      "fp": {
+        "per_seed": [
+          2344,
+          1282,
+          4327,
+          -1445,
+          808
+        ],
+        "mean": 1463.2
+      },
+      "fn": {
+        "per_seed": [
+          -44,
+          -17,
+          -9,
+          28,
+          14
+        ],
+        "mean": -5.6
+      },
+      "flagged": {
+        "per_seed": [
+          2388,
+          1299,
+          4336,
+          -1473,
+          794
+        ],
+        "mean": 1468.8
+      },
+      "precision": {
+        "per_seed": [
+          -17.01118093940082,
+          -7.887954422137819,
+          -4.7329879472145135,
+          2.983065046975047,
+          -3.1382234632777757
+        ],
+        "mean": -5.957456345011177
+      },
+      "recall": {
+        "per_seed": [
+          15.384615384615383,
+          5.944055944055943,
+          3.14685314685315,
+          -9.79020979020979,
+          -4.895104895104895
+        ],
+        "mean": 1.9580419580419584
+      }
+    }
+  },
+  "net_change_shares": {
+    "first_contact_share_of_net_tp_change": 0.9446640316205532,
+    "repeat_share_of_net_fp_change": 0.8155166648088285,
+    "days_8_9_share_of_net_fp_change": 0.9682309664474418,
+    "tail_share_of_net_tp_change": 0.42687747035573126
+  },
+  "split_data": {
+    "train": {
+      "transactions": 3248921,
+      "positive": 2530,
+      "novelty_prevalence": 0.28947764503969164
+    },
+    "validation": {
+      "transactions": 965524,
+      "positive": 1036,
+      "novelty_prevalence": 0.03938276003496547
+    },
+    "test": {
+      "transactions": 863900,
+      "positive": 1611,
+      "novelty_prevalence": 0.043084847783308254
+    }
+  },
+  "selected_validation": {
+    "cp": {
+      "mean_f1_percent": 46.3522579145868,
+      "mean_ap_percent": 40.953301491554996,
+      "selected_epochs": [
+        21,
+        28,
+        21,
+        23,
+        29
+      ],
+      "completed_epochs": [
+        30,
+        30,
+        30,
+        30,
+        30
+      ]
+    },
+    "cpn": {
+      "mean_f1_percent": 46.962420617096036,
+      "mean_ap_percent": 40.56272164723676,
+      "selected_epochs": [
+        12,
+        13,
+        19,
+        12,
+        25
+      ],
+      "completed_epochs": [
+        22,
+        23,
+        29,
+        22,
+        30
+      ]
+    },
+    "cn": {
+      "mean_f1_percent": 50.03248186309646,
+      "mean_ap_percent": 46.72626135474002,
+      "selected_epochs": [
+        12,
+        28,
+        27,
+        18,
+        30
+      ],
+      "completed_epochs": [
+        22,
+        30,
+        30,
+        28,
+        30
+      ]
+    }
+  },
+  "first_contact_rule_illustration": {
+    "status": "post-hoc base-rate illustration, not a prespecified model baseline",
+    "precision_percent": 3.5598183820961284,
+    "recall_percent": 82.24705152079453,
+    "f1_percent": 6.824268644416975
+  },
+  "limitations": [
+    "Net count changes do not identify overlapping alert sets.",
+    "Novelty and time partitions overlap; do not add their decompositions.",
+    "Seed averages of precision/F1 differ from metrics computed from averaged counts.",
+    "Transaction predictions and checkpoints are absent from the review archive."
+  ]
+}
