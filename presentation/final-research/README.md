@@ -23,12 +23,12 @@ This 16-slide presentation revises the user's supplied deck directly. It preserv
 | 2–4 | Kept the introductory diagrams and explanation of the published method. Clarified in notes that graph patterns are not proof of laundering. |
 | 5 | Defined transfer counts, distinct-counterparty counts and local port labels. A four-transfer table distinguishes all three: S pays A, B, A, then C. Before the fourth transfer the values are 3 earlier transfers, 2 earlier distinct receivers and outgoing port 2. |
 | 6 | Added a complete sender/receiver example showing the four count features and two port features. Counts are [3,2,2,2]; Ports are [0,1] in the code's incoming/outgoing order. Defined the separate first-contact flag, which is 0 for this repeated pair. |
-| 7 | Connected three questions: do ports still help when counts are provided, does a first-contact flag improve detection, and which transfers account for the extra detections? The third question is explicitly descriptive error analysis. |
+| 7 | States the three questions precisely: do ports still help when counts are provided; does a first-contact flag improve detection beyond counts; and where are the extra detections when the flag replaces ports? The third question is explicitly descriptive error analysis. |
 | 8–9 | Retained the data and factorial layout, clarified timestamp/tie order, and disclosed original split-specific normalisation, active dropout and batch statistics during scoring. |
 | 10 | Repeats the exact RQ1, **Do ports still help when counts are provided?**, and answers it directly: **Yes. Ports add 14.91 F1 points beyond counts (95% CI [10.11, 19.71]).** The Python plot shows paired seeds and the planned ratio interval stays in a footnote. |
 | 11 | Kept the worked example: identical account counts can accompany a new or repeated pair. Defined the flag in plain language. |
-| 12 | Replaced result graphics with a Python plot and complete sentences: adding the flag to Counts gives +24.33 F1 points [21.47, 27.19]; replacing ports with the flag gives +9.42 [5.73, 13.11]. |
-| 13 | Added **The flag detects more laundering on first contacts**. The paired plot shows recall rising from 47.1% to 64.0%. All five seeds detect more first-contact positives; mean true-positive changes are +224.6 on first contacts and −7.4 on repeated pairs. First-contact F1 rises by 11.40 points [7.54, 15.26]. |
+| 12 | Repeats RQ2: **Does a first-contact flag improve detection beyond counts?** The subtitle answers: **Yes. The flag adds 24.33 F1 points beyond counts (95% CI [21.47, 27.19]).** The separate replacement comparison, +9.42 [5.73, 13.11], leads into Q3. |
+| 13 | Repeats RQ3: **Where are the extra detections when the flag replaces ports?** The subtitle answers: **On first contacts: laundering recall rises from 47.1% to 64.0%.** The caption names Counts + flag versus Counts + Ports and the original protocol. All five seeds detect more first-contact positives; mean true-positive changes are +224.6 on first contacts and −7.4 on repeated pairs. First-contact F1 rises by 11.40 points [7.54, 15.26]. |
 | 14 | Retained the completed addition follow-up with its own Python interval plot. The primary F1 and AP intervals cross zero; no positive addition benefit was established. |
 | 15 | Replaced the conclusion with three complete, evidence-supported sentences. The scope is stated beneath them: original five-epoch HI-Small protocol, five paired seeds, supplementary flag comparison. |
 | 16 | Updated sources/materials links and consistent page numbering. |
@@ -36,6 +36,8 @@ This 16-slide presentation revises the user's supplied deck directly. It preserv
 Speaker notes provide the question, interpretation and transition for each slide. The presentation has no backup section and no oversized numerical cards.
 
 RQ1's wording now names the tested conditional contrast: (Counts + Ports) − Counts. The earlier phrase “Do counts replace ports?” could be read as the separate comparison Counts − Ports. The research question slide, result slide, conclusion and notes now consistently describe the incremental port benefit after counts. This is a wording correction; the factorial design, saved estimates and original ratio estimand are unchanged.
+
+RQ2 names the addition contrast (Counts + flag) − Counts. Its result page also shows the separate replacement contrast (Counts + flag) − (Counts + Ports), which supplies the comparison for RQ3's descriptive breakdown by first-contact/repeat status. These are distinct from the controlled follow-up's (Counts + Ports + flag) − (Counts + Ports). The question slide, result titles, subtitles, conclusion and notes now make the sequence explicit. The supplementary and descriptive labels remain; no analysis has been newly declared primary.
 
 ## What the evidence means
 
