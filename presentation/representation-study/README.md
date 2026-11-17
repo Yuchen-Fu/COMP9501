@@ -1,5 +1,7 @@
 # Making pair history explicit
 
+**Follow-up notice (17 November 2026):** the user reports that the controlled addition experiment did not support an explicit-novelty benefit. The files below remain the historical five-epoch presentation. Use the [revised storyline](FOLLOWUP_STORYLINE.md) and [provisional follow-up interpretation](../../results/representation_8h/reported/INTERPRETATION.md) when discussing the new results; the new machine-readable outputs have not yet been received here.
+
 This edition centers the presentation on a specific representation question:
 
 > Under the same five-epoch GIN protocol, does explicitly encoding pair novelty improve AML prediction when that fact is already recoverable from historical counts and port numbers?

@@ -2,6 +2,8 @@
 
 _COMP9501 course project · IBM AML HI-Small · GIN · counts × ports · five seeds_
 
+**User-reported follow-up completion, 17 November 2026:** all 15 budget runs and probes reportedly finished. The primary addition effect is −7.21 F1 points [−15.46,+1.03], with the prespecified decision `inconclusive`. Read the [provisional interpretation and figures](results/representation_8h/reported/INTERPRETATION.md) and [revised presentation storyline](presentation/representation-study/FOLLOWUP_STORYLINE.md). These numbers come from the user's completion summary; original server outputs are still needed for independent review. This finding does not alter the historical pilot results below.
+
 **Current requested budget:** [eight-hour experiment and submission instructions](docs/portable/README_8H.md). This separate 15-run design keeps mandatory A/B/C arms, uses 5 fresh seeds each and 20–30 epochs, and requests 4 identical GPUs. A small [GitHub update ZIP](downloads/README.md) reuses the existing data package. No production result is claimed before all runs complete.
 
 **Prospective GPU follow-up:** [download complete package with data](downloads/README.md) · [portable server instructions](docs/portable/README.md) · [frozen addition experiment](docs/portable/PROTOCOL.md) · [execution prompt](docs/portable/RUN_PROMPT.txt). This separate 25-run batch tests explicit novelty with ports retained; production results are pending. The completed results below are the original five-epoch study.
@@ -12,7 +14,7 @@ _COMP9501 course project · IBM AML HI-Small · GIN · counts × ports · five s
 
 The current edition asks whether explicitly encoding pair novelty improves prediction when that fact is already recoverable from counts and ports. It contains 17 main slides and three appendices, with one baseline-paper slide and 11 numbered Python figures. The original factorial remains primary and the novelty comparison supplementary. [Presentation sources](presentation/representation-study/README.md) and [detailed update rationale](presentation/representation-study/UPDATE_NOTES.md) are included.
 
-**Process status:** all 25 runs completed, all 125 saved epoch predictions audited, and the report and graphical presentation finished. See the [dated completion status](STATUS.md).
+**Original five-epoch study status:** all 25 runs completed, all 125 saved epoch predictions audited, and the historical report and presentation finished. See the [dated completion status](STATUS.md). The separate 15-run follow-up is described above.
 
 **Integrated branches:** [course-project guide](COURSE_PROJECT.md) · [integration record](INTEGRATION.md). Shared setup prepares `data/hi_small.pt` for both implementations. The completed five-epoch results remain the primary study; the course branch's distinct 100-epoch runner is an optional follow-up with separate outputs.
 

@@ -1,0 +1,121 @@
+{
+  "evidence_status": "user_reported_summary_not_independently_verified",
+  "source": "User supplied completion summary in this conversation on 2026-11-17; no production result archives received locally.",
+  "job_id": 303978,
+  "completed_at_hong_kong": "2026-11-17 01:32 +08:00",
+  "runs": 15,
+  "seeds": [
+    15,
+    16,
+    17,
+    18,
+    19
+  ],
+  "epochs_total": 416,
+  "mean_epoch_seconds": 54.4,
+  "runs_at_cap": 9,
+  "cp_runs_at_cap": 5,
+  "primary": {
+    "contrast": "cpn minus cp",
+    "selection": "best validation AP; validation-F1 threshold",
+    "per_seed_f1_points": [
+      -0.22,
+      -11.63,
+      -14.84,
+      -8.99,
+      -0.39
+    ],
+    "per_seed_ap_points": [
+      -7.83,
+      -1.5,
+      3.05,
+      -23.12,
+      6.94
+    ],
+    "f1": {
+      "mean": -7.21,
+      "ci95": [
+        -15.46,
+        1.03
+      ],
+      "paired_sd": 6.64
+    },
+    "ap": {
+      "mean": -4.49,
+      "ci95": [
+        -19.11,
+        10.13
+      ]
+    },
+    "decision": "inconclusive"
+  },
+  "cells": {
+    "cp": {
+      "f1_mean": 33.97,
+      "f1_sd": 9.13,
+      "ap_mean": 32.43,
+      "ap_sd": 9.45,
+      "precision_percent": 33.68,
+      "recall_percent": 43.05,
+      "mean_tp_rounded": 694,
+      "mean_fp_rounded": 1751
+    },
+    "cpn": {
+      "f1_mean": 26.76,
+      "f1_sd": 6.4,
+      "ap_mean": 27.93,
+      "ap_sd": 15.94,
+      "precision_percent": 19.19,
+      "recall_percent": 49.34,
+      "mean_tp_rounded": 795,
+      "mean_fp_rounded": 3546
+    },
+    "cn": {
+      "f1_mean": 38.55,
+      "f1_sd": 6.89,
+      "ap_mean": 41.03,
+      "ap_sd": 6.33,
+      "precision_percent": 29.13,
+      "recall_percent": 60.04,
+      "mean_fp_rounded": 2558
+    }
+  },
+  "replacement": {
+    "contrast": "cn minus cp",
+    "f1_mean": 4.58,
+    "f1_ci95": [
+      -11.45,
+      20.6
+    ]
+  },
+  "sensitivities": {
+    "epoch_5_f1": {
+      "mean": 12.11,
+      "ci95": [
+        0.34,
+        23.88
+      ]
+    },
+    "epoch_5_ap_ci_includes_zero": true,
+    "days8_9_epoch20_final": "F1 estimates negative or near zero; all intervals include zero; exact values not supplied.",
+    "robustness_status": "primary_not_supported"
+  },
+  "probe": {
+    "raw_input_auroc_range": [
+      0.999,
+      1.0
+    ],
+    "penultimate_auroc_range": [
+      0.76,
+      0.96
+    ],
+    "penultimate_ap_range": [
+      0.12,
+      0.44
+    ],
+    "novelty_prevalence_approx": 0.043
+  },
+  "planning_paired_sd": 2.97,
+  "planning_mdes_f1_points_n5": 5.0,
+  "units": "F1/AP differences are absolute percentage points; means/intervals are rounded values supplied by the user."
+}
