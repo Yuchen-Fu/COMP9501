@@ -152,6 +152,45 @@ def conclusion_layout(slide):
          .889, 6.55, 11.902, .27, 11, ink="CCD5DC")
 
 
+def configuration_slide(slide):
+    """Keep the four-card layout and report settings from completed run records."""
+    pilot = json.loads((REPO / "results/runs/base_s0.json").read_text())
+    followup = json.loads((REPO / "results/representation_8h/runs/cp_s15.json").read_text())
+    hp = pilot["hp"]
+    if hp != followup["hp"]:
+        raise ValueError("Shared hyperparameter statement no longer matches saved runs")
+    replace_text(slide, "The study at a glance", "Model, training and evaluation configuration")
+    replace_text(slide, "The network is held fixed. What changes is the history each transfer carries.",
+                 "Fixed GIN settings; CPU for the original study, RTX 3090 for the follow-up.")
+    shapes = {shape.shape_id: shape for shape in slide.shapes}
+    # Shape IDs refer to the unchanged four-card methodology template.
+    card_labels = {6: "DATA", 12: "SHARED SETTINGS", 18: "SHARED SETTINGS", 24: "TRAINING BUDGET"}
+    for shape_id, value in card_labels.items():
+        shape = shapes[shape_id]
+        shape.text_frame.paragraphs[0].runs[0].text = value
+    contents = {
+        7: "HI-Small", 8: "5,078,345 transfers\n515,088 accounts", 9: "5,177 laundering labels\n(0.102% of transfers)",
+        13: "GIN model", 14: f'{hp["n_gnn_layers"]} GINE layers · hidden {hp["n_hidden"]}\nClassifier: 50 → 25 → 2',
+        15: f'Dropout: {hp["final_dropout"]:.4f}\nNeighbors: {hp["num_neighbors"]}',
+        19: "Optimization", 20: f'Adam · lr {hp["lr"]:.6f}\nBatch: {hp["batch_size"]:,} target transfers',
+        21: f'Weighted cross-entropy\nClass weights ≈ 1 : {hp["w_ce"][1]:.3f}',
+        25: "Completed runs", 26: "Original: 25 runs × 5 epochs\nSeeds 0–4",
+        27: "Follow-up: 15 runs\n20–30 epochs · seeds 15–19"}
+    for shape_id, value in contents.items():
+        shape = shapes[shape_id]
+        replace_text(slide, shape.text, value)
+    for shape_id in (8, 14, 20, 26):
+        shapes[shape_id].height = Inches(.62)
+    for shape_id in (9, 15, 21, 27):
+        shapes[shape_id].top = Inches(3.88)
+        shapes[shape_id].height = Inches(.54)
+    replace_text(slide, shapes[28].text,
+                 "Checkpoint: best validation F1 (original); best validation AP (follow-up). Both choose the decision threshold by validation F1.")
+    text(slide, "Original: split-specific scaling; dropout and batch statistics remain active at scoring.\nFollow-up: train-only shared scaling; evaluation mode; 11 matched input slots.",
+         .889, 6.47, 11.902, .42, 11.5, ink=MUTED)
+    notes(slide, f"This page states the configuration used in the completed experiments, checked against all 25 original and all 15 follow-up run records. Both share a two-layer edge-feature GIN implemented with GINEConv, hidden width {hp['n_hidden']}, and a classifier with widths 198, 50, 25 and 2. The classifier dropout probability is {hp['final_dropout']}; the slide rounds it to four decimals. Adam uses learning rate {hp['lr']} and default zero weight decay. The batch size is {hp['batch_size']} target transactions, not graph nodes. Two-hop neighbor sampling uses up to 100 neighbors at each hop. Weighted cross-entropy uses class weights {hp['w_ce'][0]} for legitimate transfers and {hp['w_ce'][1]} for laundering. These values are fixed within and across the two studies, while the supplied input slots and evaluation protocol differ. The original experiment has five feature cells and seeds zero through four, giving 25 CPU runs of five epochs each. Its reported checkpoint maximizes validation F1 over zero-based epochs one to four; the first epoch, indexed zero, is excluded from this selection. Its input width varies by cell, scaling is computed separately within each cumulative split graph, and dropout and batch statistics stay active during scoring. The follow-up has three cells and seeds fifteen through nineteen, giving 15 CUDA runs on NVIDIA GeForce RTX 3090 GPUs, one GPU per training process. The submitted eight-hour batch uses four GPUs in parallel. It uses eleven matched input slots, train-only shared port/count scaling, evaluation-mode scoring and fixed seed-specific evaluation sampling. Training runs for at least twenty and at most thirty epochs, with patience ten and a validation-AP progress threshold of 0.001. The selected checkpoint is the exact maximum validation AP, independently of the patience progress threshold; ties select the earliest checkpoint. Stopping does not demonstrate convergence. Both studies select the decision cutoff by maximum validation F1 at the chosen checkpoint. The follow-up runtime manifest records Python 3.12.16, PyTorch 2.8.0+cu126 and PyG 2.6.1. HI-Small contains 5,078,345 transfers, 515,088 accounts and 5,177 laundering labels. The whole-day cut points are six and eight. Historical features follow timestamp order with a label-independent fixed order for ties. Both studies use cumulative transductive graphs, so this is not an online-causal deployment evaluation. The next page shows which feature combinations are compared.")
+
+
 def savefig(fig, name):
     for ext in ("png", "pdf", "svg"):
         fig.savefig(FIGURES / f"{name}.{ext}", dpi=260, bbox_inches="tight", facecolor="#"+BG)
@@ -339,13 +378,7 @@ def main():
     question_three = replace_text(s[5], "Does the flag still help a model that keeps its ports?", "Where are the extra detections when the flag replaces ports?")
     question_three.height = Inches(1.08)
     notes(s[5], "There are three steps in the argument. First: do ports still help when counts are provided? The relevant contrast is Counts plus Ports minus Counts. We also compare that residual gain with Ports minus Base, as in the original factorial design. Second: does a first-contact flag improve detection beyond counts? This compares Counts plus flag with Counts; neither arm has ports. The supplementary flag model is also compared with Counts plus Ports, establishing the replacement comparison that leads into the third question. Third: where are the extra detections when the flag replaces ports? Both models keep counts, and we describe the change in true-positive counts on first-contact and repeat transfers separately. This third question locates the observed detections; it does not identify a causal internal mechanism. These are not three newly declared primary tests: the flag model is supplementary and the error decomposition is descriptive. The completed follow-up that adds the flag while retaining ports is a separate comparison under a different protocol.")
-    replace_text(s[6], "The network is held fixed. What changes is the history each transfer carries.", "Each experiment compares history features using a shared GIN architecture.")
-    replace_text(s[6], "4 counts, 2 ports and a 1-bit new-pair flag per transfer", "4 counts, 2 port ranks and a first-contact flag")
-    replace_text(s[6], "Built from strictly earlier transfers", "Fixed timestamp and tie order")
-    replace_text(s[6], "2-layer GIN from the public reference code", "Two-layer edge-feature GIN")
-    replace_text(s[6], "Tuned hyperparameters, identical in every run", "Fixed reference hyperparameters")
-    replace_text(s[6], s[6].shapes[26].text, "Whole-day temporal split. Validation selects checkpoints and thresholds. F1 is the main outcome; AP checks ranking performance.")
-    notes(s[6], "HI-Small contains 5,078,345 transfers and 5,177 laundering labels. Accounts are nodes and transfers are directed edges. The whole-day cut points are six and eight. We use a two-layer edge-feature GIN and the fixed reference hyperparameters. The architecture and optimization settings are shared within each experiment, but the original input dimensions vary with the supplied features. Historical features use preceding transactions in a fixed timestamp order, with a label-independent permutation for equal timestamps; that is not strict earlier wall-clock time within a tie. Both graph evaluations are cumulative and transductive, so they are not online-causal backtests. Checkpoints and thresholds are chosen on validation. The original 25 runs use five epochs; the separate 15-run follow-up uses 20 to 30.")
+    configuration_slide(s[6])
     replace_text(s[7], s[7].shapes[30].text, "Five seeds × five epochs per input set. Nominal paired-seed 95% t-intervals describe variation on this fixed dataset.")
     text(s[7], "Original protocol: split-specific normalization; dropout and batch statistics remain active during scoring.\nBoth studies use cumulative transductive graphs. The follow-up changes scaling and scoring.", .89, 6.02, 11.6, .60, 12, ink=MUTED)
     notes(s[7], "The original experiment has a two-by-two design: Base, Counts, Ports and Counts plus Ports. The four counts are earlier outgoing transfer and distinct-receiver counts for the sender, and earlier incoming transfer and distinct-sender counts for the receiver. We compare the port gain without and with these counts. The original named estimand is one minus residual port gain divided by the port gain without counts; the additive contrasts make it easier to interpret. Counts plus flag is supplementary. Each model has five seeds and a five-epoch budget. The original protocol normalizes separately in each cumulative split graph and leaves dropout and batch statistics active at scoring. Its checkpoints maximize validation F1 over the declared eligible epochs. This is a fixed-budget, transductive comparison; the intervals quantify training and scoring seed variation, not uncertainty across banks. The supplementary intervals are unadjusted. The later protocol changes these evaluation choices and is reported separately.")

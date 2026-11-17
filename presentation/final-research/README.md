@@ -12,6 +12,7 @@ This 16-slide presentation revises the user's supplied deck directly. It preserv
 - Revised conclusion: [one-slide PowerPoint](Conclusion_Three_Findings.pptx), [one-page PDF](Conclusion_Three_Findings.pdf), [Chinese speaking notes](CONCLUSION_ZH.md). The standalone slide has no fixed page number and can replace the conclusion in a different version of the deck.
 - Slide overviews: [1–8](preview/overview-01.jpg), [9–16](preview/overview-09.jpg)
 - [Counts and Ports explained in Chinese](COUNTS_PORTS_ZH.md)
+- [Exact experiment configuration and provenance](CONFIGURATION.md), summarised on slide 8
 - [Python-generated figures](figures/) in PNG, PDF and SVG
 - [Figure data and source hashes](figure_data.json)
 - [Revision script](build_revision.py) and [original user deck](source/user_refined_2026-11-17.pptx)
@@ -25,7 +26,8 @@ This 16-slide presentation revises the user's supplied deck directly. It preserv
 | 5 | Defined transfer counts, distinct-counterparty counts and local port labels. A four-transfer table distinguishes all three: S pays A, B, A, then C. Before the fourth transfer the values are 3 earlier transfers, 2 earlier distinct receivers and outgoing port 2. |
 | 6 | Added a complete sender/receiver example showing the four count features and two port features. Counts are [3,2,2,2]; Ports are [0,1] in the code's incoming/outgoing order. Defined the separate first-contact flag, which is 0 for this repeated pair. |
 | 7 | States the three questions precisely: do ports still help when counts are provided; does a first-contact flag improve detection beyond counts; and where are the extra detections when the flag replaces ports? The third question is explicitly descriptive error analysis. |
-| 8–9 | Retained the data and factorial layout, clarified timestamp/tie order, and disclosed original split-specific normalisation, active dropout and batch statistics during scoring. |
+| 8 | **Model, training and evaluation configuration** retains the four-card layout and temporal split. It reports the recorded GIN depth/width, classifier, dropout, neighbor sampling, optimizer, learning rate, batch size, loss weights, completed run budgets and seeds. It distinguishes original/follow-up checkpoint selection, scaling and scoring. Notes include exact precision, stopping rules and recorded software/hardware details. |
+| 9 | Retained the factorial layout and disclosed original split-specific normalisation, active dropout and batch statistics during scoring. |
 | 10 | Repeats the exact RQ1, **Do ports still help when counts are provided?**, and answers it directly: **Yes. Ports add 14.91 F1 points beyond counts (95% CI [10.11, 19.71]).** The Python plot shows paired seeds and the planned ratio interval stays in a footnote. |
 | 11 | Kept the worked example: identical account counts can accompany a new or repeated pair. Defined the flag in plain language. |
 | 12 | Repeats RQ2: **Does a first-contact flag improve detection beyond counts?** The subtitle answers: **Yes. The flag adds 24.33 F1 points beyond counts (95% CI [21.47, 27.19]).** The separate replacement comparison, +9.42 [5.73, 13.11], leads into Q3. |
