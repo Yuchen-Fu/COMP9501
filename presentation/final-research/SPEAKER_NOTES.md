@@ -4,7 +4,7 @@
 
 ## Slide 1
 
-This project starts from Egressy and colleagues' finding that port numbering improves AML graph learning. I ask whether account-level counts can substitute for ports, whether a simple first-contact flag helps, and where the improvement appears. The main finding is straightforward: under our original protocol, replacing ports with the flag identifies more laundering on first-contact transfers. I will show the controlled comparisons and then a separate follow-up. All results refer to HI-Small.
+This project starts from Egressy and colleagues' finding that port numbering improves AML graph learning. I ask whether ports still help when account-level counts are provided, whether a simple first-contact flag helps, and where the improvement appears. The main finding is straightforward: under our original protocol, replacing ports with the flag identifies more laundering on first-contact transfers. I will show the controlled comparisons and then a separate follow-up. All results refer to HI-Small.
 
 ## Slide 2
 
@@ -28,7 +28,7 @@ For each current sender-to-receiver transfer, Counts supplies four numbers in th
 
 ## Slide 7
 
-There are three steps in the argument. First, test whether four historical account counts remove the port gain; this is the original factorial question. Second, evaluate a supplementary first-contact flag and compare it with both Counts and Counts plus Ports. Third, describe which transfers account for the extra detections. These are not three newly declared primary tests: the flag model is supplementary and the error decomposition is descriptive. I also retain the completed follow-up that adds the flag while keeping ports, under a different protocol.
+There are three steps in the argument. First: do ports still help when counts are provided? The relevant contrast is Counts plus Ports minus Counts. We also compare that residual gain with Ports minus Base, as in the original factorial design. This is a question about the incremental value of ports after counts, not a direct replacement comparison between Counts and Ports. Second, evaluate a supplementary first-contact flag and compare it with both Counts and Counts plus Ports. Third, describe which transfers account for the extra detections. These are not three newly declared primary tests: the flag model is supplementary and the error decomposition is descriptive. I also retain the completed follow-up that adds the flag while keeping ports, under a different protocol.
 
 ## Slide 8
 
@@ -40,7 +40,7 @@ The original experiment has a two-by-two design: Base, Counts, Ports and Counts 
 
 ## Slide 10
 
-Do counts replace ports? No, in this original protocol. Ports add 7.48 F1 points without the counts and 14.91 with them. The residual interval is 10.11 to 19.71, positive in every paired seed. Supplying these four counts therefore does not remove the port benefit. I am not claiming the gain was statistically shown to grow; the interaction interval crosses zero. The planned share-explained Fieller interval is minus 512.7 to plus 8.4 percent, conditional on this protocol and statistical model. Counts alone has a small point estimate over Base but a wide interval, so this is not proof that counts are useless. Next, what information do the count scalars leave out?
+Do ports still help when counts are provided? Yes, in this original protocol. The right-hand pair compares Counts plus Ports, at mean F1 39.57, with Counts, at 24.66. Adding ports therefore improves F1 by 14.91 points, with interval 10.11 to 19.71; every paired seed has a positive difference. The left-hand pair is the reference port gain without counts: 7.48 points. The 14.91 is the effect of adding ports to a model with counts, not the effect of adding counts. A direct replacement question would instead compare Counts with Ports, which is a different contrast. Our conclusion is that ports retain predictive value after the four counts are supplied. This does not establish that counts are useless or that the two feature sets have a statistically significant interaction; the interaction interval crosses zero. The original planned share-explained Fieller interval remains minus 512.7 to plus 8.4 percent, conditional on this protocol and statistical model. Next, what information do the count scalars leave out?
 
 ## Slide 11
 
@@ -60,7 +60,7 @@ This completed follow-up asks a different question: does an explicit flag help w
 
 ## Slide 15
 
-The main finding is simple: in the original experiment, a first-contact flag helps find laundering on new pairs. First, the four account-level counts do not remove the port benefit: 14.91 F1 points remain. Second, the flag is useful beyond counts, with a 24.33-point gain, and replacing ports with the flag gives a 9.42-point gain. Third, we locate the extra detections: first-contact recall rises from 47.1 to 64.0 percent, and all five seeds detect more first-contact positives. These are results from the original five-epoch HI-Small protocol, with the flag comparison supplementary. The follow-up has already shown that an additional benefit on top of retained ports was not established. The practical research contribution is to evaluate pair-specific history alongside account-level activity counts, and to show which transactions account for the observed prediction gain. Thank you; I welcome questions.
+The main finding is simple: in the original experiment, a first-contact flag helps find laundering on new pairs. First, ports still help when counts are provided: adding ports to Counts improves F1 by 14.91 points. Second, the flag is useful beyond counts, with a 24.33-point gain, and replacing ports with the flag gives a 9.42-point gain. Third, we locate the extra detections: first-contact recall rises from 47.1 to 64.0 percent, and all five seeds detect more first-contact positives. These are results from the original five-epoch HI-Small protocol, with the flag comparison supplementary. The follow-up has already shown that an additional benefit on top of retained ports was not established. The practical research contribution is to evaluate pair-specific history alongside account-level activity counts, and to show which transactions account for the observed prediction gain. Thank you; I welcome questions.
 
 ## Slide 16
 
